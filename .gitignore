@@ -73,3 +73,11 @@ crashlytics-build.properties
 
 # Jetbrain folder
 .idea/
+
+# spine2d
+/[Aa]ssets/Spine
+/[Aa]ssets/Spine Examples
+/[Aa]ssets/Scenes
+/[Pp]ackages
+*.meta
+/ProjectSettings
