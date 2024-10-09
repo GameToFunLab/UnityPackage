@@ -1,7 +1,6 @@
 using GameToFunLab.Core;
 using GameToFunLab.Core.Spine2d;
 using GameToFunLab.Scenes;
-using Scripts.TableLoader;
 using Spine;
 using Spine.Unity;
 using UnityEngine;

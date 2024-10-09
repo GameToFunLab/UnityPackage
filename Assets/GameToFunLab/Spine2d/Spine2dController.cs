@@ -12,17 +12,17 @@ namespace GameToFunLab.Spine2d
     /// </summary>
     public class Spine2dController : MonoBehaviour
     {
-        private protected SkeletonAnimation SkeletonAnimation;
+        public SkeletonAnimation skeletonAnimation;
 
         protected virtual void Awake() {
             // Spine 오브젝트의 SkeletonAnimation 컴포넌트 가져오기
-            SkeletonAnimation = GetComponent<SkeletonAnimation>();
+            skeletonAnimation = GetComponent<SkeletonAnimation>();
 
-            if (SkeletonAnimation == null)
+            if (skeletonAnimation == null)
             {
                 FgLogger.LogError("SkeletonAnimation component not found!");
             }
-            SkeletonAnimation.AnimationState.Event += HandleEvent;
+            skeletonAnimation.AnimationState.Event += HandleEvent;
         }
 
         private void HandleEvent(TrackEntry trackEntry, Event e)
@@ -64,9 +64,9 @@ namespace GameToFunLab.Spine2d
         /// <param name="loop"></param>
         protected virtual void PlayAnimation(string animationName, bool loop = false)
         {
-            if (SkeletonAnimation == null) return;
+            if (skeletonAnimation == null) return;
             //  FG_Logger.Log("PlayAnimation gameobject: " + this.gameObject.name + " / animationName: " + animationName + " / " + loop);
-            SkeletonAnimation.AnimationState.SetAnimation(0, animationName, loop);
+            skeletonAnimation.AnimationState.SetAnimation(0, animationName, loop);
         }
         /// <summary>
         /// 현재 재생 중인 애니메이션 이름 가져오기
@@ -74,8 +74,8 @@ namespace GameToFunLab.Spine2d
         /// <returns></returns>
         protected string GetCurrentAnimation()
         {
-            if (SkeletonAnimation == null || SkeletonAnimation.AnimationState == null) return null;
-            TrackEntry currentEntry = SkeletonAnimation.AnimationState.GetCurrent(0);
+            if (skeletonAnimation == null || skeletonAnimation.AnimationState == null) return null;
+            TrackEntry currentEntry = skeletonAnimation.AnimationState.GetCurrent(0);
             return currentEntry?.Animation.Name;
         }
         /// <summary>
@@ -84,13 +84,13 @@ namespace GameToFunLab.Spine2d
         /// <param name="animationName"></param>
         protected virtual void PlayAnimationOnceAndThenLoop(string animationName)
         {
-            if (SkeletonAnimation == null) return;
+            if (skeletonAnimation == null) return;
             // FG_Logger.Log("PlayAnimationOnceAndThenLoop gameobject: " + this.gameObject.name + " / animationName: " + animationName );
             // 애니메이션 실행
-            SkeletonAnimation.AnimationState.SetAnimation(0, animationName, false);
+            skeletonAnimation.AnimationState.SetAnimation(0, animationName, false);
 
             // 애니메이션 이벤트 리스너 등록
-            SkeletonAnimation.AnimationState.Complete += OnAnimationCompleteToIdle;
+            skeletonAnimation.AnimationState.Complete += OnAnimationCompleteToIdle;
         }
         /// <summary>
         /// 애니메이션이 끝나면 호출되는 콜백 함수
@@ -98,25 +98,25 @@ namespace GameToFunLab.Spine2d
         /// <param name="entry"></param>
         protected virtual void OnAnimationCompleteToIdle(TrackEntry entry)
         {
-            if (SkeletonAnimation == null) return;
+            if (skeletonAnimation == null) return;
             // 애니메이션 이벤트 리스너 제거
-            SkeletonAnimation.AnimationState.Complete -= OnAnimationCompleteToIdle;
+            skeletonAnimation.AnimationState.Complete -= OnAnimationCompleteToIdle;
 
             // 다른 애니메이션 loop로 실행
-            SkeletonAnimation.AnimationState.SetAnimation(0, SpineCharacter.CharacterDefaultAnimationName["idle"], true);
+            skeletonAnimation.AnimationState.SetAnimation(0, SpineCharacter.CharacterDefaultAnimationName["idle"], true);
         }
         protected virtual void AddCompleteEvent() 
         {
-            SkeletonAnimation.AnimationState.Complete += OnAnimationCompleteToIdle;
+            skeletonAnimation.AnimationState.Complete += OnAnimationCompleteToIdle;
         }
         protected virtual void RemoveCompleteEvent() 
         {
-            if (SkeletonAnimation == null) return;
-            SkeletonAnimation.AnimationState.Complete -= OnAnimationCompleteToIdle;
+            if (skeletonAnimation == null) return;
+            skeletonAnimation.AnimationState.Complete -= OnAnimationCompleteToIdle;
         }
         protected float GetAnimationDuration(string animationName, bool isMilliseconds = true)
         {
-            var findAnimation = SkeletonAnimation.Skeleton.Data.FindAnimation(animationName);
+            var findAnimation = skeletonAnimation.Skeleton.Data.FindAnimation(animationName);
 
             if (findAnimation == null)
             {
@@ -129,22 +129,22 @@ namespace GameToFunLab.Spine2d
         }
         protected void SetTrackNoEnd(int trackId = 0)
         {
-            if (SkeletonAnimation == null) return;
-            TrackEntry trackEntry = SkeletonAnimation.AnimationState.GetCurrent(trackId);
+            if (skeletonAnimation == null) return;
+            TrackEntry trackEntry = skeletonAnimation.AnimationState.GetCurrent(trackId);
             if(trackEntry == null) return;
             trackEntry.AnimationEnd = 999999f;
         }
 
         protected void StopAnimation(int trackId = 0)
         {
-            if (SkeletonAnimation == null) return;
-            SkeletonAnimation.AnimationState.SetEmptyAnimation(trackId, 0);
-            SkeletonAnimation.AnimationState.ClearTrack(trackId);
+            if (skeletonAnimation == null) return;
+            skeletonAnimation.AnimationState.SetEmptyAnimation(trackId, 0);
+            skeletonAnimation.AnimationState.ClearTrack(trackId);
         }
         protected bool IsPlaying()
         {
-            if (SkeletonAnimation == null) return false;
-            var state = SkeletonAnimation.AnimationState;
+            if (skeletonAnimation == null) return false;
+            var state = skeletonAnimation.AnimationState;
             // 각 트랙에서 현재 애니메이션이 있는지 확인
             for (int i = 0; i < state.Tracks.Count; i++)
             {

@@ -156,9 +156,9 @@ namespace GameToFunLab.Characters
         /// <param name="entry"></param>
         protected override void OnAnimationCompleteToIdle(TrackEntry entry)
         {
-            if (SkeletonAnimation == null) return;
+            if (skeletonAnimation == null) return;
             // 애니메이션 이벤트 리스너 제거
-            SkeletonAnimation.AnimationState.Complete -= OnAnimationCompleteToIdle;
+            skeletonAnimation.AnimationState.Complete -= OnAnimationCompleteToIdle;
 
             // 연출중일때는 아무것도 하지 않는다
             if (sceneGame.state == SceneGame.GameState.DirectionStart) return;
@@ -168,13 +168,13 @@ namespace GameToFunLab.Characters
             {
                 Status = CharacterStatus.Idle;
                 // 공격시 flip 하기 위해 추가 
-                SkeletonAnimation.AnimationState.SetAnimation(0, idleAniName, true);
+                skeletonAnimation.AnimationState.SetAnimation(0, idleAniName, true);
                 DownAttack();
                 return;
             }
             // // 다른 애니메이션 loop로 실행
             Status = CharacterStatus.Idle;
-            SkeletonAnimation.AnimationState.SetAnimation(0, idleAniName, true);
+            skeletonAnimation.AnimationState.SetAnimation(0, idleAniName, true);
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
@@ -200,5 +200,7 @@ namespace GameToFunLab.Characters
                 isAttacking = false;
             }
         }
+        
+        
     }
 }

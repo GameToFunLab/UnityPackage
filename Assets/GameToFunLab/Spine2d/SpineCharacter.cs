@@ -23,9 +23,9 @@ namespace GameToFunLab.Spine2d
         protected void ChangeSkin(string skinName)
         {
             if (skinName == "") return;
-            if (SkeletonAnimation.Skeleton.Data.FindSkin(skinName) == null) return;
-            SkeletonAnimation.Skeleton.SetSkin(skinName);
-            SkeletonAnimation.Skeleton.SetSlotsToSetupPose(); // see note below
+            if (skeletonAnimation.Skeleton.Data.FindSkin(skinName) == null) return;
+            skeletonAnimation.Skeleton.SetSkin(skinName);
+            skeletonAnimation.Skeleton.SetSlotsToSetupPose(); // see note below
         }
         /// <summary>
         /// 여러 스킨 합치기. 예) 얼굴, 무기 스킨 적용하기
@@ -35,7 +35,7 @@ namespace GameToFunLab.Spine2d
         {
             Skin customSkin = new Skin("custom");
 
-            Skeleton skeleton = SkeletonAnimation.Skeleton;
+            Skeleton skeleton = skeletonAnimation.Skeleton;
             SkeletonData skeletonData = skeleton.Data;
             foreach (var skinName in skinNames)
             {

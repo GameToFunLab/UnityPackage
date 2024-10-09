@@ -1,6 +1,4 @@
-﻿using System;
-using GameToFunLab.Characters;
-using Scripts.Scenes;
+﻿using GameToFunLab.Scenes;
 using UnityEngine;
 
 namespace GameToFunLab.Core
