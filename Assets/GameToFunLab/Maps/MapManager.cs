@@ -18,13 +18,10 @@ namespace GameToFunLab.Maps
         {
             None,
             Common,
-            Dungeon
         }
-        public enum TypeSub
+        public enum SubType
         {
             None,
-            PlayerTitle,
-            TotalDamage
         }
 
         private enum State
@@ -176,7 +173,7 @@ namespace GameToFunLab.Maps
         {
             sceneGame.player?.GetComponent<Player>().Stop();
 
-            (int vnum, string name, string tileMapPrefabName, Type type, TypeSub typeSub) resultChapterData;
+            (int vnum, string name, string tileMapPrefabName, Type type, SubType typeSub) resultChapterData;
             if (loadMapVnum == 0)
             {
                 loadMapVnum = saveDataManager.CurrentChapter;

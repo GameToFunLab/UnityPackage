@@ -9,15 +9,15 @@ namespace GameToFunLab.Core.Maps
         private int chapterNumber;
         private string chapterName;
         private MapManager.Type mapType;
-        private MapManager.TypeSub mapTypeSub;
+        private MapManager.SubType mapSubType;
         public Tilemap tilemap;
 
-        public void Initialize(int vnum, string name, MapManager.Type type, MapManager.TypeSub typeSub)
+        public void Initialize(int vnum, string name, MapManager.Type type, MapManager.SubType subType)
         {
             chapterNumber = vnum;
             chapterName = name;
             mapType = type;
-            mapTypeSub = typeSub;
+            mapSubType = subType;
         }
         /// <summary>
         /// 같은 장의 맵인지 
