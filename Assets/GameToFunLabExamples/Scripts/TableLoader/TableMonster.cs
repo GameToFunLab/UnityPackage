@@ -10,7 +10,7 @@ namespace Scripts.TableLoader
     {
         public int Vnum;
         public string Name;
-        public int ShapeVnum;
+        public int SpineVnum;
         public string DefaultSkin;
         public float Scale;
         public DefaultCharacter.Grade Grade;
@@ -46,7 +46,7 @@ namespace Scripts.TableLoader
             {
                 Vnum = int.Parse(data["Vnum"]),
                 Name = data["Name"],
-                ShapeVnum = int.Parse(data["ShapeVnum"]),
+                SpineVnum = int.Parse(data["SpineVnum"]),
                 DefaultSkin = data["DefaultSkin"],
                 Scale = float.Parse(data["Scale"]),
                 Grade = ConvertGrade(data["Grade"]),
@@ -60,11 +60,11 @@ namespace Scripts.TableLoader
         
         public GameObject GetPrefab(int vnum) {
             var info = GetMonsterData(vnum);
-            if (info.ShapeVnum == 0) return null;
+            if (info.SpineVnum == 0) return null;
         
-            string prefabPath = TableLoaderManager.Instance.TableAnimation.GetPath(info.ShapeVnum);
+            string prefabPath = TableLoaderManager.Instance.TableSpine.GetPath(info.SpineVnum);
             if (prefabPath == "") {
-                FgLogger.Log("prefabPath is ''. shape: "+info.ShapeVnum);
+                FgLogger.Log("prefabPath is ''. shape: "+info.SpineVnum);
                 return null;
             }
             GameObject prefab = Resources.Load<GameObject>(prefabPath);
@@ -77,7 +77,7 @@ namespace Scripts.TableLoader
         public string GetShapePath(int vnum)
         {
             var info = GetMonsterData(vnum);
-            return info.ShapeVnum <= 0 ? "" : TableLoaderManager.Instance.TableAnimation.GetPath(info.ShapeVnum);
+            return info.SpineVnum <= 0 ? "" : TableLoaderManager.Instance.TableSpine.GetPath(info.SpineVnum);
         }
     }
 }

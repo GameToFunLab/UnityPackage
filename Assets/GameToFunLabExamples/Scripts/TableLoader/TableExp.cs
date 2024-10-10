@@ -1,6 +1,6 @@
 ﻿using GameToFunLab.TableLoader;
 
-namespace FocusGame.Core.TableLoader
+namespace Scripts.TableLoader
 {
     public class TableExp : DefaultTable
     {	

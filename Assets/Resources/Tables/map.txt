@@ -1,0 +1,3 @@
+Vnum	Name	Type	SubType	TileMapPrefabName
+1	맵1	Common	None	Prefabs/Maps/map1
+2	맵2	Common	None	Prefabs/Maps/map2

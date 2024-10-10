@@ -1,0 +1,5 @@
+Vnum	Name	SpineVnum	DefaultSkin	Scale	Grade	StatHp	StatAtk	StatMoveSpeed	RewardExp	RewardGold
+#1장										
+110001	몬스터1	100001	maggot	0.5	Common	10	5	1	10	100
+110002	몬스터2	100002	bat	0.4	Common	15	5	1	10	100
+120001	보스1	200001	skull	0.6	Boss	100	15	1	100	1000

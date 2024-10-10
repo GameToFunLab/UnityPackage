@@ -33,7 +33,6 @@ namespace GameToFunLab.TableLoader
         }
         public Dictionary<int, Dictionary<string, string>> GetDatas() => table;
         protected Dictionary<string, string> GetData(int vnum) => table.GetValueOrDefault(vnum);
-        // protected string GetDataColumn(int vnum, string columnName) => table.TryGetValue(vnum, out var data) && data.TryGetValue(columnName, out var value) ? value : null;
         protected string GetDataColumn(int vnum, string columnName)
         {
             table.TryGetValue(vnum, out var data);
