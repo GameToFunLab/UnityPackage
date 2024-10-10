@@ -1,15 +1,12 @@
 using System.Collections;
 using GameToFunLab.Core;
-using GameToFunLab.Core.Utils;
 using GameToFunLab.Scenes;
-using TMPro;
 using UnityEngine;
 
 namespace GameToFunLab.UI
 {
     public class UITextUpdate : MonoBehaviour
     {
-        protected TextMeshProUGUI TargetText;
         protected SaveDataManager SaveDataManager;
         protected long CurrentValue;
         protected long PreviousValue;
@@ -18,7 +15,6 @@ namespace GameToFunLab.UI
         public bool useShortText; // 줄임 단위를 사용할 것인지 
 
         protected void Awake() {
-            TargetText = GetComponent<TextMeshProUGUI>();
             wasDisabled = false;
         }
         protected virtual void Start()
@@ -67,11 +63,9 @@ namespace GameToFunLab.UI
         {
             if (useShortText)
             {
-                TargetText.text = $"{MathHelper.FormatNumber(value)}";
             }
             else
             {
-                TargetText.text = $"{value}";
             }
         }
     }

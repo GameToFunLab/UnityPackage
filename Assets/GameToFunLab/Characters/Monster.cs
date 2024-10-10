@@ -1,5 +1,4 @@
 using GameToFunLab.Scenes;
-using Spine;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
@@ -96,8 +95,6 @@ namespace GameToFunLab.Characters
             else
             {
                 Status = CharacterStatus.Damage;
-            
-                PlayAnimationOnceAndThenLoop(damageAniName);
             }
 
             return true;
@@ -118,23 +115,6 @@ namespace GameToFunLab.Characters
         protected bool SearchAndAttackPlayer()
         {
             return false;
-        }
-        /// <summary>
-        /// 애니메이션이 끝나면 호출되는 콜백 함수
-        /// </summary>
-        /// <param name="entry"></param>
-        protected override void OnAnimationCompleteToIdle(TrackEntry entry)
-        {
-            base.OnAnimationCompleteToIdle(entry);
-        
-            bool isCollisionPlayer = SearchAndAttackPlayer();
-            if (isCollisionPlayer)
-            {
-                Status = CharacterStatus.Idle;
-                return;
-            }
-            Status = CharacterStatus.Idle;
-            Run();
         }
         public void Destroy() {
             Destroy(this.gameObject);

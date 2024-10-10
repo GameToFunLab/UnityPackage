@@ -1,7 +1,8 @@
 using System.Collections;
+using GameToFunLab.Core;
 using UnityEngine;
 
-namespace GameToFunLab.Core.Utils
+namespace GameToFunLab.Utils
 {
     public class CoroutineHelper : MonoBehaviour
     {

@@ -1,9 +1,8 @@
 using System.Collections;
-using GameToFunLab.Core.Utils;
-using GameToFunLab.UI;
+using GameToFunLab.Utils;
 using UnityEngine;
 
-namespace GameToFunLab.Core.UI
+namespace GameToFunLab.UI
 {
     public class UIWindowFade : MonoBehaviour
     {

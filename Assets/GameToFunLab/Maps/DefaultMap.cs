@@ -1,8 +1,7 @@
-using GameToFunLab.Maps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace GameToFunLab.Core.Maps
+namespace GameToFunLab.Maps
 {
     public class DefaultMap : MonoBehaviour
     {

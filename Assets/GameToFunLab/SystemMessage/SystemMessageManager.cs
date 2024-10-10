@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameToFunLab.Core.SystemMessage
+namespace GameToFunLab.SystemMessage
 {
     public class SystemMessageManager : MonoBehaviour
     {

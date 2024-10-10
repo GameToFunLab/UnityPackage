@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GameToFunLab.Core;
-using GameToFunLab.Scenes;
 using UnityEngine;
 
 namespace GameToFunLab.Popup

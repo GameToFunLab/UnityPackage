@@ -1,5 +1,4 @@
 using GameToFunLab.Scenes;
-using Spine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -24,6 +23,7 @@ namespace GameToFunLab.Characters
             base.Start();
             sceneGame = SceneGame.Instance;
         }
+        
         // Update is called once per frame
         protected override void Update()
         {
@@ -69,44 +69,7 @@ namespace GameToFunLab.Characters
 
             SetFlipToTarget(targetMonster.transform);
             int attackNameIndex = Random.Range(0, attackAniNames.Length);
-            PlayAnimationOnceAndThenLoop(attackAniNames[attackNameIndex]);
             return true;
-        }
-        /// <summary>
-        /// 스파인 hit 이벤트 발동되었을때 처리 
-        /// </summary>
-        /// <param name="eEvent">이벤트 json 문구</param>
-        protected override void OnSpineEventHit(Spine.Event eEvent) {
-            long totalDamage = sceneGame.calculateManager.GetPlayerTotalAtk();
-        
-            // 캡슐 콜라이더 2D와 충돌 중인 모든 콜라이더를 검색
-            CapsuleCollider2D capsuleCollider = GetComponent<CapsuleCollider2D>();
-            Vector2 size = new Vector2(capsuleCollider.size.x * Mathf.Abs(transform.localScale.x), capsuleCollider.size.y * transform.localScale.y);
-            Vector2 point = (Vector2)transform.position + capsuleCollider.offset * transform.localScale;
-            int hitCount = Physics2D.OverlapCapsuleNonAlloc(point, size, capsuleCollider.direction, 0f, hits);
-
-            int countDamageMonster = 0;
-            int maxDamageMonster = 10;
-            for (int i = 0; i < hitCount; i++)
-            {
-                Collider2D hit = hits[i];
-                if (hit.CompareTag(sceneGame.tagEnemy))
-                {
-                    Monster monster = hit.GetComponent<Monster>();
-                    if (monster != null)
-                    {
-                        // FgLogger.Log("Player attacked the monster after animation!");
-                        monster.OnDamage(totalDamage);
-                        ++countDamageMonster;
-                        
-                        // maxDamageMonster 마리 한테만 데미지 준다 
-                        if (countDamageMonster > maxDamageMonster)
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
         }
         /// <summary>
         /// 내가 데미지 받았을때 처리 
@@ -149,32 +112,6 @@ namespace GameToFunLab.Characters
             }
 
             return false;
-        }
-        /// <summary>
-        /// 애니메이션이 끝나면 호출되는 콜백 함수
-        /// </summary>
-        /// <param name="entry"></param>
-        protected override void OnAnimationCompleteToIdle(TrackEntry entry)
-        {
-            if (skeletonAnimation == null) return;
-            // 애니메이션 이벤트 리스너 제거
-            skeletonAnimation.AnimationState.Complete -= OnAnimationCompleteToIdle;
-
-            // 연출중일때는 아무것도 하지 않는다
-            if (sceneGame.state == SceneGame.GameState.DirectionStart) return;
-
-            bool isCollisionMonster = SearchAndAttackMonsters();
-            if (isCollisionMonster)
-            {
-                Status = CharacterStatus.Idle;
-                // 공격시 flip 하기 위해 추가 
-                skeletonAnimation.AnimationState.SetAnimation(0, idleAniName, true);
-                DownAttack();
-                return;
-            }
-            // // 다른 애니메이션 loop로 실행
-            Status = CharacterStatus.Idle;
-            skeletonAnimation.AnimationState.SetAnimation(0, idleAniName, true);
         }
         void OnTriggerEnter2D(Collider2D collision)
         {

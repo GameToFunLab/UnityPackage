@@ -1,5 +1,4 @@
 using GameToFunLab.Core;
-using GameToFunLab.Core.UI;
 using GameToFunLab.Scenes;
 using UnityEngine;
 using UnityEngine.EventSystems;

@@ -1,7 +1,5 @@
 using GameToFunLab.Core;
-using GameToFunLab.Core.UI;
 using GameToFunLab.Scenes;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -259,7 +257,6 @@ namespace GameToFunLab.UI
         public void AddDebugMessage(string text)
         {
             if (debugMessageVerticalLayoutGroup == null || prefabDebugMessage == null || GameObject.Find("ScrollViewDebugMessage") == null) return;
-            prefabDebugMessage.GetComponent<TextMeshProUGUI>().text = $"{Time.time:f2} : {text}";
             Instantiate(prefabDebugMessage, debugMessageVerticalLayoutGroup.transform);
             LayoutRebuilder.ForceRebuildLayoutImmediate(debugMessageVerticalLayoutGroup.GetComponent<RectTransform >());
             GameObject.Find("ScrollViewDebugMessage").GetComponent<ScrollRect>().verticalNormalizedPosition = 0;

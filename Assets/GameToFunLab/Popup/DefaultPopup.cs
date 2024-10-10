@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameToFunLab.Core;
-using GameToFunLab.Core.Utils;
 using GameToFunLab.Scenes;
-using TMPro;
+using GameToFunLab.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -33,16 +32,11 @@ namespace GameToFunLab.Popup
     public class DefaultPopup : MonoBehaviour, IPointerClickHandler
     {
         protected PopupType PopupType;
-        public TextMeshProUGUI textTitle;
-        public TextMeshProUGUI textMessage; // 메시지를 표시할 TextMeshProUGUI
         public Button buttonConfirm; // 확인 버튼
         public Button buttonCancel; // 취소 버튼
         protected CanvasGroup CanvasGroup; // 페이드 인/아웃을 위한 CanvasGroup
         public RectTransform panelContent; // 내용, 보상 아이템이 들어가는 패널
 
-        public TextMeshProUGUI textRewardDia;
-        public TextMeshProUGUI textRewardGold;
-        
         protected bool IsClosableByClick;
         public float autoCloseTime; // 자동 닫힘 시간을 저장할 변수
         public Image gaugeBarAutoClose;
@@ -60,27 +54,6 @@ namespace GameToFunLab.Popup
             if (popupMetadata.PopupType != PopupType.None)
             {
                 PopupType = popupMetadata.PopupType;
-            }
-            if (popupMetadata.Title != "" && textTitle != null)
-            {
-                textTitle.text = popupMetadata.Title;
-            }
-            if (popupMetadata.Message != "")
-            {
-                if (textMessage != null)
-                {
-                    textMessage.gameObject.SetActive(true);
-                    textMessage.text = popupMetadata.Message;
-                    textMessage.color = popupMetadata.MessageColor;
-                }
-            }
-            else
-            {
-                // Logger.LogError("message is blank.");
-                if (textMessage != null)
-                {
-                    textMessage.gameObject.SetActive(false);
-                }
             }
 
             SetRewardDiaGold(popupMetadata.RewardDia, popupMetadata.RewardGold);
@@ -179,24 +152,6 @@ namespace GameToFunLab.Popup
 
         public void SetRewardDiaGold(long rewardDia, long rewardGold)
         {
-            if (rewardDia >= 0 && textRewardDia != null)
-            {
-                // textRewardDia.gameObject.SetActive(true);
-                textRewardDia.text = "+" + MathHelper.FormatNumber(rewardDia);
-            }
-            else
-            {
-                // textRewardDia.gameObject.SetActive(false);
-            }
-            if (rewardGold >= 0 && textRewardGold != null)
-            {
-                // textRewardGold.gameObject.SetActive(true);
-                textRewardGold.text = "+" + MathHelper.FormatNumber(rewardGold);
-            }
-            else
-            {
-                // textRewardGold.gameObject.SetActive(false);
-            }
         }
 
         public void ShowPopup()

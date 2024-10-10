@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameToFunLab.Core.UI
+namespace GameToFunLab.UI
 {
     /// <summary>
     /// Toogle 버튼의 이름을 Vnum 으로 사용한다 

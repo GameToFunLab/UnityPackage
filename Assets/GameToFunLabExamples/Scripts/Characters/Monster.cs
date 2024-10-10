@@ -1,7 +1,6 @@
 using GameToFunLab.Characters;
 using Scripts.Scenes;
 using Scripts.TableLoader;
-using Spine;
 using UnityEngine;
 
 namespace Scripts.Characters
@@ -111,8 +110,6 @@ namespace Scripts.Characters
             else
             {
                 Status = CharacterStatus.Damage;
-            
-                PlayAnimationOnceAndThenLoop(damageAniName);
             }
 
             return true;
@@ -153,27 +150,6 @@ namespace Scripts.Characters
             }
 
             return false;
-        }
-        /// <summary>
-        /// 애니메이션이 끝나면 호출되는 콜백 함수
-        /// </summary>
-        /// <param name="entry"></param>
-        protected override void OnAnimationCompleteToIdle(TrackEntry entry)
-        {
-            base.OnAnimationCompleteToIdle(entry);
-        
-            // 연출중일때는 아무것도 하지 않는다
-            if (sceneGame.state == SceneGame.GameState.DirectionStart) return;
-        
-            bool isCollisionPlayer = SearchAndAttackPlayer();
-            if (isCollisionPlayer)
-            {
-                Status = CharacterStatus.Idle;
-                return;
-            }
-            Status = CharacterStatus.Idle;
-            Run();
-            // Status = CharacterStatus.idle;
         }
         public void Destroy() {
             Destroy(this.gameObject);

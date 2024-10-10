@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GameToFunLab.Core;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -60,9 +59,7 @@ namespace GameToFunLab.UI
     
         private Status iconStatus;
         public Image imageIcon; // 아이템 아이콘
-        public TextMeshProUGUI textName;
     
-        private TextMeshProUGUI coolTimeText;
         private float currentCoolTime;
         public bool isReverseFillAmount; // true 일경우, 0에서 1로 
         [HideInInspector] public bool isPlayingCoolTime;
@@ -75,12 +72,9 @@ namespace GameToFunLab.UI
         public int levelMax;
         private Grade grade;
         private int gradeLevel;
-        public TextMeshProUGUI textLevel;
 
         public int count;
         public int composeCount;
-        public TextMeshProUGUI textCount;
-        public TextMeshProUGUI textComposeCount;
         public Image imageGrade;
         public GameObject imageLock;
 
@@ -100,10 +94,6 @@ namespace GameToFunLab.UI
         }
         public virtual void Awake() {
             Transform textCoolTime = transform.Find("TextCoolTime");
-            if (textCoolTime != null) {
-                coolTimeText = textCoolTime.GetComponent<TextMeshProUGUI>();
-                coolTimeText.gameObject.SetActive(false);
-            }
             Transform imageCoolTimeGauge = transform.Find("ImageCoolTimeGauge");
             if (imageCoolTimeGauge != null) {
                 coolTimeGauge = imageCoolTimeGauge.GetComponent<Image>();
@@ -215,9 +205,6 @@ namespace GameToFunLab.UI
             if (isPlayingCoolTime) return false;
             if (GetCoolTimeDuration() <= 0) return false;
 
-            if (coolTimeText != null) {
-                coolTimeText.gameObject.SetActive(true);
-            }
             isPlayingCoolTime = true;
             currentCoolTime = GetCoolTimeDuration();
             if (coolTimeGauge != null)
@@ -241,9 +228,6 @@ namespace GameToFunLab.UI
                 return;
             }
             // iconImage.fillAmount = currentCooldown / cooldownTime; // 아이콘 채우기
-            if (coolTimeText != null) {
-                coolTimeText.text = currentCoolTime.ToString("F1"); // 남은 시간 표시
-            }
             if (coolTimeGauge != null) {
                 if (isReverseFillAmount)
                 {
@@ -262,9 +246,6 @@ namespace GameToFunLab.UI
         {
             isPlayingCoolTime = false;
             currentCoolTime = 0;
-            if (coolTimeText != null) {
-                coolTimeText.gameObject.SetActive(false);
-            }
             if (coolTimeGauge != null) {
                 coolTimeGauge.gameObject.SetActive(false);
             }
@@ -276,9 +257,6 @@ namespace GameToFunLab.UI
         public virtual void EndCoolTime() {
             isPlayingCoolTime = false;
             currentCoolTime = 0;
-            if (coolTimeText != null) {
-                coolTimeText.gameObject.SetActive(false);
-            }
             if (coolTimeGauge != null) {
                 coolTimeGauge.gameObject.SetActive(false);
                 // coolTimeGauge.fillAmount = 1; // 아이콘이 완전히 채워짐
@@ -427,12 +405,6 @@ namespace GameToFunLab.UI
                 FgLogger.LogError("Name is blank.");
                 return;
             }
-            if (textName == null)
-            {
-                FgLogger.LogError("dont exist text name object.");
-                return;
-            }
-            textName.text = iconName;
         }
         /// <summary>
         /// 레벨 셋팅하기
@@ -440,21 +412,7 @@ namespace GameToFunLab.UI
         /// <param name="iconLevel"></param>
         protected void SetLevel(int iconLevel)
         {
-            if (textLevel == null)
-            {
-                FgLogger.LogError("dont exist text level object.");
-                return;
-            }
-
             this.level = iconLevel;
-            if (levelMax > 0 && level >= levelMax)
-            {
-                textLevel.text = "MAX";
-            }
-            else
-            {
-                textLevel.text = iconLevel.ToString();
-            }
         }
 
         protected void SetLevelUpCount(int value)
@@ -464,14 +422,7 @@ namespace GameToFunLab.UI
                 FgLogger.LogError("compose count is 0.");
                 return;
             }
-            if (textComposeCount == null)
-            {
-                FgLogger.LogError("dont exist compose count object.");
-                return;
-            }
-
             this.composeCount = value;
-            textComposeCount.text = "/" + value;
         }
         /// <summary>
         /// 등급 셋팅하기
@@ -513,14 +464,7 @@ namespace GameToFunLab.UI
                 FgLogger.LogError("compose count is 0.");
                 return;
             }
-            if (textComposeCount == null)
-            {
-                FgLogger.LogError("dont exist compose count object.");
-                return;
-            }
-
             this.composeCount = value;
-            textComposeCount.text = "/" + value;
         }
         /// <summary>
         /// 가지고 있는 개수
@@ -528,12 +472,6 @@ namespace GameToFunLab.UI
         /// <param name="value"></param>
         public void SetCount(int value)
         {
-            if (textCount == null)
-            {
-                FgLogger.LogError("dont exist text count object.");
-                return;
-            }
-
             if (value <= 0)
             {
                 SetIconLock(true);
@@ -544,7 +482,6 @@ namespace GameToFunLab.UI
             }
 
             this.count = value;
-            textCount.text = value.ToString();
             OnSetCount();
         }
         protected virtual void OnSetCount()

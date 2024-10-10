@@ -1,4 +1,4 @@
-﻿namespace GameToFunLab.Core.Utils
+﻿namespace GameToFunLab.Utils
 {
     public class MathHelper
     {

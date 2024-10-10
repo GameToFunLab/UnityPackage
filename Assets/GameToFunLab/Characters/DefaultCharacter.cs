@@ -1,10 +1,8 @@
-using System;
-using GameToFunLab.Spine2d;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
 {
-    public class DefaultCharacter : SpineCharacter
+    public class DefaultCharacter : MonoBehaviour
     {
         /// <summary>
         /// 캐릭터 기본 클레스
@@ -32,9 +30,9 @@ namespace GameToFunLab.Characters
         }
         
         public string[] attackAniNames = new string[] {"attack"};
-        public string idleAniName = SpineCharacter.CharacterDefaultAnimationName["idle"];
-        public string runAniName =  SpineCharacter.CharacterDefaultAnimationName["run"];
-        public string damageAniName =  SpineCharacter.CharacterDefaultAnimationName["damage"];
+        public string idleAniName = "idle";
+        public string runAniName =  "run";
+        public string damageAniName =  "damage";
 
         private CharacterStatus status = CharacterStatus.None;
     
@@ -99,8 +97,6 @@ namespace GameToFunLab.Characters
         private bool IsPossibleFlip()
         {
             // 공격중이면 flip 하지 않는다
-            if (IsCurrentAninameIsAttack()) return false;
-            
             return isPossibleFlip;
         }
         /// <summary>
@@ -122,9 +118,8 @@ namespace GameToFunLab.Characters
             Vector3 destination = new Vector2(targetTransform.position.x, transform.position.y);
             SetFlip(!(transform.position.x > destination.x));
         }
-        protected override void Awake()
+        protected virtual void Awake()
         {
-            base.Awake();
             isAttacking = false;
             currentAtk = (long)statAtk;
             currentHp = (long)statHp;
@@ -134,21 +129,9 @@ namespace GameToFunLab.Characters
             originalScaleX = transform.localScale.x;
         }
 
-        protected override void Start()
+        protected virtual void Start()
         {
-            base.Start();
             characterRenderer = GetComponent<Renderer>();
-        }
-        /// <summary>
-        /// 캐릭터가 현재 공격 애니메이션을 하고 있는지 체크 
-        /// </summary>
-        /// <returns></returns>
-        private bool IsCurrentAninameIsAttack()
-        {
-            string currentAnimation = GetCurrentAnimation();
-            if (currentAnimation == null) return false;
-
-            return currentAnimation.IndexOf("attack", StringComparison.Ordinal) >= 0;
         }
         /// <summary>
         /// 연출 시작할때 캐릭터에 셋팅해주기 
@@ -205,7 +188,6 @@ namespace GameToFunLab.Characters
 
             // FG_Logger.Log("player Run status: "+player.Status);
             Status = CharacterStatus.Run;
-            PlayAnimation(runAniName, true);
         }
         /// <summary>
         ///  플레이어 움직임 멈춤 
@@ -213,7 +195,6 @@ namespace GameToFunLab.Characters
         public void Stop() {
             // FG_Logger.Log("player Stop");
             Status = CharacterStatus.Idle;
-            PlayAnimation(idleAniName, true);
         }
         public void SetSortingOrder(CharacterSortingOrder value)
         {
