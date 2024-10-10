@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GameToFunLab.Core;
 using UnityEngine;
 
-namespace GameToFunLab.Core.Spine2d
+namespace Spine2d
 {
     public class SpineEventManager : MonoBehaviour
     {

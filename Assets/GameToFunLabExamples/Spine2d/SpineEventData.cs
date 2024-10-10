@@ -3,7 +3,7 @@ using Spine;
 using Spine.Unity;
 using UnityEngine;
 
-namespace GameToFunLab.Core.Spine2d
+namespace Spine2d
 {
     [Serializable]
     public class SpineEventData : MonoBehaviour
