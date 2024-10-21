@@ -36,13 +36,14 @@ namespace GameToFunLab.Characters
             Fixed
         }
         
+        long Vnum { get; set; }
         float StatHp { get; set; }
         float StatAtk { get; set; }
         float StatMoveSpeed { get; set; }
         long CurrentHp { get; set; }
         long CurrentAtk { get; set; }
         float CurrentMoveSpeed { get; set; }
-        CharacterStatus Status { get; set; }
+        CharacterStatus CurrentStatus { get; set; }
         CharacterSortingOrder SortingOrder { get; set; }
         bool PossibleAttack { get; set; }
         float OriginalScaleX { get; set; }

@@ -1,0 +1,4 @@
+Vnum	Name	SpineVnum	DefaultSkin	Scale	Grade	StatHp	StatAtk	StatMoveSpeed	RewardExp	RewardGold
+#1장										
+110001	npc1	100001	default	0.0625	Common	0	0	2	0	0
+110002	npc2	100002	default	0.0625	Common	0	0	2	0	0

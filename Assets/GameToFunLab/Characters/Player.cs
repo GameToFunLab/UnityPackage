@@ -86,7 +86,7 @@ namespace GameToFunLab.Characters
             {
                 IsAttacking = true;
                 Monster monster = collision.gameObject.GetComponent<Monster>();
-                if (monster.gameObject.GetComponent<Monster>().IsDead())
+                if (monster.gameObject.GetComponent<Monster>().IsStatusDead())
                 {
                     // FG_Logger.Log("player / update / monster dead");
                     targetMonster = null;

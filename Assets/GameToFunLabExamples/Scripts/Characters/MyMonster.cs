@@ -7,7 +7,7 @@ namespace Scripts.Characters
     /// <summary>
     /// 몬스터 기본 클레스
     /// </summary>
-    public class Monster : GameToFunLab.Characters.Monster
+    public class MyMonster : GameToFunLab.Characters.Monster
     {
         /// <summary>
         /// 몬스터 정보 초기화.
@@ -54,7 +54,7 @@ namespace Scripts.Characters
         {
             if (damage <= 0) return false;
             
-            if (Status == ICharacter.CharacterStatus.Dead)
+            if (CurrentStatus == ICharacter.CharacterStatus.Dead)
             {
                 // FG_Logger.Log("monster dead");
                 return false;
@@ -75,7 +75,7 @@ namespace Scripts.Characters
             if (CurrentHp <= 0)
             {
                 //FG_Logger.Log("dead vid : " + this.vid);
-                Status = ICharacter.CharacterStatus.Dead;
+                CurrentStatus = ICharacter.CharacterStatus.Dead;
                 float delay = 0.01f;
                 Destroy(this.gameObject, delay);
 
@@ -83,7 +83,7 @@ namespace Scripts.Characters
             }
             else
             {
-                Status = ICharacter.CharacterStatus.Damage;
+                CurrentStatus = ICharacter.CharacterStatus.Damage;
             }
 
             return true;
@@ -113,8 +113,8 @@ namespace Scripts.Characters
                 Collider2D hit = hits[i];
                 if (hit.CompareTag(sceneGame.tagPlayer))
                 {
-                    Player player = hit.GetComponent<Player>();
-                    if (player != null)
+                    MyPlayer myPlayer = hit.GetComponent<MyPlayer>();
+                    if (myPlayer != null)
                     {
                         // monster.TakeDamage(attackDamage);
                         // FgLogger.Log("Monster attacked the player after animation!");
@@ -142,7 +142,7 @@ namespace Scripts.Characters
             if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
             {
                 IsAttacking = true;
-                Status = ICharacter.CharacterStatus.Idle;
+                CurrentStatus = ICharacter.CharacterStatus.Idle;
                 // StartCoroutine(AttackCoroutine(collision.gameObject.GetComponent<Player>()));
             }
         }
@@ -151,7 +151,7 @@ namespace Scripts.Characters
             if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
             {
                 IsAttacking = false;
-                Status = ICharacter.CharacterStatus.Idle;
+                CurrentStatus = ICharacter.CharacterStatus.Idle;
                 Invoke(nameof(Run), 0.3f);
             }
         }
@@ -161,7 +161,7 @@ namespace Scripts.Characters
         private void UpdateAutoMove()
         {
             // if (IsCurrentAninameIsAttack() == true) return;
-            if (Status != ICharacter.CharacterStatus.Run) return;
+            if (CurrentStatus != ICharacter.CharacterStatus.Run) return;
 
             SetFlipToTarget(player.transform);
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * CurrentMoveSpeed);
@@ -172,7 +172,7 @@ namespace Scripts.Characters
         public void DestroyByChallengeBoss()
         {
             if (sceneGame == null) return;
-            Status = ICharacter.CharacterStatus.Dead;
+            CurrentStatus = ICharacter.CharacterStatus.Dead;
             Destroy(this.gameObject);
         }
     }

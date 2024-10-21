@@ -5,13 +5,14 @@ namespace GameToFunLab.Characters
 {
     public class DefaultCharacter : MonoBehaviour, ICharacter
     {
+        public long Vnum { get; set; }
         public float StatHp { get; set; }
         public float StatAtk { get; set; }
         public float StatMoveSpeed { get; set; }
         public long CurrentHp { get; set; }
         public long CurrentAtk { get; set; }
         public float CurrentMoveSpeed { get; set; }
-        public ICharacter.CharacterStatus Status { get; set; }
+        public ICharacter.CharacterStatus CurrentStatus { get; set; }
         public ICharacter.CharacterSortingOrder SortingOrder { get; set; }
         public float OriginalScaleX { get; set; }
         public bool IsAttacking { get; set; }
@@ -54,7 +55,7 @@ namespace GameToFunLab.Characters
         /// 캐릭터 방향 셋팅하기
         /// </summary>
         /// <param name="isFlip"></param>
-        private void SetFlip(bool isFlip)
+        protected void SetFlip(bool isFlip)
         {
             if (IsPossibleFlip() != true) return;
 
@@ -72,7 +73,7 @@ namespace GameToFunLab.Characters
         protected virtual void Awake()
         {
             IsAttacking = false;
-            Status = ICharacter.CharacterStatus.None;
+            CurrentStatus = ICharacter.CharacterStatus.None;
         }
 
         protected virtual void Start()
@@ -92,11 +93,11 @@ namespace GameToFunLab.Characters
         protected virtual void SetByDirection(bool set) 
         {
             if (set) {
-                Status = ICharacter.CharacterStatus.DontMove;
+                CurrentStatus = ICharacter.CharacterStatus.DontMove;
                 PossibleAttack = false;
             }
             else {
-                Status = ICharacter.CharacterStatus.Idle;
+                CurrentStatus = ICharacter.CharacterStatus.Idle;
                 PossibleAttack = true;
             }
         }
@@ -106,18 +107,11 @@ namespace GameToFunLab.Characters
         protected virtual bool DownAttack()
         {
             //anim.SetTrigger("onAttack");
-            if (Status == ICharacter.CharacterStatus.Attack || Status == ICharacter.CharacterStatus.Dead) return false;
+            if (CurrentStatus == ICharacter.CharacterStatus.Attack || CurrentStatus == ICharacter.CharacterStatus.Dead) return false;
             if (PossibleAttack != true) return false;
 
-            Status = ICharacter.CharacterStatus.Attack;
+            CurrentStatus = ICharacter.CharacterStatus.Attack;
             return true;
-        }
-        /// <summary>
-        /// 캐릭터가 이동중인지 
-        /// </summary>
-        /// <returns></returns>
-        private bool IsRunning() {
-            return (Status == ICharacter.CharacterStatus.Run);
         }
         /// <summary>
         /// 캐릭터가 이동할 수 있는 상태인지 
@@ -128,7 +122,7 @@ namespace GameToFunLab.Characters
             if (IsAttacking) return false;
             if (CurrentMoveSpeed <= 0) return false;
             
-            return (Status == ICharacter.CharacterStatus.Idle || Status == ICharacter.CharacterStatus.None);
+            return (CurrentStatus == ICharacter.CharacterStatus.Idle || CurrentStatus == ICharacter.CharacterStatus.None);
         }
         /// <summary>
         /// 플레이어 이동 시작 
@@ -136,33 +130,21 @@ namespace GameToFunLab.Characters
         public void Run() 
         {
             if (IsPossibleRun() != true) return;
-            if (IsRunning()) return;
+            if (IsStatusRun()) return;
 
             // FG_Logger.Log("player Run status: "+player.Status);
-            Status = ICharacter.CharacterStatus.Run;
+            CurrentStatus = ICharacter.CharacterStatus.Run;
         }
         /// <summary>
         ///  플레이어 움직임 멈춤 
         /// </summary>
         public void Stop() {
             // FG_Logger.Log("player Stop");
-            Status = ICharacter.CharacterStatus.Idle;
+            CurrentStatus = ICharacter.CharacterStatus.Idle;
         }
         public void SetSortingOrder(ICharacter.CharacterSortingOrder value)
         {
             SortingOrder = value;
-        }
-        /// <summary>
-        /// 몬스터가 죽은 상태인지 체크 
-        /// </summary>
-        /// <returns></returns>
-        public bool IsDead()
-        {
-            return Status == ICharacter.CharacterStatus.Dead;
-        }
-        public void SetDeadState()
-        {
-            Status = ICharacter.CharacterStatus.Dead;
         }
         private void UpdatePosition()
         {
@@ -233,11 +215,6 @@ namespace GameToFunLab.Characters
             CurrentMoveSpeed = speed;
         }
 
-        protected bool IsStatusAttack()
-        {
-            return Status == ICharacter.CharacterStatus.Attack;
-        }
-
         public void Move(Vector3 direction)
         {
             throw new System.NotImplementedException();
@@ -251,6 +228,55 @@ namespace GameToFunLab.Characters
         public void TakeDamage(int damage)
         {
             throw new System.NotImplementedException();
+        }
+        /// <summary>
+        /// 몬스터가 죽은 상태인지 체크 
+        /// </summary>
+        /// <returns></returns>
+        public bool IsStatusDead()
+        {
+            return CurrentStatus == ICharacter.CharacterStatus.Dead;
+        }
+        protected bool IsStatusAttack()
+        {
+            return CurrentStatus == ICharacter.CharacterStatus.Attack;
+        }
+        protected bool IsStatusRun()
+        {
+            return CurrentStatus == ICharacter.CharacterStatus.Run;
+        }
+        protected bool IsSatusIdle()
+        {
+            return CurrentStatus == ICharacter.CharacterStatus.Idle;
+        }
+        protected bool IsStatusIdle()
+        {
+            return CurrentStatus != ICharacter.CharacterStatus.Idle;
+        }
+        protected bool IsStatusNone()
+        {
+            return CurrentStatus != ICharacter.CharacterStatus.None;
+        }
+
+        /// <summary>
+        /// 캐릭터 상태 변화
+        /// </summary>
+        /// <param name="value"></param>
+        private void SetStatus(ICharacter.CharacterStatus value)
+        {
+            CurrentStatus = value;
+        }
+        protected void SetStatusDead()
+        {
+            SetStatus(ICharacter.CharacterStatus.Dead);
+        }
+        protected void SetStatusIdle()
+        {
+            SetStatus(ICharacter.CharacterStatus.Idle);
+        }
+        protected void SetStatusRun()
+        {
+            SetStatus(ICharacter.CharacterStatus.Run);
         }
     }
 }

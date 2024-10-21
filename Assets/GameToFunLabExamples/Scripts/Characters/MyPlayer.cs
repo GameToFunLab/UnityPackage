@@ -10,7 +10,7 @@ namespace Scripts.Characters
     /// <summary>
     /// 플레이어 기본 클레스
     /// </summary>
-    public class Player : GameToFunLab.Characters.Player
+    public class MyPlayer : GameToFunLab.Characters.Player
     {
         protected override void Awake()
         {
@@ -52,7 +52,7 @@ namespace Scripts.Characters
             if (CurrentHp <= 0)
             {
                 CurrentHp = 0;
-                sceneGame.state = SceneGame.GameState.End;
+                sceneGame.state = MySceneGame.GameState.End;
                 return;
             }
         } 
@@ -86,7 +86,7 @@ namespace Scripts.Characters
             {
                 IsAttacking = true;
                 GameToFunLab.Characters.Monster monster = collision.gameObject.GetComponent<GameToFunLab.Characters.Monster>();
-                if (monster.gameObject.GetComponent<GameToFunLab.Characters.Monster>().IsDead())
+                if (monster.gameObject.GetComponent<GameToFunLab.Characters.Monster>().IsStatusDead())
                 {
                     // FG_Logger.Log("player / update / monster dead");
                     targetMonster = null;

@@ -7,7 +7,7 @@ namespace GameToFunLab.Characters
     /// <summary>
     /// 몬스터 기본 클레스
     /// </summary>
-    public class Monster : DefaultCharacter
+    public class Npc : DefaultCharacter
     {
         // 스폰될때 vid
         public int vid;
@@ -37,8 +37,8 @@ namespace GameToFunLab.Characters
             player = GameObject.FindWithTag(sceneGame.tagPlayer);
             gameObject.tag = sceneGame.tagMonster;
         
-            // 자동으로 플레이어에게 다가가는 이동 전략 설정
-            MovementStrategy = new AutoMoveStrategy(player.transform);
+            // // 자동으로 플레이어에게 다가가는 이동 전략 설정
+            // MovementStrategy = new AutoMoveStrategy(player.transform);
             
             InitializationStat();
             Run();
