@@ -6,7 +6,7 @@ namespace GameToFunLab.Core
 {
     public class CameraManager : MonoBehaviour
     {
-        [SerializeField] Transform playerTransform;
+        private Transform playerTransform;
         [SerializeField] Vector3 cameraPosition;
         [SerializeField] Vector2 center;
         [SerializeField] Vector2 mapSize;
@@ -26,6 +26,7 @@ namespace GameToFunLab.Core
             width = height * Screen.width / Screen.height;
             originalPos = transform.localPosition;
             isShaking = false;
+            playerTransform = SceneGame.Instance.player.transform;
         }
 
         private void Update()

@@ -36,7 +36,6 @@ namespace GameToFunLab.Maps
         private State currentState = State.None;
 
         public GameObject bgBlackForMapLoading;  // 페이드 인에 사용할 검정색 스프라이트 오브젝트
-        public Image blockUIInteraction;  // 페이드 인에 사용할 검정색 스프라이트 오브젝트
         public float fadeDuration = 2.0f;  // 페이드 인 지속 시간
 
         public List<GameObject> monsterPrefabs;
@@ -52,7 +51,6 @@ namespace GameToFunLab.Maps
         private void Awake()
         {
             bgBlackForMapLoading.SetActive(false);
-            ShowBlockInteraction(false);
         }
 
         private void Start()
@@ -124,7 +122,6 @@ namespace GameToFunLab.Maps
             }
 
             bgBlackForMapLoading.SetActive(true);
-            ShowBlockInteraction(true);
             SpriteRenderer spriteRenderer = bgBlackForMapLoading.GetComponent<SpriteRenderer>();
             spriteRenderer.color = new Color(0, 0, 0, 0);
             float elapsedTime = 0.0f;
@@ -147,7 +144,7 @@ namespace GameToFunLab.Maps
         IEnumerator UnloadPreviousStage()
         {
             // 현재 씬에 있는 모든 몬스터 오브젝트를 삭제
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(sceneGame.tagEnemy);
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(sceneGame.tagMonster);
             foreach (var monster in enemies)
             {
                 Destroy(monster);
@@ -181,10 +178,6 @@ namespace GameToFunLab.Maps
             {
                 Destroy(currentDefaultMap.gameObject);
             }
-            
-            // GameObject currentMap = Instantiate(prefab, transform);
-            // currentDefaultMap = currentMap.GetComponent<DefaultMap>();
-            // currentDefaultMap.Initialize(resultChapterData.vnum, resultChapterData.name, resultChapterData.type, resultChapterData.typeSub);
             
             var result = currentDefaultMap.GetMapSize();
 
@@ -241,7 +234,6 @@ namespace GameToFunLab.Maps
             // Fade in이 완료된 후에 완전히 불투명하게 설정
             spriteRenderer.color = new Color(0, 0, 0, 0);
             bgBlackForMapLoading.SetActive(false);
-            ShowBlockInteraction(false);
 
             // Logger.Log("Fade Out 완료");
         }
@@ -261,12 +253,6 @@ namespace GameToFunLab.Maps
             if (monsterPrefabs.Count <= 0) return (null, 0);
             int rand = Random.Range(0, monsterPrefabs.Count);
             return (monsterPrefabs[rand], monsterVnums[rand]);
-        }
-
-        public void ShowBlockInteraction(bool set)
-        {
-            if (blockUIInteraction == null) return;
-            blockUIInteraction.gameObject.SetActive(set);
         }
         private bool IsPossibleLoad()
         {

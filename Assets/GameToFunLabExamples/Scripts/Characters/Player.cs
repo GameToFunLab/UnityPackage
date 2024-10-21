@@ -1,3 +1,4 @@
+using GameToFunLab.Characters;
 using Scripts.Scenes;
 using Scripts.TableLoader;
 using Spine;
@@ -16,8 +17,8 @@ namespace Scripts.Characters
             base.Awake();
             if (TableLoaderManager.Instance != null)
             {
-                statAtk = (long)TableLoaderManager.Instance.TableConfig.GetPolyPlayerStatAtk();
-                statMoveSpeed = TableLoaderManager.Instance.TableConfig.GetPolyPlayerStatMoveSpeed();
+                StatAtk = (long)TableLoaderManager.Instance.TableConfig.GetPolyPlayerStatAtk();
+                StatMoveSpeed = TableLoaderManager.Instance.TableConfig.GetPolyPlayerStatMoveSpeed();
             }
         }
         // Start is called before the first frame update
@@ -26,42 +27,6 @@ namespace Scripts.Characters
             base.Start();
             hits = new Collider2D[sceneGame.GetMaxEnemyValue()];
         }
-        // Update is called once per frame
-        protected override void Update()
-        {
-            base.Update();
-            if (IsStatusAttack())
-            {
-
-            }
-            else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-            {
-                Status = CharacterStatus.Run;
-            }
-            else if (Status != CharacterStatus.Attack)
-            {
-                Status = CharacterStatus.Idle;
-            }
-
-            if (Input.GetKey(KeyCode.W))
-                transform.Translate(Vector3.up * (currentMoveSpeed * Time.deltaTime));
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.localScale = new Vector3(1f, 1f, 1f);
-                transform.Translate(Vector3.left * (currentMoveSpeed * Time.deltaTime));
-            }
-
-            if (Input.GetKey(KeyCode.S))
-                transform.Translate(Vector3.down * (currentMoveSpeed * Time.deltaTime));
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-                transform.Translate(Vector3.right * (currentMoveSpeed * Time.deltaTime));
-            }
-        }
-    
         /// <summary>
         /// 공격 버튼 눌렀을때 처리 
         /// </summary>
@@ -82,11 +47,11 @@ namespace Scripts.Characters
         {
             // soundAttack.PlayOneShot(audioClipDamage);
             if (damage <= 0) return;
-            currentHp = currentHp - damage;
+            CurrentHp = CurrentHp - damage;
             
-            if (currentHp <= 0)
+            if (CurrentHp <= 0)
             {
-                currentHp = 0;
+                CurrentHp = 0;
                 sceneGame.state = SceneGame.GameState.End;
                 return;
             }
@@ -101,7 +66,7 @@ namespace Scripts.Characters
             for (int i = 0; i < hitCount; i++)
             {
                 Collider2D hit = hits[i];
-                if (hit.CompareTag(sceneGame.tagEnemy))
+                if (hit.CompareTag(sceneGame.tagMonster))
                 {
                     GameToFunLab.Characters.Monster monster = hit.GetComponent<GameToFunLab.Characters.Monster>();
                     if (monster != null)
@@ -117,9 +82,9 @@ namespace Scripts.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagEnemy))
+            if (collision.gameObject.CompareTag(sceneGame.tagMonster))
             {
-                isAttacking = true;
+                IsAttacking = true;
                 GameToFunLab.Characters.Monster monster = collision.gameObject.GetComponent<GameToFunLab.Characters.Monster>();
                 if (monster.gameObject.GetComponent<GameToFunLab.Characters.Monster>().IsDead())
                 {
@@ -134,9 +99,9 @@ namespace Scripts.Characters
         }
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagEnemy))
+            if (collision.gameObject.CompareTag(sceneGame.tagMonster))
             {
-                isAttacking = false;
+                IsAttacking = false;
             }
         }
     }

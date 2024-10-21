@@ -1,4 +1,3 @@
-using GameToFunLab.Scenes;
 using Spine2d;
 using UnityEngine;
 
@@ -51,23 +50,5 @@ public class UISpineManager : MonoBehaviour
             spine2dUIController.StopAnimation();
             spine2dUIController.gameObject.SetActive(false);
         }
-    }
-    /// <summary>
-    /// 뒤끝 데이터 불러올때 로딩 아이콘 보여주기 
-    /// </summary>
-    /// <param name="show"></param>
-    public void ShowBackendLoadingIcon(bool show)
-    {
-        UISpineMetadata uiSpineMetadata = new UISpineMetadata();
-        uiSpineMetadata.SpineVnum = UISpineVnum.SpineBackendLoadingIcon;
-        uiSpineMetadata.Loop = true;
-        SceneGame.Instance.mapManager.ShowBlockInteraction(show);
-        ShowSpineByVnum(show, uiSpineMetadata);
-    }
-    public void ShowUpgradeAtkButton(bool show, UISpineMetadata uiSpineMetadata)
-    {
-        uiSpineMetadata.SpineVnum = UISpineVnum.SpineUpgradeAtkButton;
-        uiSpineMetadata.Loop = false;
-        ShowSpineByVnum(show, uiSpineMetadata);
     }
 }

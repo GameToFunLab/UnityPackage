@@ -10,14 +10,14 @@ namespace GameToFunLab.Scenes
     {
         public static SceneGame Instance { get; private set; }
         public string tagPlayer = "Player";
-        public string tagEnemy = "Enemy";
+        public string tagMonster = "Monster";
         
         public enum GameState { Begin, Combat, End, DirectionStart, DirectionEnd };
         public enum GameSubState { Normal, BossChallenge };
         public GameState state;
         public GameSubState stateSub;
 
-        public GameObject player;
+        [HideInInspector] public GameObject player;
 
         public Camera mainCamera;
         
@@ -35,6 +35,7 @@ namespace GameToFunLab.Scenes
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
+            player = GameObject.FindWithTag(tagPlayer);
         }
         public virtual long GetMaxEnemyValue()
         {

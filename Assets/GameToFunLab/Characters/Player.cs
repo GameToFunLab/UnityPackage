@@ -1,3 +1,4 @@
+using GameToFunLab.CharacterMovement;
 using GameToFunLab.Scenes;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,8 +11,8 @@ namespace GameToFunLab.Characters
     public class Player : DefaultCharacter
     {
         [HideInInspector] public GameObject targetMonster;
-        public Collider2D[] hits;  // 필요한 크기로 초기화
-        public SceneGame sceneGame;
+        [HideInInspector] public Collider2D[] hits;  // 필요한 크기로 초기화
+        [HideInInspector] public SceneGame sceneGame;
 
         protected override void Awake()
         {
@@ -22,44 +23,10 @@ namespace GameToFunLab.Characters
         {
             base.Start();
             sceneGame = SceneGame.Instance;
+            
+            // 자동으로 플레이어에게 다가가는 이동 전략 설정
+            movementStrategy = new ManualMoveStrategy();
         }
-        
-        // Update is called once per frame
-        protected override void Update()
-        {
-            base.Update();
-            if (IsStatusAttack())
-            {
-
-            }
-            else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-            {
-                Status = CharacterStatus.Run;
-            }
-            else if (Status != CharacterStatus.Attack)
-            {
-                Status = CharacterStatus.Idle;
-            }
-
-            if (Input.GetKey(KeyCode.W))
-                transform.Translate(Vector3.up * currentMoveSpeed * Time.deltaTime);
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.localScale = new Vector3(1f, 1f, 1f);
-                transform.Translate(Vector3.left * currentMoveSpeed * Time.deltaTime);
-            }
-
-            if (Input.GetKey(KeyCode.S))
-                transform.Translate(Vector3.down * currentMoveSpeed * Time.deltaTime);
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-                transform.Translate(Vector3.right * currentMoveSpeed * Time.deltaTime);
-            }
-        }
-    
         /// <summary>
         /// 공격 버튼 눌렀을때 처리 
         /// </summary>
@@ -80,11 +47,11 @@ namespace GameToFunLab.Characters
         {
             // soundAttack.PlayOneShot(audioClipDamage);
             if (damage <= 0) return;
-            currentHp = currentHp - damage;
+            CurrentHp = CurrentHp - damage;
             
-            if (currentHp <= 0)
+            if (CurrentHp <= 0)
             {
-                currentHp = 0;
+                CurrentHp = 0;
                 sceneGame.SetStateEnd();
                 return;
             }
@@ -99,7 +66,7 @@ namespace GameToFunLab.Characters
             for (int i = 0; i < hitCount; i++)
             {
                 Collider2D hit = hits[i];
-                if (hit.CompareTag(sceneGame.tagEnemy))
+                if (hit.CompareTag(sceneGame.tagMonster))
                 {
                     Monster monster = hit.GetComponent<Monster>();
                     if (monster != null)
@@ -115,9 +82,9 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagEnemy))
+            if (collision.gameObject.CompareTag(sceneGame.tagMonster))
             {
-                isAttacking = true;
+                IsAttacking = true;
                 Monster monster = collision.gameObject.GetComponent<Monster>();
                 if (monster.gameObject.GetComponent<Monster>().IsDead())
                 {
@@ -132,9 +99,9 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagEnemy))
+            if (collision.gameObject.CompareTag(sceneGame.tagMonster))
             {
-                isAttacking = false;
+                IsAttacking = false;
             }
         }
         

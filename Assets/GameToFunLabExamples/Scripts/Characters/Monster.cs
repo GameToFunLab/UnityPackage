@@ -1,5 +1,4 @@
 using GameToFunLab.Characters;
-using Scripts.Scenes;
 using Scripts.TableLoader;
 using UnityEngine;
 
@@ -8,55 +7,30 @@ namespace Scripts.Characters
     /// <summary>
     /// 몬스터 기본 클레스
     /// </summary>
-    public class Monster : DefaultCharacter
+    public class Monster : GameToFunLab.Characters.Monster
     {
-        // 스폰될때 vid
-        [HideInInspector] public int vid;
-        // 몬스터 테이블 vnum
-        private int vnum;
-        private GameObject player;
-        private SceneGame sceneGame;
-        private readonly Collider2D[] hits = new Collider2D[10];  // 필요한 크기로 초기화
-
-        // Start is called before the first frame update
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-        protected override void Start()
-        {
-            base.Start();
-            player = GameObject.FindWithTag(sceneGame.tagPlayer);
-            gameObject.tag = sceneGame.tagEnemy;
-            InitializationStat();
-            Run();
-        }
         /// <summary>
         /// 몬스터 정보 초기화.
         /// </summary>
-        void InitializationStat() 
+        protected override void InitializationStat() 
         {
+            base.InitializationStat();
             if (vnum <= 0) return;
-            TableLoaderManager tableLoaderManager = sceneGame.tableLoaderManager;
+            TableLoaderManager tableLoaderManager = TableLoaderManager.Instance;
             var info = tableLoaderManager.TableMonster.GetMonsterData(vnum);
-            // FG_Logger.Log("InitializationStat vnum: "+vnum+" / info.vnum: "+info.vnum+" / StatMoveSpeed: "+info.statMoveSpeed);
-            statAtk = info.StatAtk;
-            currentAtk = (long)statAtk;
-            statMoveSpeed = info.StatMoveSpeed;
-
-            statHp = info.StatHp;
-            currentHp = (long)statHp;
-            
-            currentMoveSpeed = statMoveSpeed;
-            float scale = info.Scale;
-            transform.localScale = new Vector3(scale, scale, 0);
-            originalScaleX = scale;
-        }
-        // Update is called once per frame
-        protected override void Update()
-        {
-            base.Update();
-            UpdateAutoMove();
+            // FG_Logger.Log("InitializationStat vnum: "+vnum+" / info.vnum: "+info.vnum+" / StatMoveSpeed: "+info.StatMoveSpeed);
+            if (info.Vnum > 0)
+            {
+                StatAtk = info.StatAtk;
+                CurrentAtk = (long)StatAtk;
+                StatMoveSpeed = info.StatMoveSpeed;
+                StatHp = info.StatHp;
+                CurrentHp = (long)StatHp;
+                CurrentMoveSpeed = StatMoveSpeed;
+                float scale = info.Scale;
+                transform.localScale = new Vector3(scale, scale, 0);
+                OriginalScaleX = scale;
+            }
         }
         /// <summary>    
         /// 몬스터의 hit area 에 플레이어가 있을경우 공격하기 
@@ -80,7 +54,7 @@ namespace Scripts.Characters
         {
             if (damage <= 0) return false;
             
-            if (Status == CharacterStatus.Dead)
+            if (Status == ICharacter.CharacterStatus.Dead)
             {
                 // FG_Logger.Log("monster dead");
                 return false;
@@ -90,18 +64,18 @@ namespace Scripts.Characters
             //     return;
             // }
                 
-            currentHp = currentHp - damage;
+            CurrentHp = CurrentHp - damage;
             // -1 이면 죽지 않는다
-            if (statHp < 0)
+            if (StatHp < 0)
             {
-                currentHp = 1;
+                CurrentHp = 1;
             }
 
         
-            if (currentHp <= 0)
+            if (CurrentHp <= 0)
             {
                 //FG_Logger.Log("dead vid : " + this.vid);
-                Status = CharacterStatus.Dead;
+                Status = ICharacter.CharacterStatus.Dead;
                 float delay = 0.01f;
                 Destroy(this.gameObject, delay);
 
@@ -109,7 +83,7 @@ namespace Scripts.Characters
             }
             else
             {
-                Status = CharacterStatus.Damage;
+                Status = ICharacter.CharacterStatus.Damage;
             }
 
             return true;
@@ -167,8 +141,8 @@ namespace Scripts.Characters
         {
             if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
             {
-                isAttacking = true;
-                Status = CharacterStatus.Idle;
+                IsAttacking = true;
+                Status = ICharacter.CharacterStatus.Idle;
                 // StartCoroutine(AttackCoroutine(collision.gameObject.GetComponent<Player>()));
             }
         }
@@ -176,8 +150,8 @@ namespace Scripts.Characters
         {
             if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
             {
-                isAttacking = false;
-                Status = CharacterStatus.Idle;
+                IsAttacking = false;
+                Status = ICharacter.CharacterStatus.Idle;
                 Invoke(nameof(Run), 0.3f);
             }
         }
@@ -187,11 +161,10 @@ namespace Scripts.Characters
         private void UpdateAutoMove()
         {
             // if (IsCurrentAninameIsAttack() == true) return;
-            if (Status != CharacterStatus.Run) return;
+            if (Status != ICharacter.CharacterStatus.Run) return;
 
             SetFlipToTarget(player.transform);
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position,
-                Time.deltaTime * currentMoveSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * CurrentMoveSpeed);
         }
         /// <summary>
         /// 보스전 시작할때 일반 몬스터 죽이기 
@@ -199,7 +172,7 @@ namespace Scripts.Characters
         public void DestroyByChallengeBoss()
         {
             if (sceneGame == null) return;
-            Status = CharacterStatus.Dead;
+            Status = ICharacter.CharacterStatus.Dead;
             Destroy(this.gameObject);
         }
     }

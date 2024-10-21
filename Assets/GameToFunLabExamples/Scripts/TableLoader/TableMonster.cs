@@ -13,7 +13,7 @@ namespace Scripts.TableLoader
         public int SpineVnum;
         public string DefaultSkin;
         public float Scale;
-        public DefaultCharacter.Grade Grade;
+        public ICharacter.Grade Grade;
         public float StatHp;
         public float StatAtk;
         public float StatMoveSpeed;
@@ -22,17 +22,17 @@ namespace Scripts.TableLoader
     }
     public class TableMonster : DefaultTable
     {
-        private static readonly Dictionary<string, DefaultCharacter.Grade> mapGrade;
+        private static readonly Dictionary<string, ICharacter.Grade> mapGrade;
 
         static TableMonster()
         {
-            mapGrade = new Dictionary<string, DefaultCharacter.Grade>
+            mapGrade = new Dictionary<string, ICharacter.Grade>
             {
-                { "Common", DefaultCharacter.Grade.Common },
-                { "Boss", DefaultCharacter.Grade.Boss },
+                { "Common", ICharacter.Grade.Common },
+                { "Boss", ICharacter.Grade.Boss },
             };
         }
-        public DefaultCharacter.Grade ConvertGrade(string grade) => mapGrade.GetValueOrDefault(grade, DefaultCharacter.Grade.None);
+        public ICharacter.Grade ConvertGrade(string grade) => mapGrade.GetValueOrDefault(grade, ICharacter.Grade.None);
 
         public StruckTableMonster GetMonsterData(int vnum)
         {

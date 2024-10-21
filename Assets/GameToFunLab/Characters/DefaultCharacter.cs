@@ -1,83 +1,32 @@
+using GameToFunLab.CharacterMovement;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
 {
-    public class DefaultCharacter : MonoBehaviour
+    public class DefaultCharacter : MonoBehaviour, ICharacter
     {
-        /// <summary>
-        /// 캐릭터 기본 클레스
-        /// <para>플레이어, 몬스터의 상위 클레스</para>
-        /// </summary>
-        protected enum CharacterStatus
-        {
-            None,
-            Idle,
-            Run,
-            Attack,
-            Damage,
-            Dead,
-            DontMove // 못 움직이게 할 때 
-        }
-        /// <summary>
-        /// 캐릭터 기본 클레스
-        /// <para>플레이어, 몬스터의 상위 클레스</para>
-        /// </summary>
-        public enum Grade
-        {
-            None,
-            Common,
-            Boss,
-        }
+        public float StatHp { get; set; }
+        public float StatAtk { get; set; }
+        public float StatMoveSpeed { get; set; }
+        public long CurrentHp { get; set; }
+        public long CurrentAtk { get; set; }
+        public float CurrentMoveSpeed { get; set; }
+        public ICharacter.CharacterStatus Status { get; set; }
+        public ICharacter.CharacterSortingOrder SortingOrder { get; set; }
+        public float OriginalScaleX { get; set; }
+        public bool IsAttacking { get; set; }
+        // 공격 가능 y/n
+        public bool PossibleAttack { get; set; }
         
         public string[] attackAniNames = new string[] {"attack"};
         public string idleAniName = "idle";
         public string runAniName =  "run";
         public string damageAniName =  "damage";
 
-        private CharacterStatus status = CharacterStatus.None;
-    
-        public float statHp;
-        public float statAtk;
-        public float statMoveSpeed;
-        public long currentHp;
-        public long currentAtk;
-        public float currentMoveSpeed;
-        [HideInInspector] public bool isAttacking;
-
-        protected CharacterStatus Status
-        {
-            get => status;
-            set
-            {
-                if (value >= 0)
-                {
-                    status = value;
-                }
-            }
-        }
-        // 공격 가능 y/n
-        private bool possibleAttack = true;
-
-        public bool PossibleAttack
-        {
-            get => possibleAttack;
-            set => possibleAttack = value;
-        }
-
-        [HideInInspector] public float originalScaleX;
-
         private Renderer characterRenderer;
-
-        public enum CharacterSortingOrder
-        {
-            Normal,
-            AlwaysOnTop,
-            AlwaysOnBottom,
-            Fixed
-        }
-
-        public CharacterSortingOrder sortingOrder;
- 
+        
+        public IMovementStrategy movementStrategy;
+        
         /// <summary>
         /// 캐릭터가 flip 되었는지 체크
         /// <para>
@@ -86,7 +35,7 @@ namespace GameToFunLab.Characters
         /// </summary>
         /// <returns></returns>
         public bool IsFlip() {
-            return Mathf.Approximately(transform.localScale.x, (originalScaleX * -1f));
+            return Mathf.Approximately(transform.localScale.x, (OriginalScaleX * -1f));
         }
 
         public void SetIsPossibleFlip(bool set)
@@ -94,6 +43,8 @@ namespace GameToFunLab.Characters
             isPossibleFlip = set;
         }
         private bool isPossibleFlip = true;
+        private ICharacter characterImplementation;
+
         private bool IsPossibleFlip()
         {
             // 공격중이면 flip 하지 않는다
@@ -107,7 +58,7 @@ namespace GameToFunLab.Characters
         {
             if (IsPossibleFlip() != true) return;
 
-            transform.localScale = isFlip ? new Vector3(originalScaleX * -1f, transform.localScale.y, transform.localScale.z) : new Vector3(originalScaleX, transform.localScale.y, transform.localScale.z);
+            transform.localScale = isFlip ? new Vector3(OriginalScaleX * -1f, transform.localScale.y, transform.localScale.z) : new Vector3(OriginalScaleX, transform.localScale.y, transform.localScale.z);
         }
         /// <summary>
         /// 타겟 오브젝트가 있을경우 방향 셋팅하기
@@ -120,18 +71,19 @@ namespace GameToFunLab.Characters
         }
         protected virtual void Awake()
         {
-            isAttacking = false;
-            currentAtk = (long)statAtk;
-            currentHp = (long)statHp;
-            currentMoveSpeed = statMoveSpeed;
-
-            Status = CharacterStatus.None;
-            originalScaleX = transform.localScale.x;
+            IsAttacking = false;
+            Status = ICharacter.CharacterStatus.None;
         }
 
         protected virtual void Start()
         {
             characterRenderer = GetComponent<Renderer>();
+            
+            // statatk 값들은 table 에서 불러올 수 있기 때문에 Start 에서 처리한다.
+            CurrentAtk = (long)StatAtk;
+            CurrentHp = (long)StatHp;
+            CurrentMoveSpeed = StatMoveSpeed;
+            OriginalScaleX = transform.localScale.x;
         }
         /// <summary>
         /// 연출 시작할때 캐릭터에 셋팅해주기 
@@ -140,12 +92,12 @@ namespace GameToFunLab.Characters
         protected virtual void SetByDirection(bool set) 
         {
             if (set) {
-                Status = CharacterStatus.DontMove;
-                possibleAttack = false;
+                Status = ICharacter.CharacterStatus.DontMove;
+                PossibleAttack = false;
             }
             else {
-                Status = CharacterStatus.Idle;
-                possibleAttack = true;
+                Status = ICharacter.CharacterStatus.Idle;
+                PossibleAttack = true;
             }
         }
         /// <summary>
@@ -154,10 +106,10 @@ namespace GameToFunLab.Characters
         protected virtual bool DownAttack()
         {
             //anim.SetTrigger("onAttack");
-            if (Status == CharacterStatus.Attack || Status == CharacterStatus.Dead) return false;
+            if (Status == ICharacter.CharacterStatus.Attack || Status == ICharacter.CharacterStatus.Dead) return false;
             if (PossibleAttack != true) return false;
 
-            Status = CharacterStatus.Attack;
+            Status = ICharacter.CharacterStatus.Attack;
             return true;
         }
         /// <summary>
@@ -165,7 +117,7 @@ namespace GameToFunLab.Characters
         /// </summary>
         /// <returns></returns>
         private bool IsRunning() {
-            return (Status == CharacterStatus.Run);
+            return (Status == ICharacter.CharacterStatus.Run);
         }
         /// <summary>
         /// 캐릭터가 이동할 수 있는 상태인지 
@@ -173,10 +125,10 @@ namespace GameToFunLab.Characters
         /// <returns></returns>
         private bool IsPossibleRun()
         {
-            if (isAttacking) return false;
-            if (currentMoveSpeed <= 0) return false;
+            if (IsAttacking) return false;
+            if (CurrentMoveSpeed <= 0) return false;
             
-            return (Status == CharacterStatus.Idle || Status == CharacterStatus.None);
+            return (Status == ICharacter.CharacterStatus.Idle || Status == ICharacter.CharacterStatus.None);
         }
         /// <summary>
         /// 플레이어 이동 시작 
@@ -187,18 +139,18 @@ namespace GameToFunLab.Characters
             if (IsRunning()) return;
 
             // FG_Logger.Log("player Run status: "+player.Status);
-            Status = CharacterStatus.Run;
+            Status = ICharacter.CharacterStatus.Run;
         }
         /// <summary>
         ///  플레이어 움직임 멈춤 
         /// </summary>
         public void Stop() {
             // FG_Logger.Log("player Stop");
-            Status = CharacterStatus.Idle;
+            Status = ICharacter.CharacterStatus.Idle;
         }
-        public void SetSortingOrder(CharacterSortingOrder value)
+        public void SetSortingOrder(ICharacter.CharacterSortingOrder value)
         {
-            sortingOrder = value;
+            SortingOrder = value;
         }
         /// <summary>
         /// 몬스터가 죽은 상태인지 체크 
@@ -206,22 +158,22 @@ namespace GameToFunLab.Characters
         /// <returns></returns>
         public bool IsDead()
         {
-            return Status == CharacterStatus.Dead;
+            return Status == ICharacter.CharacterStatus.Dead;
         }
         public void SetDeadState()
         {
-            Status = CharacterStatus.Dead;
+            Status = ICharacter.CharacterStatus.Dead;
         }
         private void UpdatePosition()
         {
-            if (sortingOrder == CharacterSortingOrder.Fixed) return;
+            if (SortingOrder == ICharacter.CharacterSortingOrder.Fixed) return;
             int baseSortingOrder;
             // 무조건 위 또는 무조건 아래 플래그 확인
-            if (sortingOrder == CharacterSortingOrder.AlwaysOnTop)
+            if (SortingOrder == ICharacter.CharacterSortingOrder.AlwaysOnTop)
             {
                 baseSortingOrder = 32767;
             }
-            else if (sortingOrder == CharacterSortingOrder.AlwaysOnBottom)
+            else if (SortingOrder == ICharacter.CharacterSortingOrder.AlwaysOnBottom)
             {
                 baseSortingOrder = -32768;
             }
@@ -235,7 +187,13 @@ namespace GameToFunLab.Characters
         }
         protected virtual void Update()
         {
-            UpdatePosition();
+            // UpdatePosition();
+            
+            // 캐릭터의 움직임을 전략 패턴에 위임
+            if (movementStrategy != null)
+            {
+                movementStrategy.Move(this);
+            }
         }
         /// <summary>
         /// 강제로 이동시키기
@@ -269,15 +227,30 @@ namespace GameToFunLab.Characters
             // -1 일때는 리셋 
             if (Mathf.Approximately(speed, -1))
             {
-                currentMoveSpeed = statMoveSpeed;
+                CurrentMoveSpeed = StatMoveSpeed;
                 return;
             }
-            currentMoveSpeed = speed;
+            CurrentMoveSpeed = speed;
         }
 
         protected bool IsStatusAttack()
         {
-            return Status == CharacterStatus.Attack;
+            return Status == ICharacter.CharacterStatus.Attack;
+        }
+
+        public void Move(Vector3 direction)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Attack()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void TakeDamage(int damage)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
