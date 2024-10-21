@@ -38,7 +38,7 @@ namespace GameToFunLab.Characters
             gameObject.tag = sceneGame.tagMonster;
         
             // 자동으로 플레이어에게 다가가는 이동 전략 설정
-            movementStrategy = new AutoMoveStrategy(player.transform);
+            MovementStrategy = new AutoMoveStrategy(player.transform);
             
             InitializationStat();
             Run();

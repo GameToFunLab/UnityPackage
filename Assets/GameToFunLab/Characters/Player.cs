@@ -25,7 +25,7 @@ namespace GameToFunLab.Characters
             sceneGame = SceneGame.Instance;
             
             // 자동으로 플레이어에게 다가가는 이동 전략 설정
-            movementStrategy = new ManualMoveStrategy();
+            MovementStrategy = new ManualMoveStrategy();
         }
         /// <summary>
         /// 공격 버튼 눌렀을때 처리 

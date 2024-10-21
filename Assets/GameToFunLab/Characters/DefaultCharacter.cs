@@ -24,8 +24,8 @@ namespace GameToFunLab.Characters
         public string damageAniName =  "damage";
 
         private Renderer characterRenderer;
-        
-        public IMovementStrategy movementStrategy;
+
+        protected IMovementStrategy MovementStrategy;
         
         /// <summary>
         /// 캐릭터가 flip 되었는지 체크
@@ -190,9 +190,9 @@ namespace GameToFunLab.Characters
             // UpdatePosition();
             
             // 캐릭터의 움직임을 전략 패턴에 위임
-            if (movementStrategy != null)
+            if (MovementStrategy != null)
             {
-                movementStrategy.Move(this);
+                MovementStrategy.Move(this);
             }
         }
         /// <summary>
