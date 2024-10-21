@@ -1,3 +1,3 @@
-Vnum	Value
-1	800
-2	3
+Vnum	Value   Memo
+1	800 플레이어 시작 hp
+2	3   플레이어 시작 이동 속도
