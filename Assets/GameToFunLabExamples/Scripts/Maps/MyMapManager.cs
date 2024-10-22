@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameToFunLab.Characters;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Maps.Objects;
@@ -14,7 +15,6 @@ namespace Scripts.Maps
 {
     public class MyMapManager : MapManager
     {
-        
         private List<NpcData> npcList;
         private List<WarpData> warpDatas;
         private StruckTableMap resultChapterData;
@@ -22,6 +22,10 @@ namespace Scripts.Maps
         private MapTiled mapTiled;
         private MySceneGame mySceneGame;
 
+        private void Awake()
+        {
+            FadeDuration = MapConstants.FadeDuration;
+        }
         private void Start()
         {
             mySceneGame = MySceneGame.MyInstance;
@@ -147,7 +151,7 @@ namespace Scripts.Maps
                 {
                     // npcExporter.cs:158 도 수정
                     myNpcScript.unum = npcData.Unum;
-                    myNpcScript.npcData = npcData;
+                    myNpcScript.NpcData = npcData;
                     
                     mapTiled.AddNpc(npc);
                 }

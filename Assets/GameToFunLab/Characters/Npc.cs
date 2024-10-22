@@ -1,5 +1,4 @@
-using GameToFunLab.Maps;
-using GameToFunLab.Scenes;
+using GameToFunLab.Configs;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
@@ -15,10 +14,9 @@ namespace GameToFunLab.Characters
         public int unum;
         [HideInInspector] public GameObject player;
         [HideInInspector] public Collider2D[] hits;  // 필요한 크기로 초기화
-        [HideInInspector] public SceneGame sceneGame;
-        
-        public NpcData npcData; // 리젠 json 에서 읽어오는 데이터 
 
+        public NpcData NpcData;
+        
         // Start is called before the first frame update
         protected override void Awake()
         {
@@ -31,14 +29,13 @@ namespace GameToFunLab.Characters
             CurrentMoveSpeed = 1f;
             transform.localScale = new Vector3(1f, 1f, 0);
             OriginalScaleX = 1f;
-            npcData = null;
+            NpcData = null;
         }
         protected override void Start()
         {
             base.Start();
-            sceneGame = SceneGame.Instance;
-            player = GameObject.FindWithTag(sceneGame.tagPlayer);
-            gameObject.tag = sceneGame.tagMonster;
+            player = GameObject.FindWithTag(ConfigCommon.TagPlayer);
+            gameObject.tag = ConfigCommon.TagMonster;
         
             // // 자동으로 플레이어에게 다가가는 이동 전략 설정
             // MovementStrategy = new AutoMoveStrategy(player.transform);
@@ -67,7 +64,7 @@ namespace GameToFunLab.Characters
         /// 몬스터에게 데미지 주기 
         /// </summary>
         /// <param name="damage">데미지 수치</param>
-        public virtual bool OnDamage(long damage)
+        protected virtual bool OnDamage(long damage)
         {
             if (damage <= 0) return false;
             
@@ -131,7 +128,7 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
+            if (collision.gameObject.CompareTag(ConfigCommon.TagPlayer))
             {
                 IsAttacking = true;
                 CurrentStatus = ICharacter.CharacterStatus.Idle;
@@ -140,24 +137,12 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
+            if (collision.gameObject.CompareTag(ConfigCommon.TagPlayer))
             {
                 IsAttacking = false;
                 CurrentStatus = ICharacter.CharacterStatus.Idle;
                 Invoke(nameof(Run), 0.3f);
             }
-        }
-        /// <summary>
-        /// 몬스터가 플레이어한테 자동 이동하기 
-        /// </summary>
-        private void UpdateAutoMove()
-        {
-            // if (IsCurrentAninameIsAttack() == true) return;
-            if (CurrentStatus != ICharacter.CharacterStatus.Run) return;
-
-            SetFlipToTarget(player.transform);
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position,
-                Time.deltaTime * CurrentMoveSpeed);
         }
     }
 }

@@ -1,4 +1,5 @@
 using GameToFunLab.Characters;
+using Scripts.Scenes;
 using Scripts.TableLoader;
 using UnityEngine;
 
@@ -9,11 +10,13 @@ namespace Scripts.Characters
     /// </summary>
     public class MyPlayer : Player
     {
+        private MySceneGame mySceneGame;
         // Start is called before the first frame update
         protected override void Start()
         {
             base.Start();
-            hits = new Collider2D[sceneGame.GetMaxEnemyValue()];
+            mySceneGame = MySceneGame.MyInstance;
+            hits = new Collider2D[mySceneGame.GetMaxEnemyValue()];
         }
 
         /// <summary>

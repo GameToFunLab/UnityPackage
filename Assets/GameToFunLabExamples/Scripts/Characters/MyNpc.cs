@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using GameToFunLab.Scenes;
 using GameToFunLab.Utils;
-using Scripts.Maps;
 using Scripts.Scenes;
 using Scripts.TableLoader;
 using Spine.Unity;
@@ -16,7 +14,6 @@ namespace Scripts.Characters
     /// </summary>
     public class MyNpc : GameToFunLab.Characters.Npc
     {
-        public string npcName;
         public bool isFlip;
         public List<int> questUnums;
         private MySceneGame sceneGameCustom;
@@ -80,12 +77,12 @@ namespace Scripts.Characters
 
             SetFlip(isFlip);
             // 맵 배치툴로 저장한 정보가 있을 경우 
-            if (npcData != null)
+            if (NpcData != null)
             {
-                SetFlip(npcData.IsFlip);
+                SetFlip(NpcData.IsFlip);
                 // List<int> questUnums = tableLoaderManager.TableQuest.GetQuestsByNpcUnum(npcData.MapUnum, npcData.Unum);
-                transform.localScale = new Vector3(npcData.ScaleX, npcData.ScaleY, npcData.ScaleZ);
-                OriginalScaleX = npcData.ScaleX;
+                transform.localScale = new Vector3(NpcData.ScaleX, NpcData.ScaleY, NpcData.ScaleZ);
+                OriginalScaleX = NpcData.ScaleX;
                 // SetQuestUnums(questUnums);
             }
         }

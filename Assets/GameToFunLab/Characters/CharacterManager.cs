@@ -1,6 +1,4 @@
 ﻿using System;
-using GameToFunLab.CharacterMovement;
-using GameToFunLab.Core;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
@@ -41,7 +39,7 @@ namespace GameToFunLab.Characters
             GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Characters/player");
             if (playerPrefab == null)
             {
-                FgLogger.LogError("플레이어 프리팹이 없습니다.");
+                // FgLogger.LogError("플레이어 프리팹이 없습니다.");
                 return null;
             }
             GameObject playerObject = GameObject.Instantiate(playerPrefab);
@@ -50,7 +48,7 @@ namespace GameToFunLab.Characters
             Player player = playerObject.GetComponent<Player>();
             if (player == null)
             {
-                FgLogger.LogError("플레이어 스크립트가 프리팹에 없습니다.");
+                // FgLogger.LogError("플레이어 스크립트가 프리팹에 없습니다.");
                 return null;
             }
 

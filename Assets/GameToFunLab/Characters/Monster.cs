@@ -1,5 +1,5 @@
-using GameToFunLab.CharacterMovement;
-using GameToFunLab.Scenes;
+using GameToFunLab.Characters.Movement;
+using GameToFunLab.Configs;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
@@ -15,7 +15,6 @@ namespace GameToFunLab.Characters
         public int unum;
         [HideInInspector] public GameObject player;
         [HideInInspector] public Collider2D[] hits;  // 필요한 크기로 초기화
-        [HideInInspector] public SceneGame sceneGame;
 
         // Start is called before the first frame update
         protected override void Awake()
@@ -33,14 +32,14 @@ namespace GameToFunLab.Characters
         protected override void Start()
         {
             base.Start();
-            sceneGame = SceneGame.Instance;
-            player = GameObject.FindWithTag(sceneGame.tagPlayer);
-            gameObject.tag = sceneGame.tagMonster;
-        
-            // 자동으로 플레이어에게 다가가는 이동 전략 설정
-            MovementStrategy = new AutoMoveStrategy(player.transform);
+            player = GameObject.FindWithTag(ConfigCommon.TagPlayer);
+            gameObject.tag = ConfigCommon.TagMonster;
             
             InitializationStat();
+        
+            // 자동으로 플레이어에게 다가가는 이동 전략 설정
+            MovementStrategy = new AutoMoveStrategy(transform, CurrentMoveSpeed);
+            
             Run();
         }
         /// <summary>
@@ -129,7 +128,7 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
+            if (collision.gameObject.CompareTag(ConfigCommon.TagPlayer))
             {
                 IsAttacking = true;
                 CurrentStatus = ICharacter.CharacterStatus.Idle;
@@ -142,7 +141,7 @@ namespace GameToFunLab.Characters
         /// <param name="collision"></param>
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
+            if (collision.gameObject.CompareTag(ConfigCommon.TagPlayer))
             {
                 IsAttacking = false;
                 CurrentStatus = ICharacter.CharacterStatus.Idle;

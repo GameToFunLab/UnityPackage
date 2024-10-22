@@ -155,7 +155,7 @@ namespace GameToFunLab.Editor.MapEditor
                 {
                     // MapManager.cs:138 도 수정
                     npcScript.unum = npcData.Unum;
-                    npcScript.npcData = npcData;
+                    npcScript.NpcData = npcData;
                     npcScript.InitializeByEditor();
                     // 추가적인 속성 설정을 여기에서 수행할 수 있습니다.
                 }

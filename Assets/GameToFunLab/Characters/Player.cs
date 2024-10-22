@@ -1,6 +1,5 @@
-using GameToFunLab.CharacterMovement;
-using GameToFunLab.Maps.Objects;
-using GameToFunLab.Scenes;
+using GameToFunLab.Characters.Movement;
+using GameToFunLab.Configs;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,7 +12,6 @@ namespace GameToFunLab.Characters
     {
         [HideInInspector] public GameObject targetMonster;
         [HideInInspector] public Collider2D[] hits;  // 필요한 크기로 초기화
-        [HideInInspector] public SceneGame sceneGame;
 
         private bool isNpcNearby;
         
@@ -26,10 +24,9 @@ namespace GameToFunLab.Characters
         protected override void Start()
         {
             base.Start();
-            sceneGame = SceneGame.Instance;
             
-            // 자동으로 플레이어에게 다가가는 이동 전략 설정
-            MovementStrategy = new ManualMoveStrategy();
+            // 수동 플레이 이동 전략 설정
+            MovementStrategy = new ManualMoveStrategy(transform, CurrentMoveSpeed, OriginalScaleX);
         }
         /// <summary>
         /// 테이블에서 가져온 몬스터 정보 셋팅
@@ -62,7 +59,6 @@ namespace GameToFunLab.Characters
             if (CurrentHp <= 0)
             {
                 CurrentHp = 0;
-                sceneGame.SetStateEnd();
                 return;
             }
         } 
@@ -76,7 +72,7 @@ namespace GameToFunLab.Characters
             for (int i = 0; i < hitCount; i++)
             {
                 Collider2D hit = hits[i];
-                if (hit.CompareTag(sceneGame.tagMonster))
+                if (hit.CompareTag(ConfigCommon.TagMonster))
                 {
                     Monster monster = hit.GetComponent<Monster>();
                     if (monster != null)
@@ -92,7 +88,7 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagMonster))
+            if (collision.gameObject.CompareTag(ConfigCommon.TagMonster))
             {
                 IsAttacking = true;
                 Monster monster = collision.gameObject.GetComponent<Monster>();
@@ -106,27 +102,27 @@ namespace GameToFunLab.Characters
                     DownAttack();
                 }
             }
-            else if (collision.gameObject.CompareTag(sceneGame.tagNpc))
+            else if (collision.gameObject.CompareTag(ConfigCommon.TagNpc))
             {
                 isNpcNearby = true;
             }
-            else if (collision.gameObject.CompareTag(sceneGame.tagMapObjectWarp))
+            else if (collision.gameObject.CompareTag(ConfigCommon.TagMapObjectWarp))
             {
-                ObjectWarp objectWarp = collision.gameObject.GetComponent<ObjectWarp>();
-                if (objectWarp != null && objectWarp.toMapUnum > 0)
-                {
-                    SceneGame.Instance.mapManager.SetPlaySpawnPosition(objectWarp.toMapPlayerSpawnPosition);
-                    SceneGame.Instance.mapManager.LoadMap(objectWarp.toMapUnum);
-                }
+                // ObjectWarp objectWarp = collision.gameObject.GetComponent<ObjectWarp>();
+                // if (objectWarp != null && objectWarp.toMapUnum > 0)
+                // {
+                //     SceneGame.Instance.mapManager.SetPlaySpawnPosition(objectWarp.toMapPlayerSpawnPosition);
+                //     SceneGame.Instance.mapManager.LoadMap(objectWarp.toMapUnum);
+                // }
             }
         }
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(sceneGame.tagMonster))
+            if (collision.gameObject.CompareTag(ConfigCommon.TagMonster))
             {
                 IsAttacking = false;
             }
-            else if (collision.gameObject.CompareTag(sceneGame.tagNpc))
+            else if (collision.gameObject.CompareTag(ConfigCommon.TagNpc))
             {
                 isNpcNearby = false;
             }

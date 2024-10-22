@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameToFunLab.Characters;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Maps.Objects;

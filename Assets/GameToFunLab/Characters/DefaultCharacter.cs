@@ -1,4 +1,4 @@
-using GameToFunLab.CharacterMovement;
+using GameToFunLab.Characters.Movement;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
@@ -22,6 +22,8 @@ namespace GameToFunLab.Characters
         public bool IsAttacking { get; set; }
         // 공격 가능 y/n
         public bool PossibleAttack { get; set; }
+        public string MyTag { get; set; }
+        public string TargetTag { get; set; }
         
         public string[] attackAniNames = new string[] {"attack"};
         public string idleAniName = "idle";
@@ -189,7 +191,7 @@ namespace GameToFunLab.Characters
             // 캐릭터의 움직임을 전략 패턴에 위임
             if (MovementStrategy != null)
             {
-                MovementStrategy.Move(this);
+                MovementStrategy.Move();
             }
         }
         /// <summary>

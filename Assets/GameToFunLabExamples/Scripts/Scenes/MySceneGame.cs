@@ -3,7 +3,6 @@ using GameToFunLab.Characters;
 using GameToFunLab.Core;
 using GameToFunLab.Scenes;
 using GameToFunLab.Utils;
-using Scripts.Maps;
 using Scripts.TableLoader;
 using UnityEngine;
 using UnityEngine.UI;

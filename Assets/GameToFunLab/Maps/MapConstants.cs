@@ -32,6 +32,8 @@
         public const string PrefabNameWarp = "objectWarp";
         public const string FileExt = ".json";
         
+        public const float FadeDuration = 0.7f;
+        
         public const string PathPrefabWarp = ResourceMapPath+PrefabNameWarp;
     }
 }
