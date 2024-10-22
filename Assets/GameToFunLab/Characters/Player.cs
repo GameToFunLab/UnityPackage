@@ -1,7 +1,6 @@
 using GameToFunLab.CharacterMovement;
 using GameToFunLab.Maps.Objects;
 using GameToFunLab.Scenes;
-using Scripts.Maps.Objects;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

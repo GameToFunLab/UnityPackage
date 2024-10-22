@@ -130,8 +130,8 @@ namespace GameToFunLab.Core
         
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireCube(center, mapSize * 2);
+            // Gizmos.color = Color.blue;
+            // Gizmos.DrawWireCube(center, mapSize * 2);
 
             // Gizmos.color = Color.blue;
             // Gizmos.DrawWireCube(center, monsterSpawnPositionBoxSize * 2);

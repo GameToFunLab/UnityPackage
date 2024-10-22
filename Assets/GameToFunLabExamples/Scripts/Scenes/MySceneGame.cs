@@ -151,21 +151,8 @@ namespace Scripts.Scenes
 
         private void OnLoadComplete()
         {
-            
+            FgLogger.Log("게임 씬 로드 완료");
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
         public override long GetMaxEnemyValue()
         {
             return 10;

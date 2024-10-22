@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
+using GameToFunLab.Maps.Objects;
 using Scripts.Maps;
-using Scripts.Maps.Objects;
 using Scripts.TableLoader;
 using UnityEditor;
 using UnityEngine;

@@ -10,6 +10,9 @@ using Random = UnityEngine.Random;
 
 namespace GameToFunLab.Maps
 {
+    /// <summary>
+    /// 맵 매니저
+    /// </summary>
     public class MapManager : MonoBehaviour
     {
         public MapConstants.State CurrentState { get; set; }

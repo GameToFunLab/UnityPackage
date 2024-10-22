@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scripts.Maps
+namespace GameToFunLab.Maps
 {
     public class NpcData
     {

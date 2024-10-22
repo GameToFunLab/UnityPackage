@@ -1,12 +1,11 @@
-using GameToFunLab.CharacterMovement;
+using GameToFunLab.Maps;
 using GameToFunLab.Scenes;
-using Scripts.Maps;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
 {
     /// <summary>
-    /// 몬스터 기본 클레스
+    /// Npc 기본 클레스
     /// </summary>
     public class Npc : DefaultCharacter
     {

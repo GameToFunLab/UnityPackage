@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Scripts.Maps
+namespace GameToFunLab.Maps
 {
     [System.Serializable]
     public class NpcDataList

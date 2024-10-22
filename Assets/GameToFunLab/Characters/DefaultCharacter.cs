@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace GameToFunLab.Characters
 {
+    /// <summary>
+    /// 기본 캐릭터 클레스
+    /// </summary>
+    ///<inheritdoc cref="ICharacter"/>
     public class DefaultCharacter : MonoBehaviour, ICharacter
     {
         public long Unum { get; set; }

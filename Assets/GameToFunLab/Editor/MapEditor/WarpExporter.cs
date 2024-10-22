@@ -5,7 +5,6 @@ using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Maps.Objects;
 using Newtonsoft.Json;
-using Scripts.Maps.Objects;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

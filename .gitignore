@@ -74,11 +74,6 @@ crashlytics-build.properties
 # Jetbrain folder
 .idea/
 
-# spine2d
-/[Aa]ssets/Spine
-/[Aa]ssets/Spine Examples
-/[Aa]ssets/Scenes
-/[Aa]ssets/Editor
-/[Pp]ackages
-*.meta
-/ProjectSettings
+# docFX 
+/Documentation
+**/obj/xdoc/**

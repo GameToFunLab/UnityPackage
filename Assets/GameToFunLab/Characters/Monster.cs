@@ -136,6 +136,10 @@ namespace GameToFunLab.Characters
                 // StartCoroutine(AttackCoroutine(collision.gameObject.GetComponent<Player>()));
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collision"></param>
         void OnTriggerExit2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag(sceneGame.tagPlayer))

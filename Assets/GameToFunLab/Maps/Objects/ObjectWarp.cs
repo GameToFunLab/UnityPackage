@@ -1,5 +1,4 @@
-﻿using Scripts.Maps.Objects;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GameToFunLab.Maps.Objects
 {

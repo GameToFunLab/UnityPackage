@@ -4,7 +4,7 @@ using GameToFunLab.FgPlayerPrefs;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.GameToFunTool
+namespace GameToFunLab.Editor
 {
     public class PlayerPrefsEditor : EditorWindow
     {

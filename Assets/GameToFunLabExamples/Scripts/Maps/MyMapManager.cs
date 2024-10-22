@@ -8,13 +8,13 @@ using Scripts.Characters;
 using Scripts.Scenes;
 using Scripts.TableLoader;
 using Newtonsoft.Json;
-using Scripts.Maps.Objects;
 using UnityEngine;
 
 namespace Scripts.Maps
 {
     public class MyMapManager : MapManager
     {
+        
         private List<NpcData> npcList;
         private List<WarpData> warpDatas;
         private StruckTableMap resultChapterData;

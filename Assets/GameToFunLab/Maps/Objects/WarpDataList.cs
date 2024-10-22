@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Scripts.Maps.Objects
+namespace GameToFunLab.Maps.Objects
 {
     [System.Serializable]
     public class WarpDataList

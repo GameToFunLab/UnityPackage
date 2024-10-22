@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scripts.Maps.Objects
+namespace GameToFunLab.Maps.Objects
 {
     public class WarpData
     {
