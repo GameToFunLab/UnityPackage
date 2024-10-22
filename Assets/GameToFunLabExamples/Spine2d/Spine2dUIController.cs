@@ -46,8 +46,8 @@ namespace Spine2d
         }
         private void OnSpineEventSound(Event eEvent) 
         {
-            int soundVnum = eEvent.Int;
-            if (soundVnum <= 0) return;
+            int soundUnum = eEvent.Int;
+            if (soundUnum <= 0) return;
         }
 
         /// <summary>

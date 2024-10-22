@@ -4,6 +4,6 @@ namespace Scripts.TableLoader
 {
     public class TableExp : DefaultTable
     {	
-        public long GetNeedExp(int vnum) => long.TryParse(GetDataColumn(vnum, "NeedExp"), out var v) ? v : 0;
+        public long GetNeedExp(int Unum) => long.TryParse(GetDataColumn(Unum, "NeedExp"), out var v) ? v : 0;
     }
 }

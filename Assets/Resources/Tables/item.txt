@@ -1,4 +1,4 @@
-Vnum	Type	SubType	Name	Grade	Damage	CoolTime	IconPath	PurchaseCurrency	PurchaseCost
+Unum	Type	SubType	Name	Grade	Damage	CoolTime	IconPath	PurchaseCurrency	PurchaseCost
 #재화									
 1	Currency	Gold	골드	None	0	0	Images/Icons/Currency/gold	None	0
 2	Currency	Dia	다이아	None	0	0	Images/Icons/Currency/dia	None	0

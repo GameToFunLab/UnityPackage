@@ -11,6 +11,8 @@ namespace GameToFunLab.Scenes
         public static SceneGame Instance { get; private set; }
         public string tagPlayer = "Player";
         public string tagMonster = "Monster";
+        public string tagNpc = "Npc";
+        public string tagMapObjectWarp = "MapObjectWarp";
         
         public enum GameState { Begin, Combat, End, DirectionStart, DirectionEnd };
         public enum GameSubState { Normal, BossChallenge };
@@ -27,6 +29,7 @@ namespace GameToFunLab.Scenes
         public UIWindowManager uIWindowManager;
         public MapManager mapManager;
         public PopupManager popupManager;
+        public SoundManager soundManager;
         
         protected virtual void Awake()
         {
@@ -36,6 +39,16 @@ namespace GameToFunLab.Scenes
                 DontDestroyOnLoad(gameObject);
             }
             player = GameObject.FindWithTag(tagPlayer);
+        }
+
+        protected virtual void Start()
+        {
+            InitializeManager();
+        }
+
+        private void InitializeManager()
+        {
+            mapManager.Initialize();
         }
         public virtual long GetMaxEnemyValue()
         {

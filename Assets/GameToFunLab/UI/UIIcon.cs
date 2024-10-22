@@ -52,7 +52,7 @@ namespace GameToFunLab.UI
         public UIWindow window;
         public int iconIndex; // 아이콘에 할당된 인덱스
         public int iconSlotIndex; // 슬롯 이동을 위한 인덱스
-        public int vnum; // 테이블 vnum
+        public int unum; // 테이블 unum
         protected Type IconType;
         protected bool IsPossibleDrag;
         [SerializeField] private bool isPossibleClick;
@@ -285,7 +285,7 @@ namespace GameToFunLab.UI
 
                     if (newSprite == null)
                     {
-                        FgLogger.LogError("dont exist icon path. vnum: "+vnum+" / icon path: "+iconPath);
+                        FgLogger.LogError("dont exist icon path. unum: "+unum+" / icon path: "+iconPath);
                         return;
                     }
                     imageIcon.sprite = newSprite;
@@ -293,12 +293,12 @@ namespace GameToFunLab.UI
                 }
                 else
                 {
-                    FgLogger.LogError("no ImageSkillIcon child. vnum:"+vnum);
+                    FgLogger.LogError("no ImageSkillIcon child. unum:"+unum);
                 }
             }
             else
             {
-                FgLogger.LogError("no icon path. vnum:"+vnum);
+                FgLogger.LogError("no icon path. unum:"+unum);
             }
         }
         /// <summary>
@@ -342,9 +342,9 @@ namespace GameToFunLab.UI
         /// <summary>
         /// 아이콘 정보 바꾸기
         /// </summary>
-        /// <param name="iconVnum"></param>
+        /// <param name="iconUnum"></param>
         /// <param name="remainCoolTime"></param>
-        public virtual void ChangeInfoByVnum(int iconVnum, int remainCoolTime = 0)
+        public virtual void ChangeInfoByUnum(int iconUnum, int remainCoolTime = 0)
         {
         
         }
@@ -372,10 +372,10 @@ namespace GameToFunLab.UI
             }
 
             window = parentWindow.GetComponent<UIWindow>();
-            vnum = int.Parse(innerDictionary["Vnum"]);
+            unum = int.Parse(innerDictionary["Unum"]);
             iconIndex = slotIndex;
             iconSlotIndex = slotIndex;
-            ChangeInfoByVnum(vnum);
+            ChangeInfoByUnum(unum);
         }
         /// <summary>
         /// 클릭 가능 여부 
@@ -519,7 +519,7 @@ namespace GameToFunLab.UI
             // 초기화 순서 지키기 
             EndCoolTime();
             
-            vnum = 0;
+            unum = 0;
             if (imageGrade != null)
             {
                 Sprite newSprite = Resources.Load<Sprite>($"Images/UI/rank_none");

@@ -8,9 +8,9 @@ namespace Scripts.TableLoader
 {
     public class StruckTableMonster
     {
-        public int Vnum;
+        public int Unum;
         public string Name;
-        public int SpineVnum;
+        public int SpineUnum;
         public string DefaultSkin;
         public float Scale;
         public ICharacter.Grade Grade;
@@ -34,19 +34,19 @@ namespace Scripts.TableLoader
         }
         public ICharacter.Grade ConvertGrade(string grade) => mapGrade.GetValueOrDefault(grade, ICharacter.Grade.None);
 
-        public StruckTableMonster GetMonsterData(int vnum)
+        public StruckTableMonster GetMonsterData(int unum)
         {
-            if (vnum <= 0)
+            if (unum <= 0)
             {
-                FgLogger.LogError("vnum is 0.");
+                FgLogger.LogError("unum is 0.");
                 return new StruckTableMonster();
             }
-            var data = GetData(vnum);
+            var data = GetData(unum);
             return new StruckTableMonster
             {
-                Vnum = int.Parse(data["Vnum"]),
+                Unum = int.Parse(data["Unum"]),
                 Name = data["Name"],
-                SpineVnum = int.Parse(data["SpineVnum"]),
+                SpineUnum = int.Parse(data["SpineUnum"]),
                 DefaultSkin = data["DefaultSkin"],
                 Scale = float.Parse(data["Scale"]),
                 Grade = ConvertGrade(data["Grade"]),
@@ -58,13 +58,13 @@ namespace Scripts.TableLoader
             };
         }
         
-        public GameObject GetPrefab(int vnum) {
-            var info = GetMonsterData(vnum);
-            if (info.SpineVnum == 0) return null;
+        public GameObject GetPrefab(int unum) {
+            var info = GetMonsterData(unum);
+            if (info.SpineUnum == 0) return null;
         
-            string prefabPath = TableLoaderManager.Instance.TableSpine.GetPath(info.SpineVnum);
+            string prefabPath = TableLoaderManager.Instance.TableSpine.GetPath(info.SpineUnum);
             if (prefabPath == "") {
-                FgLogger.Log("prefabPath is ''. shape: "+info.SpineVnum);
+                FgLogger.Log("prefabPath is ''. shape: "+info.SpineUnum);
                 return null;
             }
             GameObject prefab = Resources.Load<GameObject>(prefabPath);
@@ -74,10 +74,10 @@ namespace Scripts.TableLoader
             }
             return prefab;
         }
-        public string GetShapePath(int vnum)
+        public string GetShapePath(int unum)
         {
-            var info = GetMonsterData(vnum);
-            return info.SpineVnum <= 0 ? "" : TableLoaderManager.Instance.TableSpine.GetPath(info.SpineVnum);
+            var info = GetMonsterData(unum);
+            return info.SpineUnum <= 0 ? "" : TableLoaderManager.Instance.TableSpine.GetPath(info.SpineUnum);
         }
     }
 }

@@ -4,9 +4,9 @@ namespace Scripts.TableLoader
 {
     public class StruckTableMapRegen
     {
-        public int Vnum;
-        public int MapVnum;
-        public int MonsterVnum;
+        public int Unum;
+        public int MapUnum;
+        public int MonsterUnum;
         public string SpawnArea;
         public string SpawnPosition;
         public int SpawnCount;
@@ -15,19 +15,19 @@ namespace Scripts.TableLoader
     }
     public class TableMapRegen : GameToFunLab.TableLoader.DefaultTable
     {
-        public StruckTableMapRegen GetMapRegenData(int vnum)
+        public StruckTableMapRegen GetMapRegenData(int unum)
         {
-            if (vnum <= 0)
+            if (unum <= 0)
             {
-                FgLogger.LogError("vnum is 0.");
+                FgLogger.LogError("unum is 0.");
                 return new StruckTableMapRegen();
             }
-            var data = GetData(vnum);
+            var data = GetData(unum);
             return new StruckTableMapRegen
             {
-                Vnum = int.Parse(data["Vnum"]),
-                MapVnum = int.Parse(data["MapVnum"]),
-                MonsterVnum = int.Parse(data["MonsterVnum"]),
+                Unum = int.Parse(data["Unum"]),
+                MapUnum = int.Parse(data["MapUnum"]),
+                MonsterUnum = int.Parse(data["MonsterUnum"]),
                 SpawnArea = data["SpawnArea"],
                 SpawnPosition = data["SpawnPosition"],
                 SpawnCount = int.Parse(data["SpawnCount"]),

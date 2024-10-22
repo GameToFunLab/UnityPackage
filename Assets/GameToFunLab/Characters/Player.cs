@@ -1,5 +1,7 @@
 using GameToFunLab.CharacterMovement;
+using GameToFunLab.Maps.Objects;
 using GameToFunLab.Scenes;
+using Scripts.Maps.Objects;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,9 +16,12 @@ namespace GameToFunLab.Characters
         [HideInInspector] public Collider2D[] hits;  // 필요한 크기로 초기화
         [HideInInspector] public SceneGame sceneGame;
 
+        private bool isNpcNearby;
+        
         protected override void Awake()
         {
             base.Awake();
+            isNpcNearby = false;
         }
         // Start is called before the first frame update
         protected override void Start()
@@ -26,6 +31,12 @@ namespace GameToFunLab.Characters
             
             // 자동으로 플레이어에게 다가가는 이동 전략 설정
             MovementStrategy = new ManualMoveStrategy();
+        }
+        /// <summary>
+        /// 테이블에서 가져온 몬스터 정보 셋팅
+        /// </summary>
+        protected override void InitializationStat() 
+        {
         }
         /// <summary>
         /// 공격 버튼 눌렀을때 처리 
@@ -96,12 +107,29 @@ namespace GameToFunLab.Characters
                     DownAttack();
                 }
             }
+            else if (collision.gameObject.CompareTag(sceneGame.tagNpc))
+            {
+                isNpcNearby = true;
+            }
+            else if (collision.gameObject.CompareTag(sceneGame.tagMapObjectWarp))
+            {
+                ObjectWarp objectWarp = collision.gameObject.GetComponent<ObjectWarp>();
+                if (objectWarp != null && objectWarp.toMapUnum > 0)
+                {
+                    SceneGame.Instance.mapManager.SetPlaySpawnPosition(objectWarp.toMapPlayerSpawnPosition);
+                    SceneGame.Instance.mapManager.LoadMap(objectWarp.toMapUnum);
+                }
+            }
         }
         void OnTriggerExit2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag(sceneGame.tagMonster))
             {
                 IsAttacking = false;
+            }
+            else if (collision.gameObject.CompareTag(sceneGame.tagNpc))
+            {
+                isNpcNearby = false;
             }
         }
         

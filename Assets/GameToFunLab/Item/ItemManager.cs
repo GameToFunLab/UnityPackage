@@ -29,12 +29,12 @@
             GoogleAd
         }
 
-        public const int itemVnumGold = 1;
-        public const int itemVnumDia = 2;
-        public const int itemVnumDefaultWeapon = 20010001;
-        public const int itemVnumDefaultSkinFace = 20020001;
-        public const int itemVnumSystemSkinFace = 20020015; // 채팅에서 사용중
-        public const int itemVnumDefaultTitle = 10020001;
-        public const int itemVnumLastTitle = 10020016; // 마지막 칭호
+        public const int itemUnumGold = 1;
+        public const int itemUnumDia = 2;
+        public const int itemUnumDefaultWeapon = 20010001;
+        public const int itemUnumDefaultSkinFace = 20020001;
+        public const int itemUnumSystemSkinFace = 20020015; // 채팅에서 사용중
+        public const int itemUnumDefaultTitle = 10020001;
+        public const int itemUnumLastTitle = 10020016; // 마지막 칭호
     }
 }

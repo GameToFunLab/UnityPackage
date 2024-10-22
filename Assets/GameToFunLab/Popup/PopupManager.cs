@@ -266,7 +266,7 @@ namespace GameToFunLab.Popup
             {
                 FgLogger.Log("확인 버튼 클릭됨");
                 // SceneGame.Instance.uIWindowManager.CloseAll();
-                // SceneGame.Instance.uIWindowManager.ShowWindow(UIWindowManager.WindowVnum.CashShop, true);
+                // SceneGame.Instance.uIWindowManager.ShowWindow(UIWindowManager.WindowUnum.CashShop, true);
             };
             popupMetadata.OnCancel = () =>
             {

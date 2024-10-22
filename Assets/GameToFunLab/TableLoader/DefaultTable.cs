@@ -22,8 +22,8 @@ namespace GameToFunLab.TableLoader
                     data[headers[j].Trim()] = values[j].Trim().Replace(@"\n", "\n");
                 }
 
-                int vnum = int.Parse(values[0]);
-                table[vnum] = data;
+                int Unum = int.Parse(values[0]);
+                table[Unum] = data;
             }
         }
 
@@ -32,10 +32,10 @@ namespace GameToFunLab.TableLoader
             return value == "None" ? "" : value;
         }
         public Dictionary<int, Dictionary<string, string>> GetDatas() => table;
-        protected Dictionary<string, string> GetData(int vnum) => table.GetValueOrDefault(vnum);
-        protected string GetDataColumn(int vnum, string columnName)
+        protected Dictionary<string, string> GetData(int Unum) => table.GetValueOrDefault(Unum);
+        protected string GetDataColumn(int Unum, string columnName)
         {
-            table.TryGetValue(vnum, out var data);
+            table.TryGetValue(Unum, out var data);
             if (data == null)
             {
                 return null;

@@ -11,8 +11,8 @@ namespace GameToFunLab.Characters
     {
         // 스폰될때 vid
         public int vid;
-        // 몬스터 테이블 vnum
-        public int vnum;
+        // 몬스터 테이블 unum
+        public int unum;
         [HideInInspector] public GameObject player;
         [HideInInspector] public Collider2D[] hits;  // 필요한 크기로 초기화
         [HideInInspector] public SceneGame sceneGame;
@@ -46,9 +46,9 @@ namespace GameToFunLab.Characters
         /// <summary>
         /// 테이블에서 가져온 몬스터 정보 셋팅
         /// </summary>
-        protected virtual void InitializationStat() 
+        protected override void InitializationStat() 
         {
-            if (vnum <= 0) return;
+            if (unum <= 0) return;
         }
         /// <summary>    
         /// 몬스터의 hit area 에 플레이어가 있을경우 공격하기 
@@ -144,18 +144,6 @@ namespace GameToFunLab.Characters
                 CurrentStatus = ICharacter.CharacterStatus.Idle;
                 Invoke(nameof(Run), 0.3f);
             }
-        }
-        /// <summary>
-        /// 몬스터가 플레이어한테 자동 이동하기 
-        /// </summary>
-        private void UpdateAutoMove()
-        {
-            // if (IsCurrentAninameIsAttack() == true) return;
-            if (CurrentStatus != ICharacter.CharacterStatus.Run) return;
-
-            SetFlipToTarget(player.transform);
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position,
-                Time.deltaTime * CurrentMoveSpeed);
         }
     }
 }

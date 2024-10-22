@@ -12,98 +12,89 @@ namespace GameToFunLab.Maps
 {
     public class MapManager : MonoBehaviour
     {
-        public enum Type
-        {
-            None,
-            Common,
-        }
-        public enum SubType
-        {
-            None,
-        }
-
-        private enum State
-        {
-            None,
-            FadeIn,               // 1. 검정색 스프라이트 페이드 인
-            UnloadPreviousStage,  // 1. 이전 스테이지의 몬스터 인스턴스를 제거하고 메모리 정리를 진행
-            LoadTilemapPrefab,    // 2. 맵에 필요한 타일맵 프리팹 불러오기
-            LoadMonsterPrefabs,   // 3. 맵에 배치되는 몬스터 스파인 프리팹 불러오기
-            FadeOut,              // 6. 완료
-            Complete              // 6. 완료
-        }
-
-        private State currentState = State.None;
+        public MapConstants.State CurrentState { get; set; }
+        public bool IsLoadComplete { get; set; }
+        public int CurrentMapUnum { get; set; }
+        public float FadeDuration { get; set; }
+        public Vector3 PlaySpawnPosition { get; set; }
 
         public GameObject bgBlackForMapLoading;  // 페이드 인에 사용할 검정색 스프라이트 오브젝트
-        public float fadeDuration = 2.0f;  // 페이드 인 지속 시간
 
         public List<GameObject> monsterPrefabs;
-        public List<int> monsterVnums;
+        public List<int> monsterUnums;
 
-        public int loadMapVnum; // 현재 맵 vnum
-        private DefaultMap currentDefaultMap; // 현재 맵 defaultMap 
-        private int questVnum; // 맵에 연결된 퀘스트 vnum
+        protected DefaultMap DefaultMap; // 현재 맵 defaultMap 
 
-        private SceneGame sceneGame;
-        private SaveDataManager saveDataManager;
+        protected SceneGame SceneGame;
+        protected SaveDataManager SaveDataManager;
         
         private void Awake()
         {
-            bgBlackForMapLoading.SetActive(false);
+            bgBlackForMapLoading.SetActive(true);
+            Image spriteRenderer = bgBlackForMapLoading.GetComponent<Image>();
+            spriteRenderer.color = new Color(0, 0, 0, 1);
+            IsLoadComplete = false;
         }
 
-        private void Start()
+        public virtual void Initialize()
         {
-            sceneGame = SceneGame.Instance;
-            saveDataManager = sceneGame.saveDataManager;
+            SceneGame = SceneGame.Instance;
+            SaveDataManager = SceneGame.saveDataManager;
         }
 
-        private void Reset()
+        protected virtual void Reset()
         {
-            questVnum = 0;
+            IsLoadComplete = false;
         }
-        public void LoadMap(int mapVnum = 0)
+        public void LoadMap(int mapUnum = 0)
         {
             if (IsPossibleLoad() != true)
             {
-                // FgLogger.LogError($"map state: {currentState}");
+                // FgLogger.LogError($"map state: {CurrentState}");
                 return;
             }
             // FgLogger.Log("LoadMap start");
             Reset();
-            currentState = State.FadeIn;
-            loadMapVnum = mapVnum;
+            CurrentState = MapConstants.State.FadeIn;
+            CurrentMapUnum = mapUnum;
             StartCoroutine(UpdateState());
         }
 
         IEnumerator UpdateState()
         {
-            while (currentState != State.Complete)
+            while (CurrentState != MapConstants.State.Complete)
             {
-                switch (currentState)
+                switch (CurrentState)
                 {
-                    case State.FadeIn:
+                    case MapConstants.State.FadeIn:
                         yield return StartCoroutine(FadeIn());
-                        currentState = State.UnloadPreviousStage;
+                        CurrentState = MapConstants.State.UnloadPreviousStage;
                         break;
 
-                    case State.UnloadPreviousStage:
+                    case MapConstants.State.UnloadPreviousStage:
                         yield return StartCoroutine(UnloadPreviousStage());
-                        currentState = State.LoadTilemapPrefab;
+                        CurrentState = MapConstants.State.LoadTilemapPrefab;
                         break;
-                    case State.LoadTilemapPrefab:
-                        LoadTilemap();
-                        currentState = State.LoadMonsterPrefabs;
+                    case MapConstants.State.LoadTilemapPrefab:
+                        yield return StartCoroutine(CreateMap());
+                        CurrentState = MapConstants.State.LoadMonsterPrefabs;
                         break;
 
-                    case State.LoadMonsterPrefabs:
-                        LoadMonsters();
-                        currentState = State.FadeOut;
+                    case MapConstants.State.LoadMonsterPrefabs:
+                        yield return StartCoroutine(LoadMonsters());
+                        CurrentState = MapConstants.State.LoadNpcPrefabs;
                         break;
-                    case State.FadeOut:
+                    case MapConstants.State.LoadNpcPrefabs:
+                        yield return StartCoroutine(LoadNpcs());
+                        CurrentState = MapConstants.State.LoadWarpPrefabs;
+                        break;
+                    case MapConstants.State.LoadWarpPrefabs:
+                        yield return StartCoroutine(LoadWarps());
+                        CurrentState = MapConstants.State.FadeOut;
+                        break;
+                    case MapConstants.State.FadeOut:
                         yield return StartCoroutine(FadeOut());
-                        currentState = State.Complete;
+                        CurrentState = MapConstants.State.Complete;
                         break;
                 }
 
@@ -120,16 +111,21 @@ namespace GameToFunLab.Maps
                 FgLogger.LogError("Fade Sprite가 설정되지 않았습니다.");
                 yield break;
             }
+            // 이미 활성화 되어있으면 (인게임 처음 시작했을때) 건너뛰기.
+            if (bgBlackForMapLoading.activeSelf)
+            {
+                yield break;
+            }
 
             bgBlackForMapLoading.SetActive(true);
-            SpriteRenderer spriteRenderer = bgBlackForMapLoading.GetComponent<SpriteRenderer>();
+            Image spriteRenderer = bgBlackForMapLoading.GetComponent<Image>();
             spriteRenderer.color = new Color(0, 0, 0, 0);
             float elapsedTime = 0.0f;
 
-            while (elapsedTime < fadeDuration)
+            while (elapsedTime < FadeDuration)
             {
                 elapsedTime += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsedTime / fadeDuration);
+                float t = Mathf.Clamp01(elapsedTime / FadeDuration);
                 float alpha = Mathf.Lerp(0, 1, Easing.EaseOutQuintic(t));
                 spriteRenderer.color = new Color(0, 0, 0, alpha);
                 yield return null;
@@ -140,18 +136,24 @@ namespace GameToFunLab.Maps
 
             // Logger.Log("Fade In 완료");
         }
-        
+        protected void DestroyByTag(string tag)
+        {
+            GameObject[] mapObjects = GameObject.FindGameObjectsWithTag(tag);
+            foreach (GameObject mapObject in mapObjects)
+            {
+                if (mapObject == null) continue;
+                Destroy(mapObject);
+            }
+        }
         IEnumerator UnloadPreviousStage()
         {
             // 현재 씬에 있는 모든 몬스터 오브젝트를 삭제
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(sceneGame.tagMonster);
-            foreach (var monster in enemies)
-            {
-                Destroy(monster);
-            }
-            monsterVnums.Clear();
+            DestroyByTag(SceneGame.tagMonster);
+            DestroyByTag(SceneGame.tagNpc);
+            monsterUnums.Clear();
             monsterPrefabs.Clear();
 
+            DestroyOthers();
             // 잠시 대기하여 오브젝트가 완전히 삭제되도록 보장
             yield return null;
 
@@ -164,51 +166,60 @@ namespace GameToFunLab.Maps
             // FgLogger.Log("이전 스테이지의 몬스터 프리팹이 메모리에서 해제되었습니다.");
         }
 
-        void LoadTilemap()
+        protected virtual void DestroyOthers()
         {
-            sceneGame.player?.GetComponent<Player>().Stop();
-
-            (int vnum, string name, string tileMapPrefabName, Type type, SubType typeSub) resultChapterData;
-            if (loadMapVnum == 0)
-            {
-                loadMapVnum = saveDataManager.CurrentChapter;
-            }
-            
-            if (currentDefaultMap != null)
-            {
-                Destroy(currentDefaultMap.gameObject);
-            }
-            
-            var result = currentDefaultMap.GetMapSize();
-
-            // 로드된 맵에 맞게 맵 영역 사이즈 갱신하기 
-            sceneGame.cameraManager.ChangeMapSize(result.width / 2, result.height / 2);
-            
-            // 플레이어 위치 0, 0 으로
-            sceneGame.player?.GetComponent<Player>().MoveForce(0, 0);
-            
-            // Logger.Log("타일맵 프리팹 로드 완료");
         }
 
-        protected virtual void LoadMonsters()
+        protected virtual IEnumerator CreateMap()
         {
-            // string chapterMonsterVnums = tableLoaderManager.TableMap.GetMonsterVnum(loadMapVnum);
-            // if (chapterMonsterVnums == "")
+            SceneGame.player?.GetComponent<Player>().Stop();
+
+            if (CurrentMapUnum == 0)
+            {
+                CurrentMapUnum = SaveDataManager.CurrentChapter;
+            }
+            
+            if (DefaultMap != null)
+            {
+                Destroy(DefaultMap.gameObject);
+            }
+            // 맵 생성 코드 추가 해야 함
+            
+            // 플레이어 위치 0, 0 으로
+            SceneGame.player?.GetComponent<Player>().MoveForce(0, 0);
+            
+            // Logger.Log("타일맵 프리팹 로드 완료");
+            yield return null;
+        }
+
+        protected virtual IEnumerator LoadMonsters()
+        {
+            yield return null;
+        }
+        protected virtual IEnumerator LoadWarps()
+        {
+            yield return null;
+        }
+        protected virtual IEnumerator LoadNpcs()
+        {
+            // string chapterMonsterUnums = tableLoaderManager.TableMap.GetMonsterUnum(loadMapUnum);
+            // if (chapterMonsterUnums == "")
             // {
-            //     // FgLogger.LogError("monster vnum is blink. map vnum: "+loadMapVnum);
+            //     // FgLogger.LogError("monster unum is blink. map unum: "+loadMapUnum);
             //     return;
             // }
             //
-            // string[] vnums = chapterMonsterVnums.Split(",");
-            // foreach(string vnum in vnums)
+            // string[] unums = chapterMonsterUnums.Split(",");
+            // foreach(string unum in unums)
             // {
-            //     string shapePath = tableLoaderManager.TableMonster.GetShapePath(int.Parse(vnum));
+            //     string shapePath = tableLoaderManager.TableMonster.GetShapePath(int.Parse(unum));
             //     if (shapePath == "") continue;
             //     GameObject monster = Resources.Load<GameObject>(shapePath);
             //     monsterPrefabs.Add(monster);
-            //     monsterVnums.Add(int.Parse(vnum));
+            //     monsterUnums.Add(int.Parse(unum));
             // }
             // Logger.Log("몬스터 프리팹 로드 완료");
+            yield return null;
         }
         IEnumerator FadeOut()
         {
@@ -218,14 +229,14 @@ namespace GameToFunLab.Maps
                 yield break;
             }
 
-            SpriteRenderer spriteRenderer = bgBlackForMapLoading.GetComponent<SpriteRenderer>();
+            Image spriteRenderer = bgBlackForMapLoading.GetComponent<Image>();
             spriteRenderer.color = new Color(0, 0, 0, 1);
             float elapsedTime = 0.0f;
 
-            while (elapsedTime < fadeDuration)
+            while (elapsedTime < FadeDuration)
             {
                 elapsedTime += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsedTime / fadeDuration);
+                float t = Mathf.Clamp01(elapsedTime / FadeDuration);
                 float alpha = Mathf.Lerp(1, 0, Easing.EaseInQuintic(t));
                 spriteRenderer.color = new Color(0, 0, 0, alpha);
                 yield return null;
@@ -244,19 +255,43 @@ namespace GameToFunLab.Maps
             StopCoroutine(FadeOut());
             StopCoroutine(UnloadPreviousStage());
             StopCoroutine(FadeIn());
-            
+
+            SceneGame.saveDataManager.SetChapter(CurrentMapUnum);
+            IsLoadComplete = true;
+            PlaySpawnPosition = Vector3.zero;
             // Logger.Log("맵 로드 완료");
         }
 
-        public (GameObject prefab, int vnum) GetMonsterPrefabByRandom()
+        public (GameObject prefab, int unum) GetMonsterPrefabByRandom()
         {
             if (monsterPrefabs.Count <= 0) return (null, 0);
             int rand = Random.Range(0, monsterPrefabs.Count);
-            return (monsterPrefabs[rand], monsterVnums[rand]);
+            return (monsterPrefabs[rand], monsterUnums[rand]);
         }
         private bool IsPossibleLoad()
         {
-            return (currentState == State.Complete || currentState == State.None);
+            return (CurrentState == MapConstants.State.Complete || CurrentState == MapConstants.State.None);
+        }
+        protected string GetPathTilemap(string folderName)
+        {
+            return MapConstants.ResourceMapPath + folderName + "/" + MapConstants.FileNameTilemap;
+        }
+        protected string GetPathRegen(string folderName)
+        {
+            return MapConstants.ResourceMapPath + folderName + "/" + MapConstants.FileNameRegenNpc;
+        }
+        protected string GetPathWarp(string folderName)
+        {
+            return MapConstants.ResourceMapPath + folderName + "/" + MapConstants.FileNameWarp;
+        }
+
+        public void SetPlaySpawnPosition(Vector3 position)
+        {
+            PlaySpawnPosition = position;
+        }
+        public Vector3 GetPlaySpawnPosition()
+        {
+            return PlaySpawnPosition;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace GameToFunLab.Characters
             Fixed
         }
         
-        long Vnum { get; set; }
+        long Unum { get; set; }
         float StatHp { get; set; }
         float StatAtk { get; set; }
         float StatMoveSpeed { get; set; }

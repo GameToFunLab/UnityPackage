@@ -24,12 +24,12 @@ namespace GameToFunLab.CharacterMovement
             
             if (Input.GetKey(KeyCode.A))
             {
-                character.transform.localScale = new Vector3(1f, 1f, 1f);
+                character.transform.localScale = new Vector3(character.OriginalScaleX, character.transform.localScale.y, character.transform.localScale.z);
             }
             
             if (Input.GetKey(KeyCode.D))
             {
-                character.transform.localScale = new Vector3(-1f, 1f, 1f);
+                character.transform.localScale = new Vector3(character.OriginalScaleX * -1, character.transform.localScale.y, character.transform.localScale.z);
             }
             
             character.transform.Translate(direction * (character.CurrentMoveSpeed * Time.deltaTime));

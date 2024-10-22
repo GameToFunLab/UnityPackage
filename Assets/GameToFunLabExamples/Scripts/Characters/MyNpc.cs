@@ -18,7 +18,7 @@ namespace Scripts.Characters
     {
         public string npcName;
         public bool isFlip;
-        public List<int> questVnums;
+        public List<int> questUnums;
         private MySceneGame sceneGameCustom;
 
         public GameObject buttonPrefab; // 버튼 프리팹
@@ -30,15 +30,13 @@ namespace Scripts.Characters
         private Camera mainCamera; // 메인 카메라 (월드 좌표 변환에 필요)
         private SkeletonAnimation skeletonAnimation;
         private bool isStartFade;
-        public NPCData npcData;
 
         protected override void Awake()
         {
             base.Awake();
-            questVnums = new List<int>();
+            questUnums = new List<int>();
             skeletonAnimation = GetComponent<SkeletonAnimation>();
             isStartFade = false;
-            npcData = null;
         }
         // Start is called before the first frame update
         protected override void Start()
@@ -48,7 +46,7 @@ namespace Scripts.Characters
             canvasInteractionButtons = sceneGameCustom.canvasInteractionButtons;
             mainCamera = sceneGameCustom.mainCamera;
 
-            if (questVnums.Count > 0)
+            if (questUnums.Count > 0)
             {
                 CreateButtons();
             }
@@ -60,91 +58,36 @@ namespace Scripts.Characters
         protected override void InitializationStat() 
         {
             base.InitializationStat();
-            if (vnum <= 0) return;
-            TableLoaderManager tableLoaderManager = TableLoaderManager.Instance;
-            int mapVnum = MySceneGame.MyInstance.saveDataManager.CurrentChapter;
-            var info = tableLoaderManager.TableNpc.GetNpcData(vnum);
-            // FG_Logger.Log("InitializationStat vnum: "+vnum+" / info.vnum: "+info.vnum+" / StatMoveSpeed: "+info.statMoveSpeed);
-            if (info.Vnum > 0)
+            if (TableLoaderManager.Instance)
             {
-                StatAtk = info.StatAtk;
-                CurrentAtk = (long)StatAtk;
-                StatMoveSpeed = info.StatMoveSpeed;
-                StatHp = info.StatHp;
-                CurrentHp = (long)StatHp;
-                CurrentMoveSpeed = StatMoveSpeed;
-                float scale = info.Scale;
-                transform.localScale = new Vector3(scale, scale, 0);
-                OriginalScaleX = scale;
+                TableLoaderManager tableLoaderManager = TableLoaderManager.Instance;
+                int mapUnum = MySceneGame.MyInstance.saveDataManager.CurrentChapter;
+                var info = tableLoaderManager.TableNpc.GetNpcData(unum);
+                // FG_Logger.Log("InitializationStat unum: "+unum+" / info.unum: "+info.unum+" / StatMoveSpeed: "+info.statMoveSpeed);
+                if (info.Unum > 0)
+                {
+                    StatAtk = info.StatAtk;
+                    CurrentAtk = (long)StatAtk;
+                    StatMoveSpeed = info.StatMoveSpeed;
+                    StatHp = info.StatHp;
+                    CurrentHp = (long)StatHp;
+                    CurrentMoveSpeed = StatMoveSpeed;
+                    float scale = info.Scale;
+                    transform.localScale = new Vector3(scale, scale, 0);
+                    OriginalScaleX = scale;
+                }
             }
 
             SetFlip(isFlip);
-            
             // 맵 배치툴로 저장한 정보가 있을 경우 
             if (npcData != null)
             {
-                // SetFlip(npcData.IsFlip);
-                // List<int> questVnums = tableLoaderManager.TableQuest.GetQuestsByNpcVnum(npcData.MapVnum, npcData.Vnum);
-                // transform.localScale = new Vector3(npcData.ScaleX, npcData.ScaleY, npcData.ScaleZ);
-                // originalScaleX = npcData.ScaleX;
-                // SetQuestVnums(questVnums);
+                SetFlip(npcData.IsFlip);
+                // List<int> questUnums = tableLoaderManager.TableQuest.GetQuestsByNpcUnum(npcData.MapUnum, npcData.Unum);
+                transform.localScale = new Vector3(npcData.ScaleX, npcData.ScaleY, npcData.ScaleZ);
+                OriginalScaleX = npcData.ScaleX;
+                // SetQuestUnums(questUnums);
             }
-        }
-        /// <summary>    
-        /// 몬스터의 hit area 에 플레이어가 있을경우 공격하기 
-        /// <para>
-        /// monsterAi.cs 에서 충돌 검사중
-        /// </para>
-        /// </summary>
-        protected override bool DownAttack()
-        {
-            if (!base.DownAttack()) return false;
-        
-            // PlayAnimationOnceAndThenLoop(attackAniNames[attackNameIndex]);
-            // fG_Spine2DController.PlayAnimation(attackAniNames[attackNameIndex], true);
-            return true;
-        }
-        /// <summary>
-        /// 몬스터가 죽었을때 처리 
-        /// </summary>
-        private void OnDead()
-        {
-        }
-
-        protected override void SetByDirection(bool set) 
-        {
-            base.SetByDirection(set);
-            if (set == false)
-            {
-                Run();
-            }
-        }
-        void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
-            {
-                IsAttacking = true;
-                SetStatusIdle();
-                // StartCoroutine(AttackCoroutine(collision.gameObject.GetComponent<Player>()));
-            }
-        }
-        void OnTriggerExit2D(Collider2D collision)
-        {
-            if (collision.gameObject.CompareTag(sceneGame.tagPlayer))
-            {
-                IsAttacking = false;
-                SetStatusIdle();
-                Invoke(nameof(Run), 0.3f);
-            }
-        }
-        /// <summary>
-        /// 보스전 시작할때 일반 몬스터 죽이기 
-        /// </summary>
-        public void DestroyByChallengeBoss()
-        {
-            if (sceneGame == null) return;
-            SetStatusDead();
-            Destroy(this.gameObject);
         }
         /// <summary>
         /// pc 가 근처에서 f 키를 눌렀을때 처리 
@@ -153,10 +96,10 @@ namespace Scripts.Characters
         {
             // kdh
             // 퀘스트가 하나라고 했을때 처리 
-            if (questVnums.Count <= 0) return;
-            int questVnum = questVnums[0];
-            if (questVnum <= 0) return;
-            // sceneGameCustom.questDialogueManager.StartDialogueQuest(questVnum);
+            if (questUnums.Count <= 0) return;
+            int questUnum = questUnums[0];
+            if (questUnum <= 0) return;
+            // sceneGameCustom.questDialogueManager.StartDialogueQuest(questUnum);
         }
         
         protected override void Update()
@@ -170,24 +113,24 @@ namespace Scripts.Characters
         /// <summary>
         /// 맵 로드할때 npc를 생성하고 할당된 quest 가 있으면 넣어주기 
         /// </summary>
-        /// <param name="mQuestVnums"></param>
-        public void SetQuestVnums(List<int> mQuestVnums)
+        /// <param name="mQuestUnums"></param>
+        public void SetQuestUnums(List<int> mQuestUnums)
         {
-            questVnums.Clear();
+            questUnums.Clear();
             RemoveButtons();
-            if (mQuestVnums.Count <= 0) return;
-            foreach(int questVnum in mQuestVnums)
+            if (mQuestUnums.Count <= 0) return;
+            foreach(int questUnum in mQuestUnums)
             {
-                questVnums.Add(questVnum);
+                questUnums.Add(questUnum);
             }
         }
         void CreateButtons()
         {
             // 버튼 생성 및 리스트에 추가
-            foreach(int questVnum in questVnums)
+            foreach(int questUnum in questUnums)
             {
                 GameObject newButton = Instantiate(buttonPrefab, canvasInteractionButtons.transform);
-                newButton.GetComponentInChildren<TextMeshProUGUI>().text = $"{questVnum}";
+                newButton.GetComponentInChildren<TextMeshProUGUI>().text = $"{questUnum}";
                 interactionButtons.Add(newButton);
             }
         }

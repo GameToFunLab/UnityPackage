@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using GameToFunLab.Core;
+using GameToFunLab.Scenes;
 using Scripts.Scenes;
 using UnityEngine;
 
@@ -8,15 +9,16 @@ namespace Scripts.TableLoader
 {
     public class TableLoaderManager : MonoBehaviour
     {
-        private static readonly string[] DataFiles = { "config", "animation", "monster", "item", "exp", "map", "map_regen" };
+        private static readonly string[] DataFiles = { "config", "animation", "monster", "item", "exp", "map", "map_regen", "npc", "spine" };
 
         public static TableLoaderManager Instance { get; private set; }
         private float loadProgress;
-        private SceneLoading sceneLoading;
+        private MySceneLoading mySceneLoading;
 
         public TableConfig TableConfig { get; private set; } = new TableConfig();
         public TableSpine TableSpine { get; private set; } = new TableSpine();
         public TableMonster TableMonster { get; private set; } = new TableMonster();
+        public TableNpc TableNpc { get; private set; } = new TableNpc();
         public TableItem TableItem { get; private set; } = new TableItem();
         public TableExp TableExp { get; private set; } = new TableExp();
         public TableMap TableMap { get; private set; } = new TableMap();
@@ -34,7 +36,7 @@ namespace Scripts.TableLoader
                 Destroy(gameObject);
             }
             
-            sceneLoading = GameObject.Find("SceneLoading").GetComponent<SceneLoading>();
+            mySceneLoading = GameObject.Find("SceneLoading").GetComponent<MySceneLoading>();
             loadProgress = 0f;
         }
 
@@ -50,7 +52,7 @@ namespace Scripts.TableLoader
             {
                 LoadDataFile(DataFiles[i]);
                 loadProgress = (float)(i + 1) / fileCount * 100f;
-                sceneLoading?.SetTextLoadingPercent(loadProgress);
+                mySceneLoading?.SetTextLoadingPercent(loadProgress);
                 yield return new WaitForSeconds(0.1f);
             }
 
@@ -77,6 +79,9 @@ namespace Scripts.TableLoader
                             case "monster":
                                 TableMonster.LoadData(content);
                                 break;
+                            case "npc":
+                                TableNpc.LoadData(content);
+                                break;
                             case "item":
                                 TableItem.LoadData(content);
                                 break;
@@ -88,6 +93,9 @@ namespace Scripts.TableLoader
                                 break;
                             case "map_regen":
                                 TableMapRegen.LoadData(content);
+                                break;
+                            case "spine":
+                                TableSpine.LoadData(content);
                                 break;
                         }
                     }

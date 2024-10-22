@@ -8,7 +8,7 @@ namespace Scripts.TableLoader
 {
     public class StruckTableItem
     {
-        public int Vnum;
+        public int Unum;
         public ItemManager.Type Type;
         public ItemManager.SubType SubType;
         public string Name;
@@ -55,17 +55,17 @@ namespace Scripts.TableLoader
         private static ItemManager.SubType ConvertTypeSub(string type) => MapSubType.GetValueOrDefault(type, ItemManager.SubType.None);
         private static ItemManager.PurchaseCurrencyType ConvertPurchaseCurrency(string type) => MapPurchaseCurrency.GetValueOrDefault(type, ItemManager.PurchaseCurrencyType.None);
         
-        public StruckTableItem GetItemData(int vnum)
+        public StruckTableItem GetItemData(int unum)
         {
-            if (vnum <= 0)
+            if (unum <= 0)
             {
-                FgLogger.LogError("vnum is 0.");
+                FgLogger.LogError("unum is 0.");
                 return new StruckTableItem();
             }
-            var data = GetData(vnum);
+            var data = GetData(unum);
             return new StruckTableItem
             {
-                Vnum = int.Parse(data["Vnum"]),
+                Unum = int.Parse(data["Unum"]),
                 Type = ConvertType(data["Type"]),
                 SubType = ConvertTypeSub(data["TypeSub"]),
                 Name = data["Name"],
@@ -85,12 +85,12 @@ namespace Scripts.TableLoader
             // foreach 문을 사용하여 딕셔너리 내용을 출력
             foreach (KeyValuePair<int, Dictionary<string, string>> outerPair in items)
             {
-                int itemVnum = outerPair.Key;
+                int itemUnum = outerPair.Key;
                 Dictionary<string, string> innerDictionary = outerPair.Value;
 
                 if (innerDictionary == null) continue;
-                if (innerDictionary["Vnum"] == null || innerDictionary["Type"] != "Equip" || innerDictionary["TypeSub"] != "Weapon") continue;
-                weapons.Add(itemVnum, innerDictionary);
+                if (innerDictionary["Unum"] == null || innerDictionary["Type"] != "Equip" || innerDictionary["TypeSub"] != "Weapon") continue;
+                weapons.Add(itemUnum, innerDictionary);
             }
 
             return weapons;

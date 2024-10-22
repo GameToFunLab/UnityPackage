@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace GameToFunLab.UI
 {
     /// <summary>
-    /// Toogle 버튼의 이름을 Vnum 으로 사용한다 
+    /// Toogle 버튼의 이름을 Unum 으로 사용한다 
     /// </summary>
     public class UIToggleGroup : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace GameToFunLab.UI
             toggleGroup = GetComponent<ToggleGroup>();
         }
         
-        public int GetToggleVnum()
+        public int GetToggleUnum()
         {
             if (toggleGroup == null) return -1;
             Toggle selectedToggle = toggleGroup.ActiveToggles().FirstOrDefault();

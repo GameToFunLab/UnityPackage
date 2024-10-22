@@ -7,7 +7,7 @@ namespace GameToFunLab.UI
 {
     public class UIWindow : MonoBehaviour, IDropHandler
     {
-        public UIWindowManager.WindowVnum vnum;
+        public UIWindowManager.WindowUnum unum;
         public string id;
 
         public GameObject[] slots;
@@ -44,9 +44,9 @@ namespace GameToFunLab.UI
         /// <summary>
         /// 아이콘 가져오기
         /// </summary>
-        /// <param name="vnum"></param>
+        /// <param name="unum"></param>
         /// <returns></returns>
-        public GameObject GetIconByVnum(int vnum)
+        public GameObject GetIconByUnum(int unum)
         {
             if (icons.Length == 0)
             {
@@ -59,7 +59,7 @@ namespace GameToFunLab.UI
                 if (icon == null) continue;
                 UIIcon uiIcon = icon.GetComponent<UIIcon>();
                 if (uiIcon == null) continue;
-                if (uiIcon.vnum == vnum)
+                if (uiIcon.unum == unum)
                 {
                     return icon;
                 }
@@ -155,7 +155,7 @@ namespace GameToFunLab.UI
         }
         public virtual void OnClickClose()
         {
-            SceneGame.Instance.uIWindowManager.ShowWindow(vnum, false);
+            SceneGame.Instance.uIWindowManager.ShowWindow(unum, false);
         }
 
         public void Show(bool show)

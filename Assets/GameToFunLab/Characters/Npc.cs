@@ -1,5 +1,6 @@
 using GameToFunLab.CharacterMovement;
 using GameToFunLab.Scenes;
+using Scripts.Maps;
 using UnityEngine;
 
 namespace GameToFunLab.Characters
@@ -11,11 +12,13 @@ namespace GameToFunLab.Characters
     {
         // 스폰될때 vid
         public int vid;
-        // 몬스터 테이블 vnum
-        public int vnum;
+        // 몬스터 테이블 unum
+        public int unum;
         [HideInInspector] public GameObject player;
         [HideInInspector] public Collider2D[] hits;  // 필요한 크기로 초기화
         [HideInInspector] public SceneGame sceneGame;
+        
+        public NpcData npcData; // 리젠 json 에서 읽어오는 데이터 
 
         // Start is called before the first frame update
         protected override void Awake()
@@ -29,6 +32,7 @@ namespace GameToFunLab.Characters
             CurrentMoveSpeed = 1f;
             transform.localScale = new Vector3(1f, 1f, 0);
             OriginalScaleX = 1f;
+            npcData = null;
         }
         protected override void Start()
         {
@@ -46,9 +50,8 @@ namespace GameToFunLab.Characters
         /// <summary>
         /// 테이블에서 가져온 몬스터 정보 셋팅
         /// </summary>
-        protected virtual void InitializationStat() 
+        protected override void InitializationStat() 
         {
-            if (vnum <= 0) return;
         }
         /// <summary>    
         /// 몬스터의 hit area 에 플레이어가 있을경우 공격하기 

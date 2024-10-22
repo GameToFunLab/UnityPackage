@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class UISpineMetadata
 {
-    public UISpineManager.UISpineVnum SpineVnum = UISpineManager.UISpineVnum.None;
+    public UISpineManager.UISpineUnum SpineUnum = UISpineManager.UISpineUnum.None;
     public bool Loop = false;
     public Vector2 Position = Vector2.zero;
 }
 public class UISpineManager : MonoBehaviour
 {
-    public enum UISpineVnum 
+    public enum UISpineUnum 
     {
         None,
         SpineBackendLoadingIcon,
@@ -27,11 +27,11 @@ public class UISpineManager : MonoBehaviour
             spine2dUIController.gameObject.SetActive(false);
         }
     }
-    private void ShowSpineByVnum(bool show, UISpineMetadata uiSpineMetadata)
+    private void ShowSpineByUnum(bool show, UISpineMetadata uiSpineMetadata)
     {
-        UISpineVnum vnum = uiSpineMetadata.SpineVnum;
-        if (vnum == UISpineVnum.None) return;
-        Spine2dUIController spine2dUIController = uiSpines[(int)vnum];
+        UISpineUnum unum = uiSpineMetadata.SpineUnum;
+        if (unum == UISpineUnum.None) return;
+        Spine2dUIController spine2dUIController = uiSpines[(int)unum];
         if (spine2dUIController == null) return;
             
         if (show)

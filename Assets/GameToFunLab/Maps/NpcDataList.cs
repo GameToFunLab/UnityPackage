@@ -3,8 +3,8 @@
 namespace Scripts.Maps
 {
     [System.Serializable]
-    public class NPCDataList
+    public class NpcDataList
     {
-        public List<NPCData> npcDataList = new List<NPCData>();
+        public List<NpcData> DataList = new List<NpcData>();
     }
 }

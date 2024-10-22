@@ -204,24 +204,24 @@ namespace GameToFunLab.Core
         /// <summary>
         /// 아이템 개수 더해주기
         /// </summary>
-        /// <param name="itemVnum"></param>
+        /// <param name="itemUnum"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public (int itemVnum, int count) AddItemCount(int itemVnum, int value)
+        public (int itemUnum, int count) AddItemCount(int itemUnum, int value)
         {
-            if (itemVnum <= 0) return (0, 0);
-            currentItemCount.TryAdd(itemVnum, 0);
-            currentItemCount[itemVnum] += value;
-            return (itemVnum, currentItemCount[itemVnum]);
+            if (itemUnum <= 0) return (0, 0);
+            currentItemCount.TryAdd(itemUnum, 0);
+            currentItemCount[itemUnum] += value;
+            return (itemUnum, currentItemCount[itemUnum]);
         }
         /// <summary>
         /// 아이템 개수 가져오기
         /// </summary>
-        /// <param name="itemVnum"></param>
+        /// <param name="itemUnum"></param>
         /// <returns></returns>
-        public int GetItemCountByVnum(int itemVnum)
+        public int GetItemCountByUnum(int itemUnum)
         {
-            return currentItemCount.GetValueOrDefault(itemVnum, 0);
+            return currentItemCount.GetValueOrDefault(itemUnum, 0);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Spine2d
     [Serializable]
     public class SpineEventData : MonoBehaviour
     {
-        public int vnum;
+        public int unum;
 
         string targetEventName = "targetEvent";
         //string targetEventNameInFolder = "eventFolderName/targetEvent";

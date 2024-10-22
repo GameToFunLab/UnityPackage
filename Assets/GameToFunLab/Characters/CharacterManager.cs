@@ -21,13 +21,13 @@ namespace GameToFunLab.Characters
             switch (type)
             {
                 case CharacterType.Player:
-                    // return new Player { Vnum = data.Vnum };
+                    // return new Player { Unum = data.Unum };
                     newCharacter = CreatePlayerCharacter(data);
                     break;
                 // case CharacterType.NPC:
-                //     return new NPC { Vnum = data.Vnum };
+                //     return new NPC { Unum = data.Unum };
                 // case CharacterType.Monster:
-                //     return new Monster { Vnum = data.Vnum };
+                //     return new Monster { Unum = data.Unum };
                 default:
                     throw new ArgumentException("Invalid character type");
             }

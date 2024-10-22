@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using GameToFunLab.Scenes;
+using UnityEditor;
 
 namespace GameToFunLab.Core
 {
@@ -26,11 +27,16 @@ namespace GameToFunLab.Core
             width = height * Screen.width / Screen.height;
             originalPos = transform.localPosition;
             isShaking = false;
-            playerTransform = SceneGame.Instance.player.transform;
+        }
+
+        public void SetPlayer(Transform player)
+        {
+            playerTransform = player;
         }
 
         private void Update()
         {
+            if (playerTransform == null) return;
             LimitCameraArea();
         }
         private void LimitCameraArea()
@@ -39,12 +45,16 @@ namespace GameToFunLab.Core
             Vector3 targetPos = playerTransform.position + cameraPosition;
             targetPos = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * cameraMoveSpeed);
             
-            // 맵의 경계 내로 제한
-            float lx = mapSize.x - width;
-            float clampX = Mathf.Clamp(targetPos.x, -lx + center.x, lx + center.x);
-            
-            float ly = mapSize.y - height;
-            float clampY = Mathf.Clamp(targetPos.y, -ly + center.y, ly + center.y);
+            // 맵의 좌측 상단을 기준으로 경계 내로 제한
+            float clampX = Mathf.Clamp(targetPos.x, width, mapSize.x - width); // 좌측 상단 기준 X 좌표 제한
+            float clampY = Mathf.Clamp(targetPos.y, height, mapSize.y - height); // 좌측 상단 기준 Y 좌표 제한
+
+            // 맵의 가운데 기준으로 경계 내로 제한
+            // float lx = mapSize.x - width;
+            // float clampX = Mathf.Clamp(targetPos.x, -lx + center.x, lx + center.x);
+            //
+            // float ly = mapSize.y - height;
+            // float clampY = Mathf.Clamp(targetPos.y, -ly + center.y, ly + center.y);
 
             // 흔들림이 적용된 최종 위치 설정
             if (isShaking)
@@ -120,11 +130,11 @@ namespace GameToFunLab.Core
         
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(center, mapSize * 2);
 
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireCube(center, monsterSpawnPositionBoxSize * 2);
+            // Gizmos.color = Color.blue;
+            // Gizmos.DrawWireCube(center, monsterSpawnPositionBoxSize * 2);
         }
     }
 }

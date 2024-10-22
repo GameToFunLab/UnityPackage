@@ -2,18 +2,18 @@
 
 namespace Scripts.Maps
 {
-    public class NPCData
+    public class NpcData
     {
-        public int Vnum;
-        public int MapVnum;
+        public int Unum;
+        public int MapUnum;
         public float x, y, z;
         public bool IsFlip;
         public float ScaleX, ScaleY, ScaleZ;
 
-        public NPCData(int vnum, Vector3 position, bool isFlip, Vector3 scale, int mapVnum)
+        public NpcData(int unum, Vector3 position, bool isFlip, Vector3 scale, int mapUnum)
         {
-            Vnum = vnum;
-            MapVnum = mapVnum;
+            Unum = unum;
+            MapUnum = mapUnum;
             x = position.x;
             y = position.y;
             z = position.z;

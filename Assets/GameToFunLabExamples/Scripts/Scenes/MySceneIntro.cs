@@ -3,7 +3,7 @@ using GameToFunLab.Scenes;
 
 namespace Scripts.Scenes
 {
-    public class SceneIntro : DefaultScene
+    public class MySceneIntro : DefaultScene
     {
         public void OnClickGameStart()
         {

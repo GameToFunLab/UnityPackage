@@ -2,6 +2,6 @@
 {
     public class CharacterData
     {
-        public long Vnum;
+        public long Unum;
     }
 }

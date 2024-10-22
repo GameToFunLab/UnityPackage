@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameToFunLab.Core
+namespace GameToFunLab.Scenes
 {
     public class SceneManager : MonoBehaviour
     {

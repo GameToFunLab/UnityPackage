@@ -4,7 +4,7 @@ using TMPro;
 
 namespace Scripts.Scenes
 {
-    public class SceneLoading : DefaultScene
+    public class MySceneLoading : DefaultScene
     {
         public TextMeshProUGUI textLoadingPercent;
 

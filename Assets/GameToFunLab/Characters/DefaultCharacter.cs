@@ -5,7 +5,7 @@ namespace GameToFunLab.Characters
 {
     public class DefaultCharacter : MonoBehaviour, ICharacter
     {
-        public long Vnum { get; set; }
+        public long Unum { get; set; }
         public float StatHp { get; set; }
         public float StatAtk { get; set; }
         public float StatMoveSpeed { get; set; }
@@ -28,6 +28,33 @@ namespace GameToFunLab.Characters
 
         protected IMovementStrategy MovementStrategy;
         
+        protected virtual void Awake()
+        {
+            IsAttacking = false;
+            CurrentStatus = ICharacter.CharacterStatus.None;
+        }
+
+        protected virtual void Start()
+        {
+            characterRenderer = GetComponent<Renderer>();
+            
+            // statatk 값들은 table 에서 불러올 수 있기 때문에 Start 에서 처리한다.
+            CurrentAtk = (long)StatAtk;
+            CurrentHp = (long)StatHp;
+            CurrentMoveSpeed = StatMoveSpeed;
+            OriginalScaleX = transform.localScale.x;
+            InitializationStat();
+        }
+        public void InitializeByEditor()
+        {
+            InitializationStat();
+        }
+        /// <summary>
+        /// 테이블에서 가져온 몬스터 정보 셋팅
+        /// </summary>
+        protected virtual void InitializationStat() 
+        {
+        }
         /// <summary>
         /// 캐릭터가 flip 되었는지 체크
         /// <para>
@@ -69,22 +96,6 @@ namespace GameToFunLab.Characters
         {
             Vector3 destination = new Vector2(targetTransform.position.x, transform.position.y);
             SetFlip(!(transform.position.x > destination.x));
-        }
-        protected virtual void Awake()
-        {
-            IsAttacking = false;
-            CurrentStatus = ICharacter.CharacterStatus.None;
-        }
-
-        protected virtual void Start()
-        {
-            characterRenderer = GetComponent<Renderer>();
-            
-            // statatk 값들은 table 에서 불러올 수 있기 때문에 Start 에서 처리한다.
-            CurrentAtk = (long)StatAtk;
-            CurrentHp = (long)StatHp;
-            CurrentMoveSpeed = StatMoveSpeed;
-            OriginalScaleX = transform.localScale.x;
         }
         /// <summary>
         /// 연출 시작할때 캐릭터에 셋팅해주기 

@@ -7,9 +7,9 @@ namespace Scripts.TableLoader
 {
     public class StruckTableNpc
     {
-        public int Vnum;
+        public int Unum;
         public string Name;
-        public int SpineVnum;
+        public int SpineUnum;
         public string DefaultSkin;
         public float Scale;
         public ICharacter.Grade Grade;
@@ -33,19 +33,19 @@ namespace Scripts.TableLoader
         }
         public ICharacter.Grade ConvertGrade(string grade) => mapGrade.GetValueOrDefault(grade, ICharacter.Grade.None);
 
-        public StruckTableNpc GetNpcData(int vnum)
+        public StruckTableNpc GetNpcData(int unum)
         {
-            if (vnum <= 0)
+            if (unum <= 0)
             {
-                FgLogger.LogError("vnum is 0.");
+                FgLogger.LogError("unum is 0.");
                 return new StruckTableNpc();
             }
-            var data = GetData(vnum);
+            var data = GetData(unum);
             return new StruckTableNpc
             {
-                Vnum = int.Parse(data["Vnum"]),
+                Unum = int.Parse(data["Unum"]),
                 Name = data["Name"],
-                SpineVnum = int.Parse(data["SpineVnum"]),
+                SpineUnum = int.Parse(data["SpineUnum"]),
                 DefaultSkin = data["DefaultSkin"],
                 Scale = float.Parse(data["Scale"]),
                 Grade = ConvertGrade(data["Grade"]),

@@ -1,3 +1,3 @@
-Vnum	Name	Type	SubType	TileMapPrefabName
-1	맵1	Common	None	Prefabs/Maps/map1
-2	맵2	Common	None	Prefabs/Maps/map2
+Unum	Name	Chapter	Type	Subtype	FolderName	PlayerSpawnPosition	BgmUnum
+1	맵1-1	1	Common	None	Map1_1	0,0	2
+2	맵1-2	1	Common	None	Map1_2	0,0	2

@@ -1,6 +1,4 @@
-Vnum	Name	Path	Skeleton
-#일반 몬스터			
-100001	굼뱅이	Prefabs/Characters/Monsters/Monster001_01	None
-100002	박쥐	Prefabs/Characters/Monsters/Monster001_02	None
-#보스			
-200001	스컬보스	Prefabs/Characters/Monsters/Boss/Boss1	None
+Unum	Name	Path	Skeleton
+#일반 npc			
+100001	npc1	Prefabs/Characters/Npc/npc1	None
+100002	npc2	Prefabs/Characters/Npc/npc2	None
