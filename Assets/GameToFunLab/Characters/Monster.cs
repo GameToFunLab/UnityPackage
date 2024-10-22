@@ -32,8 +32,8 @@ namespace GameToFunLab.Characters
         protected override void Start()
         {
             base.Start();
-            player = GameObject.FindWithTag(ConfigCommon.TagPlayer);
-            gameObject.tag = ConfigCommon.TagMonster;
+            player = GameObject.FindWithTag(ConfigTags.TagPlayer);
+            gameObject.tag = ConfigTags.TagMonster;
             
             InitializationStat();
         
@@ -128,7 +128,7 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(ConfigCommon.TagPlayer))
+            if (collision.gameObject.CompareTag(ConfigTags.TagPlayer))
             {
                 IsAttacking = true;
                 CurrentStatus = ICharacter.CharacterStatus.Idle;
@@ -141,7 +141,7 @@ namespace GameToFunLab.Characters
         /// <param name="collision"></param>
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(ConfigCommon.TagPlayer))
+            if (collision.gameObject.CompareTag(ConfigTags.TagPlayer))
             {
                 IsAttacking = false;
                 CurrentStatus = ICharacter.CharacterStatus.Idle;

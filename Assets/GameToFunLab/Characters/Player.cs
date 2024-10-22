@@ -72,7 +72,7 @@ namespace GameToFunLab.Characters
             for (int i = 0; i < hitCount; i++)
             {
                 Collider2D hit = hits[i];
-                if (hit.CompareTag(ConfigCommon.TagMonster))
+                if (hit.CompareTag(ConfigTags.TagMonster))
                 {
                     Monster monster = hit.GetComponent<Monster>();
                     if (monster != null)
@@ -88,7 +88,7 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(ConfigCommon.TagMonster))
+            if (collision.gameObject.CompareTag(ConfigTags.TagMonster))
             {
                 IsAttacking = true;
                 Monster monster = collision.gameObject.GetComponent<Monster>();
@@ -102,27 +102,18 @@ namespace GameToFunLab.Characters
                     DownAttack();
                 }
             }
-            else if (collision.gameObject.CompareTag(ConfigCommon.TagNpc))
+            else if (collision.gameObject.CompareTag(ConfigTags.TagNpc))
             {
                 isNpcNearby = true;
-            }
-            else if (collision.gameObject.CompareTag(ConfigCommon.TagMapObjectWarp))
-            {
-                // ObjectWarp objectWarp = collision.gameObject.GetComponent<ObjectWarp>();
-                // if (objectWarp != null && objectWarp.toMapUnum > 0)
-                // {
-                //     SceneGame.Instance.mapManager.SetPlaySpawnPosition(objectWarp.toMapPlayerSpawnPosition);
-                //     SceneGame.Instance.mapManager.LoadMap(objectWarp.toMapUnum);
-                // }
             }
         }
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(ConfigCommon.TagMonster))
+            if (collision.gameObject.CompareTag(ConfigTags.TagMonster))
             {
                 IsAttacking = false;
             }
-            else if (collision.gameObject.CompareTag(ConfigCommon.TagNpc))
+            else if (collision.gameObject.CompareTag(ConfigTags.TagNpc))
             {
                 isNpcNearby = false;
             }

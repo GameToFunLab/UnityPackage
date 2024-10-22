@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using GameToFunLab.Configs;
+using GameToFunLab.Scenes;
+using UnityEngine;
 
 namespace GameToFunLab.Maps.Objects
 {
@@ -31,6 +33,15 @@ namespace GameToFunLab.Maps.Objects
             transform.position = new Vector3(warpData.x, warpData.y, warpData.z);
             transform.eulerAngles = new Vector3(warpData.RotationX, warpData.RotationY, warpData.RotationZ);
             boxCollider2D.size = new Vector2(warpData.BoxColliderSizeX, warpData.BoxColliderSizeY);
+        }
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (toMapUnum <= 0) return;
+            if (collision.gameObject.CompareTag(ConfigTags.TagPlayer) != true) return;
+            
+            SceneGame.Instance.mapManager.SetPlaySpawnPosition(toMapPlayerSpawnPosition);
+            SceneGame.Instance.mapManager.LoadMap(toMapUnum);
         }
     }
 }

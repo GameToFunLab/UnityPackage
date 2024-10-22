@@ -1,13 +1,12 @@
 using UnityEngine;
 using System.Collections;
-using GameToFunLab.Scenes;
-using UnityEditor;
 
 namespace GameToFunLab.Core
 {
     public class CameraManager : MonoBehaviour
     {
         private Transform playerTransform;
+        public Camera mainCamera;
         [SerializeField] Vector3 cameraPosition;
         [SerializeField] Vector2 center;
         [SerializeField] Vector2 mapSize;
@@ -21,9 +20,13 @@ namespace GameToFunLab.Core
         private Vector3 originalPos;
         private bool isShaking;
 
+        private void Awake()
+        {
+            mainCamera = GetComponent<Camera>();
+        }
         private void Start()
         {
-            height = SceneGame.Instance.mainCamera.orthographicSize;
+            height = mainCamera.orthographicSize;
             width = height * Screen.width / Screen.height;
             originalPos = transform.localPosition;
             isShaking = false;

@@ -1,4 +1,5 @@
-﻿using GameToFunLab.Core;
+﻿using GameToFunLab.Configs;
+using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Popup;
 using GameToFunLab.UI;
@@ -9,10 +10,6 @@ namespace GameToFunLab.Scenes
     public class SceneGame : DefaultScene
     {
         public static SceneGame Instance { get; private set; }
-        public string tagPlayer = "Player";
-        public string tagMonster = "Monster";
-        public string tagNpc = "Npc";
-        public string tagMapObjectWarp = "MapObjectWarp";
         
         public enum GameState { Begin, Combat, End, DirectionStart, DirectionEnd };
         public enum GameSubState { Normal, BossChallenge };
@@ -21,8 +18,6 @@ namespace GameToFunLab.Scenes
 
         [HideInInspector] public GameObject player;
 
-        public Camera mainCamera;
-        
         public SaveDataManager saveDataManager;
         public CalculateManager calculateManager;
         public CameraManager cameraManager;
@@ -38,7 +33,7 @@ namespace GameToFunLab.Scenes
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-            player = GameObject.FindWithTag(tagPlayer);
+            player = GameObject.FindWithTag(ConfigTags.TagPlayer);
         }
 
         protected virtual void Start()

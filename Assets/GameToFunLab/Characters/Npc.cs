@@ -34,8 +34,8 @@ namespace GameToFunLab.Characters
         protected override void Start()
         {
             base.Start();
-            player = GameObject.FindWithTag(ConfigCommon.TagPlayer);
-            gameObject.tag = ConfigCommon.TagMonster;
+            player = GameObject.FindWithTag(ConfigTags.TagPlayer);
+            gameObject.tag = ConfigTags.TagMonster;
         
             // // 자동으로 플레이어에게 다가가는 이동 전략 설정
             // MovementStrategy = new AutoMoveStrategy(player.transform);
@@ -128,7 +128,7 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(ConfigCommon.TagPlayer))
+            if (collision.gameObject.CompareTag(ConfigTags.TagPlayer))
             {
                 IsAttacking = true;
                 CurrentStatus = ICharacter.CharacterStatus.Idle;
@@ -137,7 +137,7 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(ConfigCommon.TagPlayer))
+            if (collision.gameObject.CompareTag(ConfigTags.TagPlayer))
             {
                 IsAttacking = false;
                 CurrentStatus = ICharacter.CharacterStatus.Idle;

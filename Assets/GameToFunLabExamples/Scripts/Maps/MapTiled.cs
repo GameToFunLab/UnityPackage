@@ -42,7 +42,7 @@ namespace Scripts.Maps
         {
             if (mainCamera == null)
             {
-                mainCamera = SceneGame.Instance.mainCamera;
+                mainCamera = SceneGame.Instance.cameraManager.mainCamera;
             }
             mainCameraZ = mainCamera.transform.position.z;
 

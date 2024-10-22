@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameToFunLab.Characters;
+using GameToFunLab.Configs;
 using GameToFunLab.Core;
 using GameToFunLab.Scenes;
 using GameToFunLab.Utils;
@@ -151,8 +152,8 @@ namespace GameToFunLab.Maps
         IEnumerator UnloadPreviousStage()
         {
             // 현재 씬에 있는 모든 몬스터 오브젝트를 삭제
-            DestroyByTag(SceneGame.tagMonster);
-            DestroyByTag(SceneGame.tagNpc);
+            DestroyByTag(ConfigTags.TagMonster);
+            DestroyByTag(ConfigTags.TagNpc);
             monsterUnums.Clear();
             monsterPrefabs.Clear();
 

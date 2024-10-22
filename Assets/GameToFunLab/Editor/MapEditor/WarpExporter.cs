@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using GameToFunLab.Configs;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Maps.Objects;
@@ -64,7 +65,7 @@ namespace GameToFunLab.Editor.MapEditor
 
             foreach (Transform child in mapObject.transform)
             {
-                if (child.CompareTag("MapObjectWarp"))
+                if (child.CompareTag(ConfigTags.TagMapObjectWarp))
                 {
                     var objectWarp = child.gameObject.GetComponent<ObjectWarp>();
                     if (objectWarp == null) continue;

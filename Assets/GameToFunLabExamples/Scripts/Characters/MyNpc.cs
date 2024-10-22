@@ -18,19 +18,22 @@ namespace Scripts.Characters
         public List<int> questUnums;
         private MySceneGame sceneGameCustom;
 
+        // 퀘스트 버튼 관련
         public GameObject buttonPrefab; // 버튼 프리팹
         public int buttonCount = 3; // 생성할 버튼의 수
         public float buttonSpacing = 160f; // 버튼 간격
         public float verticalSpacing = 40f; // 버튼 간격 (수직)
-        private List<GameObject> interactionButtons = new List<GameObject>();
+        private List<GameObject> interactionButtons; // 만들어진 버튼이 들어가있는 배열
         private Canvas canvasInteractionButtons; // 버튼이 배치될 Canvas
         private Camera mainCamera; // 메인 카메라 (월드 좌표 변환에 필요)
-        private SkeletonAnimation skeletonAnimation;
         private bool isStartFade;
+        
+        private SkeletonAnimation skeletonAnimation;
 
         protected override void Awake()
         {
             base.Awake();
+            interactionButtons = new List<GameObject>();
             questUnums = new List<int>();
             skeletonAnimation = GetComponent<SkeletonAnimation>();
             isStartFade = false;
@@ -41,7 +44,6 @@ namespace Scripts.Characters
             base.Start();
             sceneGameCustom = MySceneGame.MyInstance;
             canvasInteractionButtons = sceneGameCustom.canvasInteractionButtons;
-            mainCamera = sceneGameCustom.mainCamera;
 
             if (questUnums.Count > 0)
             {
@@ -58,7 +60,6 @@ namespace Scripts.Characters
             if (TableLoaderManager.Instance)
             {
                 TableLoaderManager tableLoaderManager = TableLoaderManager.Instance;
-                int mapUnum = MySceneGame.MyInstance.saveDataManager.CurrentChapter;
                 var info = tableLoaderManager.TableNpc.GetNpcData(unum);
                 // FG_Logger.Log("InitializationStat unum: "+unum+" / info.unum: "+info.unum+" / StatMoveSpeed: "+info.statMoveSpeed);
                 if (info.Unum > 0)
@@ -145,7 +146,7 @@ namespace Scripts.Characters
         void UpdateButtonPositions()
         {
             // NPC의 스켈레톤 바운딩 박스에서 높이를 계산
-            float npcHeight = GetNPCHeight();
+            float npcHeight = GetNpcHeight();
 
             // NPC 머리 위 월드 좌표 설정
             Vector3 npcHeadWorldPosition = transform.position + new Vector3(0, npcHeight, 0);
@@ -166,7 +167,7 @@ namespace Scripts.Characters
                 interactionButtons[i].GetComponent<RectTransform>().anchoredPosition = localPosition + offset;
             }
         }
-        float GetNPCHeight()
+        float GetNpcHeight()
         {
             // Skeleton에서 바운딩 박스 계산
             float[] vertexBuffer = new float[8];

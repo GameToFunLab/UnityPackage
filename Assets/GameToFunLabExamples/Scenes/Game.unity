@@ -416,6 +416,7 @@ MonoBehaviour:
   tagPlayer: Player
   tagMonster: Monster
   tagNpc: Npc
+  tagMapObjectWarp: MapObjectWarp
   state: 0
   stateSub: 0
   player: {fileID: 0}
