@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using GameToFunLab.Characters;
+using GameToFunLab.Configs;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using Newtonsoft.Json;
-using Scripts.Maps;
 using Scripts.TableLoader;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -15,32 +15,32 @@ namespace GameToFunLab.Editor.MapEditor
     public class NpcExporter
     {
         private List<NpcData> npcList;
-        private TableNpc _tableNpc;
-        private TableSpine _tableSpine;
-        private DefaultMap _defaultMap;
-        private GameObject _player;
+        private TableNpc tableNpc;
+        private TableSpine tableSpine;
+        private DefaultMap defaultMap;
+        private GameObject player;
         
         public void Initialize(TableNpc tableNpc, TableSpine tableSpine, DefaultMap defaultMap, GameObject player)
         {
-            _tableNpc = tableNpc;
-            _tableSpine = tableSpine;
-            _defaultMap = defaultMap;
-            _player = player;
+            this.tableNpc = tableNpc;
+            this.tableSpine = tableSpine;
+            this.defaultMap = defaultMap;
+            this.player = player;
         }
         public void SetDefaultMap(DefaultMap defaultMap)
         {
-            _defaultMap = defaultMap;
+            this.defaultMap = defaultMap;
         }
 
         public void AddNpcToMap(int selectedNpcIndex)
         {
-            if (_defaultMap == null)
+            if (defaultMap == null)
             {
                 Debug.LogError("_defaultMap 이 없습니다.");
                 return;
             }
 
-            var npcDictionary = _tableNpc.GetDatas();
+            var npcDictionary = tableNpc.GetDatas();
             int index = 0;
             StruckTableNpc npcData = new StruckTableNpc();
 
@@ -48,7 +48,7 @@ namespace GameToFunLab.Editor.MapEditor
             {
                 if (index == selectedNpcIndex)
                 {
-                    npcData = _tableNpc.GetNpcData(outerPair.Key);
+                    npcData = tableNpc.GetNpcData(outerPair.Key);
                     break;
                 }
                 index++;
@@ -60,17 +60,17 @@ namespace GameToFunLab.Editor.MapEditor
                 return;
             }
 
-            GameObject npcPrefab = _tableSpine.GetPrefab(npcData.SpineUnum);
+            GameObject npcPrefab = tableSpine.GetPrefab(npcData.SpineUnum);
             if (npcPrefab == null)
             {
                 Debug.LogError("NPC 프리팹을 찾을 수 없습니다.");
                 return;
             }
 
-            GameObject npc = Object.Instantiate(npcPrefab, Vector3.zero, Quaternion.identity, _defaultMap.transform);
-            if (_player != null)
+            GameObject npc = Object.Instantiate(npcPrefab, Vector3.zero, Quaternion.identity, defaultMap.transform);
+            if (player != null)
             {
-                npc.transform.position = _player.transform.position + new Vector3(1, 0, 0);
+                npc.transform.position = player.transform.position + new Vector3(1, 0, 0);
             }
 
             var npcScript = npc.GetComponent<Npc>();
@@ -82,14 +82,14 @@ namespace GameToFunLab.Editor.MapEditor
             Debug.Log($"{npcData.Name} NPC가 맵에 추가되었습니다.");
         }
 
-        public void ExportNPCDataToJson(string filePath, string fileName, int mapUnum)
+        public void ExportNpcDataToJson(string filePath, string fileName, int mapUnum)
         {
-            GameObject mapObject = GameObject.FindGameObjectWithTag("Map");
+            GameObject mapObject = GameObject.FindGameObjectWithTag(ConfigTags.Map);
             NpcDataList saveNpcList = new NpcDataList();
 
             foreach (Transform child in mapObject.transform)
             {
-                if (child.CompareTag("Npc"))
+                if (child.CompareTag(ConfigTags.Npc))
                 {
                     var npc = child.gameObject.GetComponent<Npc>();
                     if (npc == null) continue;
@@ -103,7 +103,7 @@ namespace GameToFunLab.Editor.MapEditor
             Debug.Log("NPC data exported to " + path);
         }
         
-        public void LoadNPCData(string regenFileName)
+        public void LoadNpcData(string regenFileName)
         {
             // JSON 파일을 읽기
             try
@@ -116,7 +116,7 @@ namespace GameToFunLab.Editor.MapEditor
                     {
                         NpcDataList npcDataList = JsonConvert.DeserializeObject<NpcDataList>(content);
                         npcList = npcDataList.DataList;
-                        SpawnNPCs();
+                        SpawnNpc();
                     }
                 }
             }
@@ -125,29 +125,28 @@ namespace GameToFunLab.Editor.MapEditor
                 FgLogger.LogError($"Error reading file {regenFileName}: {ex.Message}");
             }
         }
-        
-        public void SpawnNPCs()
+
+        private void SpawnNpc()
         {
-            if (_defaultMap == null)
+            if (defaultMap == null)
             {
                 Debug.LogError("_defaultMap 이 없습니다.");
                 return;
             }
 
-            GameObject npcPrefab = null;
             foreach (NpcData npcData in npcList)
             {
                 int unum = npcData.Unum;
                 if (unum <= 0) continue;
-                var info = _tableNpc.GetNpcData(unum);
+                var info = tableNpc.GetNpcData(unum);
                 if (info.Unum <= 0 || info.SpineUnum <= 0) continue;
-                npcPrefab = _tableSpine.GetPrefab(info.SpineUnum);
+                GameObject npcPrefab = tableSpine.GetPrefab(info.SpineUnum);
                 if (npcPrefab == null)
                 {
                     FgLogger.LogError("npc 프리팹이 없습니다. spine unum: " + info.SpineUnum);
                     continue;
                 }
-                GameObject npc = Object.Instantiate(npcPrefab, new Vector3(npcData.x, npcData.y, npcData.z), Quaternion.identity, _defaultMap.gameObject.transform);
+                GameObject npc = Object.Instantiate(npcPrefab, new Vector3(npcData.x, npcData.y, npcData.z), Quaternion.identity, defaultMap.gameObject.transform);
                 
                 // NPC의 속성을 설정하는 스크립트가 있을 경우 적용
                 Npc npcScript = npc.GetComponent<Npc>();

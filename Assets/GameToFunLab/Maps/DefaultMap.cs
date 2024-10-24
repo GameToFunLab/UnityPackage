@@ -28,5 +28,10 @@ namespace GameToFunLab.Maps
         {
             
         }
+        
+        public virtual void CreateMap()
+        {
+            // Logger.Log("타일맵 프리팹 로드 완료");
+        }
     }
 }

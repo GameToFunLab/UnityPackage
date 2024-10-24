@@ -1,5 +1,4 @@
-﻿using GameToFunLab.Core;
-using GameToFunLab.Scenes;
+﻿using GameToFunLab.Scenes;
 
 namespace Scripts.Scenes
 {
@@ -7,7 +6,7 @@ namespace Scripts.Scenes
     {
         public void OnClickGameStart()
         {
-            SceneManager.LoadSceneByName("Loading");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Loading");
         }
     }
 }

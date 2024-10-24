@@ -2,6 +2,11 @@
 {
     public static class MapConstants
     {
+        public enum Category
+        {
+            None,
+            Tiled
+        }
         public enum Type
         {
             None,
@@ -29,7 +34,7 @@
         public const string FileNameTilemap = "tilemap";
         public const string FileNameRegenNpc = "regen_npc";
         public const string FileNameWarp = "warp";
-        public const string PrefabNameWarp = "objectWarp";
+        private const string PrefabNameWarp = "objectWarp";
         public const string FileExt = ".json";
         
         public const float FadeDuration = 0.7f;

@@ -54,7 +54,7 @@ namespace GameToFunLab.Characters
         {
             // soundAttack.PlayOneShot(audioClipDamage);
             if (damage <= 0) return;
-            CurrentHp = CurrentHp - damage;
+            CurrentHp -= damage;
             
             if (CurrentHp <= 0)
             {
@@ -72,7 +72,7 @@ namespace GameToFunLab.Characters
             for (int i = 0; i < hitCount; i++)
             {
                 Collider2D hit = hits[i];
-                if (hit.CompareTag(ConfigTags.TagMonster))
+                if (hit.CompareTag(ConfigTags.Monster))
                 {
                     Monster monster = hit.GetComponent<Monster>();
                     if (monster != null)
@@ -88,7 +88,7 @@ namespace GameToFunLab.Characters
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(ConfigTags.TagMonster))
+            if (collision.gameObject.CompareTag(ConfigTags.Monster))
             {
                 IsAttacking = true;
                 Monster monster = collision.gameObject.GetComponent<Monster>();
@@ -102,18 +102,18 @@ namespace GameToFunLab.Characters
                     DownAttack();
                 }
             }
-            else if (collision.gameObject.CompareTag(ConfigTags.TagNpc))
+            else if (collision.gameObject.CompareTag(ConfigTags.Npc))
             {
                 isNpcNearby = true;
             }
         }
         void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(ConfigTags.TagMonster))
+            if (collision.gameObject.CompareTag(ConfigTags.Monster))
             {
                 IsAttacking = false;
             }
-            else if (collision.gameObject.CompareTag(ConfigTags.TagNpc))
+            else if (collision.gameObject.CompareTag(ConfigTags.Npc))
             {
                 isNpcNearby = false;
             }

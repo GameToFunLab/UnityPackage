@@ -32,6 +32,10 @@ namespace Scripts.Maps
             UpdatePosition();
         }
 
+        public override void CreateMap()
+        {
+            // Logger.Log("타일맵 프리팹 로드 완료");
+        }
         private void UpdatePosition()
         {
             var size = GetMapSize();

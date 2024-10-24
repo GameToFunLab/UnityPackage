@@ -1,14 +1,12 @@
 ﻿using UnityEditor;
-using UnityEngine;
 
 namespace GameToFunLab.Editor.DefaultSetting
 {
     public class DefaultSettinsTool : EditorWindow
     {
-        private int resolutionWidth = 0;
-        private int resolutionHeight = 0;
-        private SettingTags settingTags = new SettingTags();
-        private SettingResolution settingResolution = new SettingResolution();
+        private readonly SettingTags settingTags = new SettingTags();
+        private readonly SettingManagers settingManagers = new SettingManagers();
+        private readonly SettingResolution settingResolution = new SettingResolution();
         
         [MenuItem("GameToFunLab/기본 셋팅하기")]
         public static void ShowWindow()
@@ -18,26 +16,14 @@ namespace GameToFunLab.Editor.DefaultSetting
 
         private void OnGUI()
         {
-            GUILayout.Label("해상도 정하기", EditorStyles.boldLabel);
-
-            resolutionWidth = EditorGUILayout.IntField("width", resolutionWidth);
-            resolutionHeight = EditorGUILayout.IntField("height", resolutionHeight);
-            if (GUILayout.Button("적용하기"))
-            {
-                settingResolution.SetResolution(resolutionWidth, resolutionHeight);
-            }
+            settingResolution.OnGUI();
+            EditorGUILayout.Space(10);
             
-            GUILayout.Label("태그 추가하기", EditorStyles.boldLabel);
-
-            if (GUILayout.Button("태그 추가하기"))
-            {
-                settingTags.AddTags();
-            }
-        }
-
-        private void SetResolution()
-        {
+            settingTags.OnGUI();
+            EditorGUILayout.Space(10);
             
+            // todo 툴로 추가할 수 있는 방법 찾기. 현재는 class 이름으로 addComponent 를 하지 못 한다.
+            // settingManagers.OnGUI();
         }
     }
 }

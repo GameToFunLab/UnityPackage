@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameToFunLab.Characters;
+using GameToFunLab.Configs;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Maps.Objects;
@@ -7,7 +8,6 @@ using Scripts.Maps;
 using Scripts.TableLoader;
 using UnityEditor;
 using UnityEngine;
-using TableLoaderManager = GameToFunLab.Editor.TableLoader.TableLoaderManager;
 
 namespace GameToFunLab.Editor.MapEditor
 {
@@ -19,32 +19,32 @@ namespace GameToFunLab.Editor.MapEditor
         private static GameObject _gridTileMap;
         private static GameObject _player;
         
+        private TableLoader tableLoader;
         private static TableMap _tableMap;
         private static TableNpc _tableNpc;
         private static TableSpine _tableSpine;
 
-        private string jsonFolderPath = Application.dataPath+"/Resources/"+MapConstants.ResourceMapPath;
+        private readonly string jsonFolderPath = Application.dataPath+"/Resources/"+MapConstants.ResourceMapPath;
         private string currentJsonFolderPath = "";
 
-        private string resourcesFolderPath = MapConstants.ResourceMapPath;
+        private readonly string resourcesFolderPath = MapConstants.ResourceMapPath;
         // private string fileName = "regen_npc.json";
         // private string fileNameWarp = "warp.json";
         private string loadMapUnum = "1";
         private const string NameTempTableLoaderManager = "TempTableLoaderManager";
 
-        private static string _fileNameTilemap = MapConstants.FileNameTilemap;
-        private static string _fileNameRegen = MapConstants.FileNameRegenNpc;
-        private static string _fileNameWarp = MapConstants.FileNameWarp;
-        private static string _fileExt = MapConstants.FileExt;
-        private string jsonFileNameTilemap = _fileNameTilemap+_fileExt;
-        private string jsonFileNameRegen = _fileNameRegen+_fileExt;
-        private string jsonFileNameWarp = _fileNameWarp+_fileExt;
+        private static readonly string FileNameTilemap = MapConstants.FileNameTilemap;
+        private static readonly string FileNameRegen = MapConstants.FileNameRegenNpc;
+        private static readonly string FileNameWarp = MapConstants.FileNameWarp;
+        private static readonly string FileExt = MapConstants.FileExt;
+        private readonly string jsonFileNameRegen = FileNameRegen+FileExt;
+        private readonly string jsonFileNameWarp = FileNameWarp+FileExt;
         
-        private NpcExporter _npcExporter = new NpcExporter();
-        private WarpExporter _warpExporter = new WarpExporter();
+        private NpcExporter npcExporter;
+        private WarpExporter warpExporter;
         
         private static List<string> _npcNames; // NPC 이름 목록
-        private int selectedNpcIndex = 0;
+        private int selectedNpcIndex;
 
         [MenuItem("GameToFunLab/Map 배치툴")]
         public static void ShowWindow()
@@ -54,16 +54,21 @@ namespace GameToFunLab.Editor.MapEditor
 
         private void OnEnable()
         {
-            _tableMap = TableLoaderManager.LoadMapTable();
-            _gridTileMap = GameObject.Find("GridTileMap");
+            selectedNpcIndex = 0;
+            npcExporter = new NpcExporter();
+            warpExporter = new WarpExporter();
+            tableLoader = new TableLoader();
+            _tableMap = tableLoader.LoadMapTable();
+            
+            _gridTileMap = GameObject.Find(ConfigObjectName.GridTileMap);
             var defaultMap = GameObject.FindObjectOfType<DefaultMap>();
-            var player = GameObject.FindWithTag("Player");
-            var tableNpc = TableLoaderManager.LoadNpcTable();
-            var tableSpine = TableLoaderManager.LoadSpineTable();
+            var player = GameObject.FindWithTag(ConfigTags.Player);
+            var tableNpc = tableLoader.LoadNpcTable();
+            var tableSpine = tableLoader.LoadSpineTable();
 
-            _npcExporter.Initialize(tableNpc, tableSpine, defaultMap, player);
-            _warpExporter.Initialize(defaultMap, player);
-             LoadNPCInfoData();
+            npcExporter.Initialize(tableNpc, tableSpine, defaultMap, player);
+            warpExporter.Initialize(defaultMap, player);
+             LoadNpcInfoData();
         }
          private void OnDestroy()
          {
@@ -72,7 +77,7 @@ namespace GameToFunLab.Editor.MapEditor
              {
                  DestroyImmediate(obj);
              }
-             GameObject[] maps = GameObject.FindGameObjectsWithTag("Map");
+             GameObject[] maps = GameObject.FindGameObjectsWithTag(ConfigTags.Map);
              foreach (GameObject map in maps)
              {
                  if (map == null) continue;
@@ -98,7 +103,7 @@ namespace GameToFunLab.Editor.MapEditor
             // NPC 추가 버튼
             if (GUILayout.Button("NPC 추가"))
             {
-                _npcExporter.AddNpcToMap(selectedNpcIndex);
+                npcExporter.AddNpcToMap(selectedNpcIndex);
             }
             
             GUILayout.Space(20);
@@ -107,7 +112,7 @@ namespace GameToFunLab.Editor.MapEditor
             // 워프 추가 버튼
             if (GUILayout.Button("워프 추가"))
             {
-                _warpExporter.AddWarpToMap();
+                warpExporter.AddWarpToMap();
             }
             
             GUILayout.Space(20);
@@ -123,7 +128,7 @@ namespace GameToFunLab.Editor.MapEditor
         private void ExportDataToJson()
         {
             // 태그가 'Map'인 오브젝트를 찾습니다.
-            GameObject mapObject = GameObject.FindGameObjectWithTag("Map");
+            GameObject mapObject = GameObject.FindGameObjectWithTag(ConfigTags.Map);
         
             if (mapObject == null)
             {
@@ -132,24 +137,24 @@ namespace GameToFunLab.Editor.MapEditor
             }
             
             int mapUnum = int.Parse(loadMapUnum);
-            var mapData = _tableMap.GetMapData(mapUnum);
-            _npcExporter.ExportNPCDataToJson(currentJsonFolderPath, jsonFileNameRegen, mapUnum);
-            _warpExporter.ExportWarpDataToJson(currentJsonFolderPath, jsonFileNameWarp, mapUnum);
+            npcExporter.ExportNpcDataToJson(currentJsonFolderPath, jsonFileNameRegen, mapUnum);
+            warpExporter.ExportWarpDataToJson(currentJsonFolderPath, jsonFileNameWarp, mapUnum);
             AssetDatabase.Refresh();
         }
-        public void LoadJsonData()
+
+        private void LoadJsonData()
         {
             int mapUnum = int.Parse(loadMapUnum);
             var mapData = _tableMap.GetMapData(mapUnum);
             
             LoadTileData();
-            _npcExporter.LoadNPCData(resourcesFolderPath + mapData.FolderName + "/" + _fileNameRegen);
-            _warpExporter.LoadWarpData(resourcesFolderPath + mapData.FolderName + "/" + _fileNameWarp);
+            npcExporter.LoadNpcData(resourcesFolderPath + mapData.FolderName + "/" + FileNameRegen);
+            warpExporter.LoadWarpData(resourcesFolderPath + mapData.FolderName + "/" + FileNameWarp);
         }
         /// <summary>
         /// MapManager.cs:25
         /// </summary>
-        public void LoadTileData()
+        private void LoadTileData()
         {
             int mapUnum = int.Parse(loadMapUnum);
             var mapData = _tableMap.GetMapData(mapUnum);
@@ -164,7 +169,7 @@ namespace GameToFunLab.Editor.MapEditor
                 DestroyImmediate(_defaultMap.gameObject);
             }
 
-            string tilemapPath = resourcesFolderPath + mapData.FolderName + "/" + _fileNameTilemap;
+            string tilemapPath = resourcesFolderPath + mapData.FolderName + "/" + FileNameTilemap;
             GameObject prefab = Resources.Load<GameObject>(tilemapPath);
             if (prefab == null)
             {
@@ -174,18 +179,18 @@ namespace GameToFunLab.Editor.MapEditor
 
             if (_gridTileMap == null)
             {
-                _gridTileMap = GameObject.Find("GridTileMap");
+                _gridTileMap = GameObject.Find(ConfigObjectName.GridTileMap);
             }
             currentJsonFolderPath = jsonFolderPath + mapData.FolderName + "/";
             GameObject currentMap = Instantiate(prefab, _gridTileMap.transform);
             _defaultMap = currentMap.GetComponent<MapTiled>();
             _defaultMap.InitializeByEditor(mapData.Unum, mapData.Name, mapData.Type, mapData.Subtype);
-            _npcExporter.SetDefaultMap(_defaultMap);
-            _warpExporter.SetDefaultMap(_defaultMap);
+            npcExporter.SetDefaultMap(_defaultMap);
+            warpExporter.SetDefaultMap(_defaultMap);
         }
-        private static void LoadNPCInfoData()
+        private void LoadNpcInfoData()
         {
-            _tableNpc = TableLoaderManager.LoadNpcTable();
+            _tableNpc = tableLoader.LoadNpcTable();
              
             Dictionary<int, Dictionary<string, string>> npcDictionary = _tableNpc.GetDatas(); // NPC 데이터를 불러옵니다.
              
@@ -193,7 +198,6 @@ namespace GameToFunLab.Editor.MapEditor
             // foreach 문을 사용하여 딕셔너리 내용을 출력
             foreach (KeyValuePair<int, Dictionary<string, string>> outerPair in npcDictionary)
             {
-                int itemUnum = outerPair.Key;
                 var info = _tableNpc.GetNpcData(outerPair.Key);
                 if (info.Unum <= 0) continue;
                 _npcNames.Add($"{info.Unum} - {info.Name}");

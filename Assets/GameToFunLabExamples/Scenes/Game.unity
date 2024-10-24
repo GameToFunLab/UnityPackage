@@ -325,50 +325,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &163552966
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 163552967}
-  - component: {fileID: 163552968}
-  m_Layer: 0
-  m_Name: SaveDataManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &163552967
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 163552966}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 349690166}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &163552968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 163552966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6379cd7d32e5de4bb1cffdbcb7ad49e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &301417561
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,15 +369,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51d39631ba8d4fcdbd5f2bccfaf3524f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagPlayer: Player
-  tagMonster: Monster
-  tagNpc: Npc
-  tagMapObjectWarp: MapObjectWarp
   state: 0
   stateSub: 0
   player: {fileID: 0}
-  mainCamera: {fileID: 1196828583}
-  saveDataManager: {fileID: 163552968}
+  saveDataManager: {fileID: 0}
   calculateManager: {fileID: 1557099833}
   cameraManager: {fileID: 1196828585}
   uIWindowManager: {fileID: 1299104748}
@@ -459,7 +410,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 163552967}
   - {fileID: 1557099832}
   - {fileID: 1299104747}
   - {fileID: 1389452415}
@@ -765,6 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 265b0e72b3d3b01449d791dc4cd81295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   cameraPosition: {x: 0, y: 0, z: 0}
   center: {x: 0, y: 0}
   mapSize: {x: 0, y: 0}

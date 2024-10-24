@@ -33,7 +33,7 @@ namespace GameToFunLab.Scenes
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-            player = GameObject.FindWithTag(ConfigTags.TagPlayer);
+            player = GameObject.FindWithTag(ConfigTags.Player);
         }
 
         protected virtual void Start()

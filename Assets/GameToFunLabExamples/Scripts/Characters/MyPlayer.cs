@@ -1,8 +1,7 @@
 using GameToFunLab.Characters;
-using Scripts.Characters.MovementSpine2d;
+using GameToFunLab.Characters.Movement;
 using Scripts.Scenes;
 using Scripts.TableLoader;
-using Spine.Unity;
 using UnityEngine;
 
 namespace Scripts.Characters
@@ -20,9 +19,8 @@ namespace Scripts.Characters
             mySceneGame = MySceneGame.MyInstance;
             hits = new Collider2D[mySceneGame.GetMaxEnemyValue()];
 
-            SkeletonAnimation skeletonAnimation = GetComponent<SkeletonAnimation>();
             // 수동 플레이 이동 전략 설정
-            MovementStrategy = new ManualMoveStrategy(transform, CurrentMoveSpeed, OriginalScaleX, skeletonAnimation);
+            MovementStrategy = new ManualMoveStrategy(transform, CurrentMoveSpeed, OriginalScaleX);
         }
         
         /// <summary>

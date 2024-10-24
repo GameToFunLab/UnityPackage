@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameToFunLab.Characters;
+using GameToFunLab.Configs;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Maps.Objects;
@@ -32,47 +33,47 @@ namespace Scripts.Maps
         }
         protected override void DestroyOthers()
         {
-            DestroyByTag("Map");
-            DestroyByTag("ButtonNpcQuest");
+            DestroyByTag(ConfigTags.Map);
+            DestroyByTag(ConfigTags.ButtonNpcQuest);
         }
         /// <summary>
         /// MapEditor.cs:152
         /// </summary>
-        protected override IEnumerator CreateMap()
-        {
-            mySceneGame.player?.GetComponent<MyPlayer>().Stop();
-
-            if (CurrentMapUnum == 0)
-            {
-                CurrentMapUnum = SaveDataManager.CurrentChapter;
-            }
-            resultChapterData = TableLoaderManager.Instance.TableMap.GetMapData(CurrentMapUnum);
-            string path = GetPathTilemap(resultChapterData.FolderName);
-            GameObject prefab = Resources.Load<GameObject>(path);
-            if (prefab == null)
-            {
-                FgLogger.Log($"dont exist prefab path. path: {path} / chapterUnum: {CurrentMapUnum}");
-                yield break;
-            }
-            if (mapTiled != null)
-            {
-                Destroy(mapTiled.gameObject);
-            }
-            GameObject currentMap = Instantiate(prefab, gridTileMap.transform);
-            mapTiled = currentMap.GetComponent<MapTiled>();
-            mapTiled.Unum = CurrentMapUnum;
-            
-            // 플레이어 위치
-            Vector3 spawnPosition = resultChapterData.PlayerSpawnPosition;
-            if (PlaySpawnPosition != Vector3.zero)
-            {
-                spawnPosition = PlaySpawnPosition;
-            }
-            mySceneGame.player?.GetComponent<MyPlayer>().MoveForce(spawnPosition.x, spawnPosition.y);
-            
-            // Logger.Log("타일맵 프리팹 로드 완료");
-            yield return null;
-        }
+        // protected override IEnumerator CreateMap()
+        // {
+        //     mySceneGame.player?.GetComponent<MyPlayer>().Stop();
+        //
+        //     if (CurrentMapUnum == 0)
+        //     {
+        //         CurrentMapUnum = SaveDataManager.CurrentChapter;
+        //     }
+        //     resultChapterData = TableLoaderManager.Instance.TableMap.GetMapData(CurrentMapUnum);
+        //     string path = GetPathTilemap(resultChapterData.FolderName);
+        //     GameObject prefab = Resources.Load<GameObject>(path);
+        //     if (prefab == null)
+        //     {
+        //         FgLogger.Log($"dont exist prefab path. path: {path} / chapterUnum: {CurrentMapUnum}");
+        //         yield break;
+        //     }
+        //     if (mapTiled != null)
+        //     {
+        //         Destroy(mapTiled.gameObject);
+        //     }
+        //     GameObject currentMap = Instantiate(prefab, gridTileMap.transform);
+        //     mapTiled = currentMap.GetComponent<MapTiled>();
+        //     mapTiled.Unum = CurrentMapUnum;
+        //     
+        //     // 플레이어 위치
+        //     Vector3 spawnPosition = resultChapterData.PlayerSpawnPosition;
+        //     if (PlaySpawnPosition != Vector3.zero)
+        //     {
+        //         spawnPosition = PlaySpawnPosition;
+        //     }
+        //     mySceneGame.player?.GetComponent<MyPlayer>().MoveForce(spawnPosition.x, spawnPosition.y);
+        //     
+        //     // Logger.Log("타일맵 프리팹 로드 완료");
+        //     yield return null;
+        // }
         protected override IEnumerator LoadNpcs()
         {
             string regenFileName = GetPathRegen(resultChapterData.FolderName);
@@ -87,7 +88,7 @@ namespace Scripts.Maps
                     {
                         NpcDataList npcDataList = JsonConvert.DeserializeObject<NpcDataList>(content);
                         npcList = npcDataList.DataList;
-                        SpawnNPCs();
+                        SpawnNpc();
                     }
                 }
             }
@@ -125,7 +126,7 @@ namespace Scripts.Maps
             yield return null;
         }
         
-        private void SpawnNPCs()
+        private void SpawnNpc()
         {
             TableNpc tableNpc = TableLoaderManager.Instance.TableNpc;
             TableSpine tableSpine = TableLoaderManager.Instance.TableSpine;

@@ -1,12 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using GameToFunLab.Characters;
 using GameToFunLab.Configs;
-using GameToFunLab.Core;
-using GameToFunLab.Scenes;
-using GameToFunLab.Utils;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements.Experimental;
 using Random = UnityEngine.Random;
 
 namespace GameToFunLab.Maps
@@ -29,21 +27,18 @@ namespace GameToFunLab.Maps
 
         protected DefaultMap DefaultMap; // 현재 맵 defaultMap 
 
-        protected SceneGame SceneGame;
-        protected SaveDataManager SaveDataManager;
-        
         private void Awake()
         {
             bgBlackForMapLoading.SetActive(true);
             Image spriteRenderer = bgBlackForMapLoading.GetComponent<Image>();
             spriteRenderer.color = new Color(0, 0, 0, 1);
             IsLoadComplete = false;
+            
+            // todo 페이드 아웃용 gameobject 만들기 
         }
 
         public virtual void Initialize()
         {
-            SceneGame = SceneGame.Instance;
-            SaveDataManager = SceneGame.saveDataManager;
         }
 
         protected virtual void Reset()
@@ -112,7 +107,7 @@ namespace GameToFunLab.Maps
         {
             if (bgBlackForMapLoading == null)
             {
-                FgLogger.LogError("Fade Sprite가 설정되지 않았습니다.");
+                Debug.LogError("Fade Sprite가 설정되지 않았습니다.");
                 yield break;
             }
             // 이미 활성화 되어있으면 (인게임 처음 시작했을때) 건너뛰기.
@@ -130,7 +125,7 @@ namespace GameToFunLab.Maps
             {
                 elapsedTime += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsedTime / FadeDuration);
-                float alpha = Mathf.Lerp(0, 1, Easing.EaseOutQuintic(t));
+                float alpha = Mathf.Lerp(0, 1, Easing.OutQuad(t));
                 spriteRenderer.color = new Color(0, 0, 0, alpha);
                 yield return null;
             }
@@ -152,8 +147,8 @@ namespace GameToFunLab.Maps
         IEnumerator UnloadPreviousStage()
         {
             // 현재 씬에 있는 모든 몬스터 오브젝트를 삭제
-            DestroyByTag(ConfigTags.TagMonster);
-            DestroyByTag(ConfigTags.TagNpc);
+            DestroyByTag(ConfigTags.Monster);
+            DestroyByTag(ConfigTags.Npc);
             monsterUnums.Clear();
             monsterPrefabs.Clear();
 
@@ -176,24 +171,41 @@ namespace GameToFunLab.Maps
 
         protected virtual IEnumerator CreateMap()
         {
-            SceneGame.player?.GetComponent<Player>().Stop();
+            // SceneGame.player?.GetComponent<Player>().Stop();
 
-            if (CurrentMapUnum == 0)
-            {
-                CurrentMapUnum = SaveDataManager.CurrentChapter;
-            }
+            // if (CurrentMapUnum == 0)
+            // {
+            //     CurrentMapUnum = SaveDataManager.CurrentChapter;
+            // }
             
             if (DefaultMap != null)
             {
                 Destroy(DefaultMap.gameObject);
             }
-            // 맵 생성 코드 추가 해야 함
+            
+            DefaultMap defaultMap = null;
+            MapConstants.Category category = MapConstants.Category.Tiled;
+            switch (category)
+            {
+                case MapConstants.Category.Tiled:
+                    defaultMap = CreateTiledMap();
+                    break;
+                default:
+                    throw new ArgumentException("Invalid character type");
+            }
+            DefaultMap = defaultMap;
             
             // 플레이어 위치 0, 0 으로
-            SceneGame.player?.GetComponent<Player>().MoveForce(0, 0);
+            // SceneGame.player?.GetComponent<Player>().MoveForce(0, 0);
             
             // Logger.Log("타일맵 프리팹 로드 완료");
             yield return null;
+        }
+        
+        // 플레이어 캐릭터 생성
+        private DefaultMap CreateTiledMap()
+        {
+            return null;
         }
 
         protected virtual IEnumerator LoadMonsters()
@@ -229,7 +241,7 @@ namespace GameToFunLab.Maps
         {
             if (bgBlackForMapLoading == null)
             {
-                FgLogger.LogError("Fade Sprite가 설정되지 않았습니다.");
+                Debug.LogError("Fade Sprite가 설정되지 않았습니다.");
                 yield break;
             }
 
@@ -241,7 +253,7 @@ namespace GameToFunLab.Maps
             {
                 elapsedTime += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsedTime / FadeDuration);
-                float alpha = Mathf.Lerp(1, 0, Easing.EaseInQuintic(t));
+                float alpha = Mathf.Lerp(1, 0, Easing.InQuad(t));
                 spriteRenderer.color = new Color(0, 0, 0, alpha);
                 yield return null;
             }
@@ -260,7 +272,7 @@ namespace GameToFunLab.Maps
             StopCoroutine(UnloadPreviousStage());
             StopCoroutine(FadeIn());
 
-            SceneGame.saveDataManager.SetChapter(CurrentMapUnum);
+            // SceneGame.saveDataManager.SetChapter(CurrentMapUnum);
             IsLoadComplete = true;
             PlaySpawnPosition = Vector3.zero;
             // Logger.Log("맵 로드 완료");

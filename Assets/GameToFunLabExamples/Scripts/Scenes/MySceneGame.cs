@@ -33,7 +33,7 @@ namespace Scripts.Scenes
         {
             if (TableLoaderManager.Instance == null)
             {
-                SceneManager.LoadSceneByName("Intro");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Intro");
                 return;
             }
             base.Awake();

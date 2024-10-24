@@ -4,12 +4,12 @@ using GameToFunLab.TableLoader;
 using Scripts.TableLoader;
 using UnityEngine;
 
-namespace GameToFunLab.Editor.TableLoader
+namespace GameToFunLab.Editor
 {
-    public class TableLoaderManager
+    public class TableLoader
     {
         // 공통적인 로드 메서드로, 제네릭 타입과 파일명을 받아 로드
-        private static T LoadTable<T>(string fileName) where T : DefaultTable, new()
+        private T LoadTable<T>(string fileName) where T : DefaultTable, new()
         {
             T tableData = null;
             try
@@ -41,16 +41,16 @@ namespace GameToFunLab.Editor.TableLoader
             return tableData;
         }
 
-        public static TableMap LoadMapTable()
+        public TableMap LoadMapTable()
         {
             return LoadTable<TableMap>("map");
         }
 
-        public static TableNpc LoadNpcTable()
+        public TableNpc LoadNpcTable()
         {
             return LoadTable<TableNpc>("npc");
         }
-        public static TableSpine LoadSpineTable()
+        public TableSpine LoadSpineTable()
         {
             return LoadTable<TableSpine>("spine");
         }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using GameToFunLab.Core;
-using GameToFunLab.Scenes;
 using Scripts.Scenes;
 using UnityEngine;
 
@@ -110,7 +109,7 @@ namespace Scripts.TableLoader
         private static void OnEndLoad()
         {
             // 로드 완료 후의 로직 추가
-            SceneManager.LoadSceneByName("Game");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
         }
     }
 }

@@ -14,22 +14,22 @@ namespace GameToFunLab.Editor.MapEditor
     public class WarpExporter
     {
         private List<WarpData> warpDatas;
-        private DefaultMap _defaultMap;
-        private GameObject _player;
+        private DefaultMap defaultMap;
+        private GameObject player;
 
         public void Initialize(DefaultMap defaultMap, GameObject player)
         {
-            _defaultMap = defaultMap;
-            _player = player;
+            this.defaultMap = defaultMap;
+            this.player = player;
         }
 
         public void SetDefaultMap(DefaultMap defaultMap)
         {
-            _defaultMap = defaultMap;
+            this.defaultMap = defaultMap;
         }
         public void AddWarpToMap()
         {
-            if (_defaultMap == null)
+            if (defaultMap == null)
             {
                 Debug.LogError("_defaultMap 이 없습니다.");
                 return;
@@ -42,10 +42,10 @@ namespace GameToFunLab.Editor.MapEditor
                 return;
             }
 
-            GameObject warp = Object.Instantiate(warpPrefab, Vector3.zero, Quaternion.identity, _defaultMap.transform);
-            if (_player != null)
+            GameObject warp = Object.Instantiate(warpPrefab, Vector3.zero, Quaternion.identity, defaultMap.transform);
+            if (player != null)
             {
-                warp.transform.position = _player.transform.position + new Vector3(1, 0, 0);
+                warp.transform.position = player.transform.position + new Vector3(1, 0, 0);
             }
 
             var objectWarp = warp.GetComponent<ObjectWarp>();
@@ -60,12 +60,12 @@ namespace GameToFunLab.Editor.MapEditor
 
         public void ExportWarpDataToJson(string filePath, string fileName, int mapUnum)
         {
-            GameObject mapObject = GameObject.FindGameObjectWithTag("Map");
+            GameObject mapObject = GameObject.FindGameObjectWithTag(ConfigTags.Map);
             WarpDataList warpDataList = new WarpDataList();
 
             foreach (Transform child in mapObject.transform)
             {
-                if (child.CompareTag(ConfigTags.TagMapObjectWarp))
+                if (child.CompareTag(ConfigTags.MapObjectWarp))
                 {
                     var objectWarp = child.gameObject.GetComponent<ObjectWarp>();
                     if (objectWarp == null) continue;
@@ -103,7 +103,7 @@ namespace GameToFunLab.Editor.MapEditor
         }
         private void SpawnWarps()
         {
-            if (_defaultMap == null)
+            if (defaultMap == null)
             {
                 Debug.LogError("_defaultMap 이 없습니다.");
                 return;
@@ -122,7 +122,7 @@ namespace GameToFunLab.Editor.MapEditor
                 {
                     FgLogger.LogError("이동할 맵이 셋팅 되지 않았습니다.");
                 }
-                GameObject warp = Object.Instantiate(warpPrefab, _defaultMap.gameObject.transform);
+                GameObject warp = Object.Instantiate(warpPrefab, defaultMap.gameObject.transform);
                 
                 // NPC의 속성을 설정하는 스크립트가 있을 경우 적용
                 ObjectWarp npcScript = warp.GetComponent<ObjectWarp>();

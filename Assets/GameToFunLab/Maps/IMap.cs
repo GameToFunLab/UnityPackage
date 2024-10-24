@@ -10,5 +10,6 @@ namespace GameToFunLab.Maps
         float FadeDuration { get; set; }  // 페이드 인 지속 시간
         Vector3 PlaySpawnPosition { get; set; }
         
+        void CreateMap();
     }
 }
