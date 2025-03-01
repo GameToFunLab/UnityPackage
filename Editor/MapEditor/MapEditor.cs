@@ -4,8 +4,8 @@ using GameToFunLab.Configs;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Maps.Objects;
-using Scripts.Maps;
-using Scripts.TableLoader;
+using GameToFunLab.Runtime.Scripts.Maps;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using UnityEditor;
 using UnityEngine;
 

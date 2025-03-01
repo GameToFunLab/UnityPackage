@@ -1,8 +1,7 @@
-﻿using GameToFunLab.Characters.Movement;
-using GameToFunLab.Runtime.Characters.Movement;
+﻿using GameToFunLab.Runtime.Characters.Movement;
 using UnityEngine;
 
-namespace Scripts.Characters.MovementSpine2d
+namespace GameToFunLab.Runtime.Scripts.Characters.MovementSpine2d
 {
     public class AutoMoveStrategy : IMovementStrategy
     {

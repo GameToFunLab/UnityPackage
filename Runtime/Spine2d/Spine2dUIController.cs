@@ -5,7 +5,7 @@ using Spine.Unity;
 using UnityEngine;
 using Event = Spine.Event;
 
-namespace Spine2d
+namespace GameToFunLab.Runtime.Spine2d
 {
     /// <summary>
     /// 스파인 컨트롤러

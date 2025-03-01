@@ -1,7 +1,7 @@
 ﻿using GameToFunLab.Core;
 using UnityEngine;
 
-namespace Scripts.TableLoader
+namespace GameToFunLab.Runtime.Scripts.TableLoader
 {
     public class StruckTableSpine
     {

@@ -1,10 +1,10 @@
 using GameToFunLab.Characters;
 using GameToFunLab.Characters.Movement;
-using Scripts.Scenes;
-using Scripts.TableLoader;
+using GameToFunLab.Runtime.Scripts.Scenes;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using UnityEngine;
 
-namespace Scripts.Characters
+namespace GameToFunLab.Runtime.Scripts.Characters
 {
     /// <summary>
     /// 플레이어 기본 클레스

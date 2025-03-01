@@ -1,6 +1,6 @@
 ﻿using GameToFunLab.TableLoader;
 
-namespace Scripts.TableLoader
+namespace GameToFunLab.Runtime.Scripts.TableLoader
 {
     public class TableExp : DefaultTable
     {	

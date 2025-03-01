@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using GameToFunLab.Characters;
 using GameToFunLab.Core;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using GameToFunLab.Scenes;
 using GameToFunLab.Utils;
-using Scripts.TableLoader;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Scenes
+namespace GameToFunLab.Runtime.Scripts.Scenes
 {
     public class MySceneGame : SceneGame
     {

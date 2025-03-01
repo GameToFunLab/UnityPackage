@@ -4,7 +4,7 @@ using System.Linq;
 using GameToFunLab.Core;
 using UnityEngine;
 
-namespace Spine2d
+namespace GameToFunLab.Runtime.Spine2d
 {
     public class SpineEventManager : MonoBehaviour
     {

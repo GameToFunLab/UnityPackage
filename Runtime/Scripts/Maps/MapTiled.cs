@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using GameToFunLab.Scenes;
-using Scripts.TableLoader;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Scripts.Maps
+namespace GameToFunLab.Runtime.Scripts.Maps
 {
     public class MapTiled : DefaultMap
     {

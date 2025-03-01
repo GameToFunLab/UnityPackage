@@ -2,7 +2,7 @@
 using GameToFunLab.Scenes;
 using TMPro;
 
-namespace Scripts.Scenes
+namespace GameToFunLab.Runtime.Scripts.Scenes
 {
     public class MySceneLoading : DefaultScene
     {

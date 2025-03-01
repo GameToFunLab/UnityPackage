@@ -6,13 +6,13 @@ using GameToFunLab.Configs;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using GameToFunLab.Maps.Objects;
-using Scripts.Characters;
-using Scripts.Scenes;
-using Scripts.TableLoader;
+using GameToFunLab.Runtime.Scripts.Characters;
+using GameToFunLab.Runtime.Scripts.Scenes;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Scripts.Maps
+namespace GameToFunLab.Runtime.Scripts.Maps
 {
     public class MyMapManager : MapManager
     {

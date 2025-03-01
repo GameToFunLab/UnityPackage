@@ -5,8 +5,8 @@ using GameToFunLab.Characters;
 using GameToFunLab.Configs;
 using GameToFunLab.Core;
 using GameToFunLab.Maps;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using Newtonsoft.Json;
-using Scripts.TableLoader;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

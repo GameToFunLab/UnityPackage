@@ -4,7 +4,7 @@ using GameToFunLab.Item;
 using GameToFunLab.TableLoader;
 using GameToFunLab.UI;
 
-namespace Scripts.TableLoader
+namespace GameToFunLab.Runtime.Scripts.TableLoader
 {
     public class StruckTableItem
     {

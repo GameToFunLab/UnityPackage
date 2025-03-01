@@ -1,7 +1,7 @@
 ﻿using System;
 using GameToFunLab.Core;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using GameToFunLab.TableLoader;
-using Scripts.TableLoader;
 using UnityEngine;
 
 namespace GameToFunLab.Editor

@@ -1,6 +1,6 @@
 ﻿using GameToFunLab.Core;
 
-namespace Scripts.TableLoader
+namespace GameToFunLab.Runtime.Scripts.TableLoader
 {
     public class StruckTableMapRegen
     {

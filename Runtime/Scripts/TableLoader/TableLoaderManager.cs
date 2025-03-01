@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using GameToFunLab.Core;
-using Scripts.Scenes;
+using GameToFunLab.Runtime.Scripts.Scenes;
 using UnityEngine;
 
-namespace Scripts.TableLoader
+namespace GameToFunLab.Runtime.Scripts.TableLoader
 {
     public class TableLoaderManager : MonoBehaviour
     {

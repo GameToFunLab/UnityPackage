@@ -1,6 +1,6 @@
 ﻿using GameToFunLab.Scenes;
 
-namespace Scripts.Scenes
+namespace GameToFunLab.Runtime.Scripts.Scenes
 {
     public class MySceneIntro : DefaultScene
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Spine;
 
-namespace Spine2d
+namespace GameToFunLab.Runtime.Spine2d
 {
     /// <summary>
     /// 캐릭터가 사용하는 스파인 클레스

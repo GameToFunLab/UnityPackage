@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameToFunLab.Runtime.Scripts.Scenes;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using GameToFunLab.Utils;
-using Scripts.Scenes;
-using Scripts.TableLoader;
 using Spine.Unity;
 using TMPro;
 using UnityEngine;
 
-namespace Scripts.Characters
+namespace GameToFunLab.Runtime.Scripts.Characters
 {
     /// <summary>
     /// 몬스터 기본 클레스

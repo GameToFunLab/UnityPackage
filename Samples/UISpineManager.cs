@@ -1,4 +1,4 @@
-using Spine2d;
+using GameToFunLab.Runtime.Spine2d;
 using UnityEngine;
 
 public class UISpineMetadata

@@ -1,7 +1,7 @@
-using Scripts.TableLoader;
+using GameToFunLab.Runtime.Scripts.TableLoader;
 using UnityEngine;
 
-namespace Scripts.Characters
+namespace GameToFunLab.Runtime.Scripts.Characters
 {
     /// <summary>
     /// 몬스터 기본 클레스

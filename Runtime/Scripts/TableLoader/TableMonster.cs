@@ -2,10 +2,11 @@
 using GameToFunLab.Characters;
 using GameToFunLab.Core;
 using GameToFunLab.TableLoader;
+using UnityEngine;
 
-namespace Scripts.TableLoader
+namespace GameToFunLab.Runtime.Scripts.TableLoader
 {
-    public class StruckTableNpc
+    public class StruckTableMonster
     {
         public int Unum;
         public string Name;
@@ -19,11 +20,11 @@ namespace Scripts.TableLoader
         public int RewardExp;
         public int RewardGold;
     }
-    public class TableNpc : DefaultTable
+    public class TableMonster : DefaultTable
     {
         private static readonly Dictionary<string, ICharacter.Grade> mapGrade;
 
-        static TableNpc()
+        static TableMonster()
         {
             mapGrade = new Dictionary<string, ICharacter.Grade>
             {
@@ -33,15 +34,15 @@ namespace Scripts.TableLoader
         }
         public ICharacter.Grade ConvertGrade(string grade) => mapGrade.GetValueOrDefault(grade, ICharacter.Grade.None);
 
-        public StruckTableNpc GetNpcData(int unum)
+        public StruckTableMonster GetMonsterData(int unum)
         {
             if (unum <= 0)
             {
                 FgLogger.LogError("unum is 0.");
-                return new StruckTableNpc();
+                return new StruckTableMonster();
             }
             var data = GetData(unum);
-            return new StruckTableNpc
+            return new StruckTableMonster
             {
                 Unum = int.Parse(data["Unum"]),
                 Name = data["Name"],
@@ -55,6 +56,28 @@ namespace Scripts.TableLoader
                 RewardExp = int.Parse(data["RewardExp"]),
                 RewardGold = int.Parse(data["RewardGold"]),
             };
+        }
+        
+        public GameObject GetPrefab(int unum) {
+            var info = GetMonsterData(unum);
+            if (info.SpineUnum == 0) return null;
+        
+            string prefabPath = TableLoaderManager.Instance.TableSpine.GetPath(info.SpineUnum);
+            if (prefabPath == "") {
+                FgLogger.Log("prefabPath is ''. shape: "+info.SpineUnum);
+                return null;
+            }
+            GameObject prefab = Resources.Load<GameObject>(prefabPath);
+            if (prefab == null) {
+                FgLogger.Log("prefab is null. prefabPath: "+prefabPath);
+                return null;
+            }
+            return prefab;
+        }
+        public string GetShapePath(int unum)
+        {
+            var info = GetMonsterData(unum);
+            return info.SpineUnum <= 0 ? "" : TableLoaderManager.Instance.TableSpine.GetPath(info.SpineUnum);
         }
     }
 }

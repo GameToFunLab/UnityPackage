@@ -3,7 +3,7 @@ using GameToFunLab.Core;
 using GameToFunLab.Maps;
 using UnityEngine;
 
-namespace Scripts.TableLoader
+namespace GameToFunLab.Runtime.Scripts.TableLoader
 {
     public class StruckTableMap
     {
