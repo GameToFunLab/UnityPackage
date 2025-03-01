@@ -1,5 +1,6 @@
 using GameToFunLab.Characters.Movement;
 using GameToFunLab.Configs;
+using GameToFunLab.Runtime.Characters.Movement;
 using UnityEngine;
 
 namespace GameToFunLab.Characters

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GameToFunLab.Characters.Movement
+namespace GameToFunLab.Runtime.Characters.Movement
 {
     public interface IMovementStrategy
     {

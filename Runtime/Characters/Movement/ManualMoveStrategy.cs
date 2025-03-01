@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameToFunLab.Runtime.Characters.Movement;
+using UnityEngine;
 
 namespace GameToFunLab.Characters.Movement
 {

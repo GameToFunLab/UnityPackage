@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using GameToFunLab.Characters.Movement;
+using UnityEngine;
 
-namespace GameToFunLab.Characters.Movement
+namespace GameToFunLab.Runtime.Characters.Movement
 {
     public class AutoMoveStrategy : IMovementStrategy
     {
