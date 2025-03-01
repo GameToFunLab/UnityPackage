@@ -1,0 +1,4 @@
+Unum	Name	Path	Skeleton
+#일반 npc			
+100001	npc1	Prefabs/Characters/Npc/npc1	None
+100002	npc2	Prefabs/Characters/Npc/npc2	None

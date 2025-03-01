@@ -1,0 +1,3 @@
+Unum	MapUnum	MonsterUnum	SpawnArea	SpawnPosition	SpawnCount	SpawnRepeatTime	SpawnRepeatByDead
+1	1	110001	None	2,2	1	1	N
+2	1	110002	None	2,2	1	1	N

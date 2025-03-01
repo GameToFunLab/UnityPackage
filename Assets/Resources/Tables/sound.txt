@@ -1,0 +1,6 @@
+Unum	Type	TypeSub	Memo	Path	MaxPlayCount	Volume
+1	Bgm	None	인트로	Sounds/title_screen	1	1
+2	Bgm	None	플레이노멀	Sounds/play_normal	1	1
+3	Sfx	Player	공격1	Sounds/Sfx/Player/attack1	1	1
+4	Sfx	Monster	몬스터1	Sounds/Sfx/Monster/mon_hit	1	1
+5	Sfx	UI	ui 클릭	Sounds/Sfx/UI/click1	1	1

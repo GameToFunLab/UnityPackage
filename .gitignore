@@ -73,3 +73,7 @@ crashlytics-build.properties
 
 # Jetbrain folder
 .idea/
+
+# docFX 
+/Documentation
+**/obj/xdoc/**
