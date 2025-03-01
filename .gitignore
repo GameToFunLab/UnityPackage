@@ -80,3 +80,5 @@ crashlytics-build.properties
 
 # assets
 /[Aa]ssets/
+/[Pp]ackages/
+/[Pp]rojectSettings/
