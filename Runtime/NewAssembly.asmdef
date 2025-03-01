@@ -1,6 +1,6 @@
 {
     "name": "NewAssembly",
-    "rootNamespace": "GameToFunLab",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
