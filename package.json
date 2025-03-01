@@ -1,6 +1,6 @@
 {
   "name": "com.gametofunlab.unitypackage",
-  "displayName": "GameToFunLab Library",
+  "displayName": "GameToFunLabLibrary",
   "version": "1.0.0",
   "unity": "2022.3",
   "description": "한글 A sample package for GGemCo.",
