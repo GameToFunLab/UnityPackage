@@ -77,8 +77,3 @@ crashlytics-build.properties
 # docFX 
 /Documentation
 **/obj/xdoc/**
-
-# assets
-/[Aa]ssets/
-/[Pp]ackages/
-/[Pp]rojectSettings/

@@ -1,0 +1,16 @@
+{
+    "name": "AssemblyCharacters",
+    "references": [
+        "GUID:984923ff0db717b4b9457a2edaa1a249",
+        "GUID:aa3560c7181989b4393a290972e5aaf8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
