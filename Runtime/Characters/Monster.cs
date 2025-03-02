@@ -17,6 +17,11 @@ namespace GameToFunLab.Characters
         [HideInInspector] public GameObject player;
         [HideInInspector] public Collider2D[] hits;  // 필요한 크기로 초기화
 
+        // 1. 델리게이트 선언
+        public delegate void DelegateMonsterDead(int monsterUid, GameObject monsterObject);
+        // 2. 델리게이트 이벤트 정의
+        public event DelegateMonsterDead OnMonsterDead;
+        
         // Start is called before the first frame update
         protected override void Awake()
         {
@@ -103,6 +108,7 @@ namespace GameToFunLab.Characters
         /// </summary>
         private void OnDead()
         {
+            OnMonsterDead?.Invoke(unum, gameObject);
         }
         /// <summary>
         /// 플레이어의 스킬로 인한 데미지 입었을때 
