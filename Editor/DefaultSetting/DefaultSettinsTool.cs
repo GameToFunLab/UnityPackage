@@ -7,6 +7,7 @@ namespace GameToFunLab.Editor.DefaultSetting
         private readonly SettingTags settingTags = new SettingTags();
         private readonly SettingManagers settingManagers = new SettingManagers();
         private readonly SettingResolution settingResolution = new SettingResolution();
+        private readonly SettingAddressable settingAddressable = new SettingAddressable();
         
         [MenuItem("GameToFunLab/기본 셋팅하기")]
         public static void ShowWindow()
@@ -24,6 +25,8 @@ namespace GameToFunLab.Editor.DefaultSetting
             
             // todo 툴로 추가할 수 있는 방법 찾기. 현재는 class 이름으로 addComponent 를 하지 못 한다.
             // settingManagers.OnGUI();
+            EditorGUILayout.Space(10);
+            settingAddressable.OnGUI();
         }
     }
 }
